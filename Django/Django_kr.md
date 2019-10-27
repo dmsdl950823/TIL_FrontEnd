@@ -46,7 +46,11 @@
         }
     }
 
-
+    // commandline
+    # python manage.py migrate    // 데이터 베이스생성
+    # python manage.py runserver  // 웹 서버 실행
+    
+이제 등록했던 서버 'http://127.0.0.1:8000' 에 접속하면'it worked!' 페이지가 보일것이다
 
 
 
