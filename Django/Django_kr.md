@@ -53,7 +53,7 @@
 이제 등록했던 서버 'http://127.0.0.1:8000' 에 접속하면'it worked!' 페이지가 보일것이다
 
 
-
+https://tutorial.djangogirls.org/ko/django_models/ 부터 재시작
 
 
 
