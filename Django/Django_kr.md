@@ -19,18 +19,32 @@
 
 ## 프로젝트 제작
     # django-admin startproject mysite .  // . 은 현재 디렉토리에 설치하라는 의미
-.
+
     // 생성된 django 디렉토리 내부
     djangogirls
-    ├───manage.py
+    ├───manage.py           // 사이트 관리, 설치작업 없이 컴퓨터에서 웹 서버 시작 가능
     └───mysite
-            settings.py
-            urls.py
+            settings.py     // 웹사이트 설정 파일
+            urls.py         // urlresolver가 사용하는 패턴 목록 포함
             wsgi.py
             __init__.py
 
-
-
+## 설정 변경
+    // mysite/settings.py 설정 변경
+    TIME_ZONE = 'Asia/Seoul' 
+    // 앱 배포시 pythonanywhere 의 호스트 이름과 일치 하지 않으므로 설정 변경 필요
+    ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']  
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')       // 추가
+    
+## 데이터베이스 설정
+    // mysite/settings.py 설정 변경
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 
