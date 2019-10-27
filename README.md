@@ -1,2 +1,3 @@
 # TIL
-Record what I learned today
+This repository will be stacked width what I learned today
+
