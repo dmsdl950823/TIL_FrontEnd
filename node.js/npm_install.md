@@ -4,6 +4,8 @@
     // 없다면 설치 시작
     # yum install npm
     
-    // 버전 재확인
+    // npm, nodejs버전 재확인
     # rpm -qa | grep npm
-    
+    # rpm -qa | grep nodejs
+    # node -v
+    v10.16.3
