@@ -252,7 +252,27 @@ In an Array, it prints certain subdocument.
     
 
 
-    
+# Sorting
 
+## sort()
+"value" : 1  =>  asc,
+"value" : -1 =>  desc
+
+    > db.numbers.find({ "value": 1 })
+        # It will show ascending results 
+    
+    > db.numbers.find({ "value": -1 })
+        # It will show descending results 
+
+
+## limit()
+
+    > db.numbers.find().limit(3)
+        # It will show only 3 results
+        
+## skip()
+
+    > db.numbers.find().skip(2)
+        # It will show results, except 2 before the result. 
 
 
