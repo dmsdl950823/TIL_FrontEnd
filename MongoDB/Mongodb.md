@@ -3,8 +3,8 @@
   Install the mongoDB server
   
     $ sudo yum install -y mongodb-org mongodb-org-server
-     No match for argument: mongodb-org
-     No match for argument: mongodb-org-server
+       No match for argument: mongodb-org
+       No match for argument: mongodb-org-server
      
   If error messages come up, then you will have to make an repository for MongoDB
   
@@ -21,8 +21,8 @@
 You can install it from now on.    
 
     $ sudo yum install -y mongodb-org
-    ...
-    Complete!
+      ...
+      Complete!
     
     
 Version check
@@ -35,11 +35,11 @@ Version check
 
     $ sudo service mongod start
     
-    Redirecting to /bin/systemctl status mongod.service
-    ● mongod.service - MongoDB Database Server
-       Loaded: loaded (/usr/lib/systemd/system/mongod.service; enabled; vendor prese>
-       Active: active (running) since Thu 2020-01-23 20:21:30 KST; 10s ago
-         ...
+      Redirecting to /bin/systemctl status mongod.service
+      ● mongod.service - MongoDB Database Server
+         Loaded: loaded (/usr/lib/systemd/system/mongod.service; enabled; vendor prese>
+         Active: active (running) since Thu 2020-01-23 20:21:30 KST; 10s ago
+           ...
          
     $ mongo
     
@@ -66,18 +66,23 @@ Write data in the DB
       mongodb_tutorial  0.000GB
 
 Remove DB
+
 - Before using it, you must select a database.
 
+```
     > db.dripDatabase() 
       { "dropped" : "mongodb_tutorial", "ok" : 1 }
     > show dbs
       admin   0.000GB
       config  0.000GB
       local   0.000GB
+```
       
 Create Collection
+
 - db.createCollection(name, [options])
 
+```
     > db.createCollection("books")
       { "ok" : 1 }
     > db.people.insert({"name": "velopert"})
@@ -85,6 +90,7 @@ Create Collection
     > show collections
         books
         people
+```
 
 Remove Collection
 
@@ -126,6 +132,7 @@ View Documents
 Remove Documents
  - db.collection_name.remove(criteria, [justOne]);
  
+ ```
     > db.books.remove({"name": "NodeJS Guide"})
         WriteResult({ "nRemoved" : 1 })
     >  db.books.find()
@@ -136,6 +143,6 @@ Remove Documents
         WriteResult({ "nRemoved" : 1 })
     >  db.books.find()
         { "_id" : ObjectId("5e298840dd8593d1a93c570a"), "name" : "Book2", "author" : "Velopert" }
-        
+```    
 
         
