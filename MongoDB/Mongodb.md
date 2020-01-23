@@ -45,18 +45,18 @@ Version check
     
 # Using MongoDB
 
-Show all DBs
+#### Show all DBs
 
     > show dbs
       admin   0.000GB
       config  0.000GB
       local   0.000GB
       
-Select DB name
+#### Select DB name
 
     > use mongodb_tutorial
 
-Write data in the DB
+#### Write data in the DB
 
     > db.sample.insert({"name": "sample"});
     > show dbs
@@ -65,7 +65,7 @@ Write data in the DB
       local             0.000GB
       mongodb_tutorial  0.000GB
 
-Remove DB
+#### Remove DB
 
 - Before using it, you must select a database.
 
@@ -78,7 +78,7 @@ Remove DB
       local   0.000GB
 ```
       
-Create Collection
+#### Create Collection
 
 - db.createCollection(name, [options])
 
@@ -92,14 +92,14 @@ Create Collection
         people
 ```
 
-Remove Collection
+#### Remove Collection
 
     > db.people.drop()
         true
     > show collections
         books
         
-Insert Document 
+#### Insert Document 
  
     > db.books.insert({"name": "NodeJS Guide", "author": "Velopert"})
       WriteResult({ "nInserted" : 1 })
@@ -122,9 +122,10 @@ if you want to insert multiple documents, you can put it into Array.
       "upserted" : [ ]
     })
 
-View Documents
+#### View Documents
  - db.collection_name.find([query],[projection])
  
+ ```
     > db.books.find()
         { "_id" : ObjectId("5e2987b9dd8593d1a93c5708"), "name" : "NodeJS Guide", "author" : "Velopert" }
         { "_id" : ObjectId("5e298840dd8593d1a93c5709"), "name" : "Book1", "author" : "Velopert" }
@@ -146,9 +147,9 @@ View Documents
           "name" : "Book2",
           "author" : "Velopert"
         }
+```
 
-
-Remove Documents
+#### Remove Documents
  - db.collection_name.remove(criteria, [justOne]);
  
  ```
@@ -163,6 +164,65 @@ Remove Documents
     >  db.books.find()
         { "_id" : ObjectId("5e298840dd8593d1a93c570a"), "name" : "Book2", "author" : "Velopert" }
 ```    
+
+# Updating Field
+
+#### Update Field
+    > db.people.update( {"name": "Abet"}, { $set: { age: 20 } } )
+        WriteResult({ "nRemoved" : 1, "nUpserted": 0, "nModified": 1 })
+
+
+#### Replace Field
+Just do not use $set operator to replace the document.
+
+    > db.people.update( {"name": "Abet"}, { "name": "Betty 2nd", age:1 } )
+        WriteResult({ "nRemoved" : 1, "nUpserted": 0, "nModified": 1 })
+
+
+#### Remove field   =   $unset
+Use $unset operator to remove field
+
+    > db.people.update({ name: "David" }, { $unset: { score: 1 } })
+        WriteResult({ "nRemoved" : 1, "nUpserted": 0, "nModified": 1 })
+        
+#### upsert option
+If there are not exist what we searched, it will add new field.
+    
+    > db.people.update({ name: "Elly" }, { name: "Elly", age: 17 }, { upsert: true })
+
+#### Add values to field Array  =  $push
+
+    > db.people.update(
+        {name: "Charlie"},
+        {$push: { "skills": "angular.js" }}
+      )
+      
+#### Add values to field Array + sort   =  $each, $sort
+
+    > db.people.update(
+        {name: "Charlie"},
+        {$push: { 
+            "skills": {
+                $each: ["c++", "java"],
+                $sort: 1              
+              }
+            }
+         }
+      )
+
+#### Remove value from field Array   =   $pull
+
+    > db.people.update(
+        { name: "Charlie" },
+        { $pull: { skills: "mongoDB } }
+      )
+
+#### Remove multiple values from field Array   =  $in
+
+    > db.people.update(
+        { name: "Charlie" },
+        { $pull: { skills: $in: [ "angular.js", "java" ] } }
+      )
 
 
 # Insert Query
@@ -274,5 +334,13 @@ In an Array, it prints certain subdocument.
 
     > db.numbers.find().skip(2)
         # It will show results, except 2 before the result. 
+
+
+
+
+
+
+
+
 
 
