@@ -123,11 +123,30 @@ if you want to insert multiple documents, you can put it into Array.
     })
 
 View Documents
+ - db.collection_name.find([query],[projection])
  
     > db.books.find()
         { "_id" : ObjectId("5e2987b9dd8593d1a93c5708"), "name" : "NodeJS Guide", "author" : "Velopert" }
         { "_id" : ObjectId("5e298840dd8593d1a93c5709"), "name" : "Book1", "author" : "Velopert" }
         { "_id" : ObjectId("5e298840dd8593d1a93c570a"), "name" : "Book2", "author" : "Velopert" }
+        
+    > db.books.find().pretty()
+        {
+          "_id" : ObjectId("5e298840dd8593d1a93c570a"),
+          "name" : "Book2",
+          "author" : "Velopert"
+        }
+        {
+          "_id" : ObjectId("5e298d1bdd8593d1a93c570b"),
+          "name" : "Book1",
+          "author" : "Velopert"
+        }
+        {
+          "_id" : ObjectId("5e298d1bdd8593d1a93c570c"),
+          "name" : "Book2",
+          "author" : "Velopert"
+        }
+
 
 Remove Documents
  - db.collection_name.remove(criteria, [justOne]);
@@ -145,4 +164,95 @@ Remove Documents
         { "_id" : ObjectId("5e298840dd8593d1a93c570a"), "name" : "Book2", "author" : "Velopert" }
 ```    
 
-        
+
+# Insert Query
+MongoDB can filter the result through the conditions.
+
+### Comaprison operator
+|operator|explanation|
+|------|---|
+|$eq|equal|
+|$gt|greater than|
+|$gte|greater than or equal|
+|$lt|less than|
+|$lte|less than or equal|
+|$ne|not equal|
+|$in|values within the Array|
+|$nin|values not within the Array|
+
+
+    > db.numbers.find({"value": 56})
+      # Tt will show results filtered "value" key is the same with 56
+    
+    > bd.numbers.find({"value": { $gt: 100 } })
+      # It will show results filtered "value" key is bigger than 100
+      
+    > db.numbers.find({"value": { $gt: 0, $lt: 100 })
+      # It will show results filtered between bigger than 0 and less than 100
+      
+    > db.numbers.find({"value": { $gt: 0, $lt: 100, $nin: [12, 33] })
+      # It will show results filtered between bigger than 0 and less than 100 within given array.
+      
+
+## Logic operator
+|OR|AND|NOT|NOR|
+|------|---|---|---|
+|$or|$and|$not|$nor|
+
+    > db.articles.find({ $or: [ {"title": "article01"}, {"writer": "Alpha"}] })
+      # It will show results filtered either "title" key is "article01" || "writer" key is "Alpha"
+      
+    > db.articles.find({ $and: [ {"writer": "Velopert"}, {"likes": { $lt: 10 } }] })
+      # It will show results filtered either "writer" key is "Velopert" && "likes" key is less than 10
+      # Similar with =>     db.articles.find( {"writer": "Velopert"}, {"likes": { $lt: 10 } })
+      
+
+## Regex Operator
+you can find Document by using $regex operator.
+
+    > db.article.find( {"title": /article0[1-2] } )
+    > db.article.find( {"writer": /velopert/i } )
+    
+|operator|explanation|
+|------|---|
+|i|ignore case|
+|m| ... |
+|x|ignore all whitespaces|
+|s|including \n, using '.'|
+
+
+## $where Operator
+You can use javascript expression with 'where operator'
+
+    > db.article.find({ $where: "this.comments.length == 0" }).pretty()
+       # It will show results filtered the condition with JS syntax
+       
+## $elementMatch Operator
+Using it when you query the Array of subdocument (embedded document).
+
+    > db.articles.find({ "comments": { $elementMatch: { "name": "Charlie" } } })
+
+
+# [projection] 
+- db.collection_name.find([query], [projection])
+
+```
+    > db.articles.find({}, {"id": false, "title": true, "content": true })
+```
+    
+## $slice Operator
+When subdocument array is read, make a limitation.
+
+    > db.articles.find({ "title": "article03", { commetns: { $slice: 1 } } })
+    
+## $elemMatch Operator
+In an Array, it prints certain subdocument.
+
+    > ★★★★★★★★★★★★★★★
+    
+
+
+    
+
+
+
