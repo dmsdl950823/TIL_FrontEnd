@@ -65,6 +65,56 @@
     $ git merge - -squash <branch>
 #### remove branch - 브랜치 삭제하기
     $ git branch -d <subject branch>  # 삭제할 브랜치가 현재 브랜치에 합쳐졌을 경우에만
-    $ git branch -D <삭제할 브랜치>   # 삭제할 브랜치가 현재 브랜치에 합쳐지지 않았어도
+    $ git branch -D <subject branch>   # 삭제할 브랜치가 현재 브랜치에 합쳐지지 않았어도
 
 
+## Git changes
+
+#### see all the changes - 모든 이력 확인
+    $ git log
+#### show the chages with logs 변경 사항을 보여주는 패치와 함께 로그 표시하기
+    $ git log -p
+#### limit log count with only 1 lists - 1개의 항목만 보이도록 로그 개수 제한하기
+    $ git log -1
+#### limit log count with only 20 lists and patch - 20개의 항목과 패치만 보이도록 로그 제한하기
+    $ git log -20 -p
+#### see commit log for 6 months - 6개월 동안의 커밋 로그 보기
+    $ git log - -since=”6 hours”
+#### see commit log before 2 days - 이틀 전까지의 커밋 로그 보기
+    $ git log - -before=”2 days”
+#### see 3 logs before HEAD - HEAD보다 세 개 이전의 커밋 로그 보기
+    $ git log -1 HEAD-3
+    $ git log -1 HEAD^^^
+    $ git log -1 HEAD~1^^
+#### see commit log between two point - 두 지점 사이의 커밋 로그 보기
+    $ git log <start point> … <end point>
+    * start/end point can be used by commit name, branch name or tag name or combined contents as well.
+    * 시작 지점이나 끝 지점은 커밋명, 브랜치명, 혹은 태그명이 될 수 있고 조합하여 사용 가능하다.
+#### see each log with one line - 각 항목의 로그 이력 한 줄씩 보기
+    $ git log - -pretty=oneline
+#### see static of line impacted by each content - 각 항목마다 영향 받은 줄의 통계 보기
+    $ git log - -stat
+#### see the file state in the commit point - 커밋할 시점의 파일 상태 보기
+    $ git log - -name-status
+#### see the difference index and working tree - 현재 작업 트리와 인덱스의 차이점 보기
+    $ git diff
+#### see the difference between index and repository - 인덱스와 저장소의 차이점 보기
+    $ git diff - -cached
+#### see the difference between working tree and repository - 작업 트리와 저장소의 차이점 보기
+    $ git diff HEAD
+#### see the difference between working tree and a certain location - 작업 트리와 특정 위치 간의 차이점 보기
+    $ git diff <start poitn>
+    * start point would be commit name/branch name/tag name
+    * 시작 지점은 커밋명 or 브랜치명 or 태그명이다.
+#### see the difference between two points - 저장소의 두 지점 사이의 차이점 보기
+    $ git diff <start point> <end point>
+#### see statistics of diffrence -  차이점의 통계 보기
+    $ git diff - -stat <start point> [<end point>]
+#### see the commit info with lines - 파일의 커밋 정보 줄 단위로 보기
+    $ git blame <file>
+#### see information of copy, paste, move - 파일의 줄 단위의 복사, 붙여 넣기, 이동 정보 보기
+    $ git blame -M <file>
+#### see information of line moving and original file - 파일의 줄 단위의 이동과 원본 파일 정보 보기
+    $ git blame -C -C <파일>
+#### see info of copy/paste from log - 로그에서 복사와 붙여 넣은 정보 보기
+    $ git log -C -C -p -1 <특정 지점>
