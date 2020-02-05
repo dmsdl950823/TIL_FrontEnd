@@ -118,3 +118,38 @@
     $ git blame -C -C <파일>
 #### see info of copy/paste from log - 로그에서 복사와 붙여 넣은 정보 보기
     $ git log -C -C -p -1 <특정 지점>
+    
+    
+    
+## Remote repository - 원격 저장소
+
+#### clone repo - 저장소 복제하기
+    $ git clone <repo name>
+#### clone repo including only 200 commits - 마지막 200개의 커밋만 포함하여 저장소 복제하기
+    $ git clone - -depth 200 <repo name>
+#### add new remote repo - 새로운 원격 저장소 추가하기
+    $ git remote add <remote repo> <repo url>
+#### see all remote branch lists- 모든 원격 브랜치 목록 보기
+    $ git branch -r
+#### create local branch in remote branch - 원격 브랜치에서 지역 브랜치 생성하기
+    $ git branch <new branch> <remote branch>
+#### create local branch from remote tag - 원격 태그에서 지역 브랜치 생성하기
+    $ git branch <new branch> <remote tag>
+#### bring the change into local branch without merge in origin repo - origin 저장소에서 합치지 않고 지역 브랜치로 변경 사항 가져오기
+    $ git fetch
+#### bring the change into local branch without merge in remote repo - 원격 저장소에서 합치지 않고 지역 브랜치로 변경 사항 가져오기
+    $ git fetch <remote repo>
+#### merge the changes of remote repo into now branch - 원격 저장소에서 변경 사항을 가져와 현재 브랜치에 합치기
+    $ git pull <remote repo>
+#### merge the changes from origin repo into now branch - origin 저장소에서 변경 사항을 가져와 현재 브랜치에 합치기
+    $ git pull
+#### push local branch into local branch - 지역 브랜치를 원격 브랜치에 푸싱하기
+    $ git push <remote repo> <local branch>:<remote branch>
+#### push local branch into the same named remote branch - 지역 브랜치를 동일한 이름의 원격 브랜치에 푸싱하기
+    $ git push <remote repo> <local branch>
+#### push local branch into remote repo - 새로운 로컬 브랜치를 원격 저장소에 푸싱하기
+    $ git push <remote repo> <local branch>
+#### remove useless remote branch from remote repo - 원격 저장소에서 쓸모가 없어진 원격 브랜치 제거하기
+    $ git remote prune <remote repo>
+#### remove remote repo and related branch - 원격 저장소를 제거하고 관련된 브랜치도 제거하기
+    $ git remote rm <remote repo>
