@@ -131,3 +131,50 @@ Char => with '' | Int => without ''
   |LCASE('str') or LOWER('str')||소문자로 변경|
   |UCASE('str') or UPPER('str')||대문자로 변경|
   |REVERSE('str')||문자열을 반대로 나열|
+
+  #### 3. Logic Function
+  |function | Eng | Kor |
+  |------|---|---|
+  |IF(logic, true_value , false_value)||논리식이 참이면 참일 때 값을 출력하고 논리식이 거짓이면 거짓일 때 출력한다.|
+  |IFNULL(val1,val2)||val1이 NULL 이면 val2로 대치하고, 그렇지 않으면 val1을 출력|
+
+  #### 4. Count Function
+  |function | Eng | Kor |
+  |------|---|---|
+  |COUNT(field_name)||NULL 값이 아닌 레코드 수를 구함|
+  |SUM(field_name)||field_name의 합계를 구함|
+  |AVG(field_name)||각각의 그룹 안에서 field_name의 average를 구함|
+  |MAX(field_name)||max 값을 구함|
+  |MIN(필드명)||min 값을 구함|
+  
+  #### 5. Date Function
+  |function | Eng | Kor |
+  |------|---|---|
+  |NOW() or SYSDATE() or CURRENT_TIMESTAMP()||현재 날짜와 시간 출력|
+  |CURDATE() or CURRENT_DATE()||현재 날짜 출력|
+  |CURTIME() or CURRENT_TIME()||현재 시간 출력|
+  |DATE_ADD(date,INTERVAL <standard_value>)||날짜(date)에서 기준값(standard_value) 만큼 더하기 ※ 기준값 : YEAR, MONTH, DAY, HOUR, MINUTE, SECOND|
+  |DATE_SUB(date,INTERVAL <standard_value>)||날짜(date)에서 기준값(standard_value) 만큼 빼기 ※ 기준값 : YEAR, MONTH, DAY, HOUR, MINUTE, SECOND|
+  |YEAR(date)||날짜의 연도 출력|
+  |MONTH(date)||날짜의 월 출력|
+  |MONTHNAME(date)||날짜의 월을 영어로 출력|
+  |DAYNAME(date)||날짜의 요일일 영어로 출력|
+  |DAYOFMONTH(date)||날짜의 월별 일자 출력|
+  |DAYOFWEEK(date)||날짜의 주별 일자 출력(월요일(0),화요일(1)...일요일(6))|
+  |WEEKDAY(date)||날짜의 주별 일자 출력(월요일(0),화요일(1)...일요일(6))|
+  |DAYOFYEAR(date)||일년을 기준으로 한 날짜까지의 날 수|
+  |WEEK(date)||일년 중 몇 번째 주|
+  |FROM_DAYS(day)||00년 00월 00일부터 날 수 만큼 경과한 날의 날짜 출력|
+  |TO_DAYS(date)||00 년 00 월 00일 부터 날짜까지의 일자 수 출력|
+  |DATE_FORMAT(date,'type')||날짜를 형식에 맞게 출력|
+  
+  **  date type  **
+  ...
+  
+  
+  #### 6. Other function
+  |function | Eng | Kor |
+  |------|---|---|
+  |DATABASE()||현재의 데이터베이스 이름출력|
+  |PASSWORD('str')||문자열을 암호화|
+  |FORMAT(num, 0.00.. )||num을 #,###,###.## 형식으로 출력|
