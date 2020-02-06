@@ -112,6 +112,22 @@ Char => with '' | Int => without ''
   |INTERVAL(a,b,c,d.....)||a(숫자)의 위치 반환|
  
  
- 
- 
- 
+  #### 2. String Function
+
+  |function | Eng | Kor |
+  |------|---|---|
+  |ASCII(str)||문자의 아스키 코드값 리턴|
+  |CONCAT('str1','str2','str3'...)||문자열들을 이어줌|
+  |INSERT('str','from','length','new str')||문자열(str)의 시작위치(from)부터 길이(length)만큼 새로운 문자열(new str)로 대치|
+  |REPLACE('str1','str2','str3')||str1 중 str2을 str3으로 변경|
+  |INSTR('str1','str2')||str1 중 str2의 위치값을 출력|
+  |LEFT('str', len)||str 중 왼쪽에서 len만큼을 추출|
+  |RIGHT('str',len)||str 중 오른쪽에서 len만큼을 추출|
+  |MID('str', num1, num2)||str 중 num1부터 num2개만큼 출력|
+  |SUBSTRING('str', num1, num2)||str 중 num1부터 num2개만큼 출력|
+  |LTRIM('str')||str 중 왼쪽의 공백 삭제|
+  |RTRIM('str')||str 중 오른쪽의 공백 삭제|
+ 	|TRIM('str')||양쪽 모두의 공백 삭제|
+  |LCASE('str') or LOWER('str')||소문자로 변경|
+  |UCASE('str') or UPPER('str')||대문자로 변경|
+  |REVERSE('str')||문자열을 반대로 나열|
