@@ -1,5 +1,11 @@
 # MySQL
 
+## Access
+    $ mysql -u root - p
+        Enter password : 
+        
+---------------------------
+
 ## Database
   #### See all databases
     > SHOW DATABASES;    
@@ -47,7 +53,7 @@
 
 ## Give Grant before using databases / table
   You can give authority to other people before use the dbs.
-  Otherwise MySQL block server not granted so that you can not use the db.
+  Otherwise MySQL blocks server which is not granted so that you can not use the db.
   
     > GRANT <authority> ON <database.table> TO '<id>'@'<hostname>' IDENTIFIED BY '<password>';
     
@@ -84,5 +90,28 @@ Char => with '' | Int => without ''
   #### DELETE 
   
     DELETE FROM <table name> WHERE column1 = 'value1';
-    
-    
+   
+   
+---------------------------------------------------------------------
+
+## Function
+
+  #### 1. Number function
+  
+  |function | Eng | Kor |
+  |------|---|---|
+  | ABS(int) | Print absolute number | 절대값 출력 |
+  | CEILING(int) |  | 값보다 큰 정수 중 가장 작은 수 |
+  |FLOOR(int)|  |값보다 작은 정수 중 가장 큰 수 - 실수를 무조건 버림(음수일 경우는 제외)|
+  |ROUND(int, index)||int를 소수점 이하 index(자릿수)에서 반올림 - (자릿수는 양수,0,음수를 가질 수 있음)|
+  |TRUNCATE(int,index)||int를 소수점 이하 index(자릿수)에서 버림|
+  |POW(X,Y) or POWER(X,Y)||X의 Y승|
+  |MOD (numerator, denominator)||numerator(분자)를 denominator(분모)로 나눈 나머지를 구한다.(연산자 %와 같음)|
+  |GREATEST(num1,num2,num3...)||주어진 수 중 제일 큰 수 리턴|
+  |LEAST(num1,num2,num3...)||주어진 수 중 제일 작은 수 리턴.|
+  |INTERVAL(a,b,c,d.....)||a(숫자)의 위치 반환|
+ 
+ 
+ 
+ 
+ 
