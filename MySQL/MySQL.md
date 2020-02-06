@@ -127,7 +127,7 @@ Char => with '' | Int => without ''
   |SUBSTRING('str', num1, num2)||str 중 num1부터 num2개만큼 출력|
   |LTRIM('str')||str 중 왼쪽의 공백 삭제|
   |RTRIM('str')||str 중 오른쪽의 공백 삭제|
- 	|TRIM('str')||양쪽 모두의 공백 삭제|
+  |TRIM('str')||양쪽 모두의 공백 삭제|
   |LCASE('str') or LOWER('str')||소문자로 변경|
   |UCASE('str') or UPPER('str')||대문자로 변경|
   |REVERSE('str')||문자열을 반대로 나열|
