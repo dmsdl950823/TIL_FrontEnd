@@ -1,12 +1,12 @@
 # MySQL
 
-## Access
+## 🚪 Access
     $ mysql -u root - p
         Enter password : 
         
 ---------------------------
 
-## Database
+## 📋 Database
   #### See all databases
     > SHOW DATABASES;    
         +--------------------+
@@ -51,7 +51,7 @@
 
 ---------------------------------------------------------------
 
-## Give Grant before using databases / table
+## 🔑 Give Grant before using databases / table
   You can give authority to other people before use the dbs.
   Otherwise MySQL blocks server which is not granted so that you can not use the db.
   
@@ -60,7 +60,7 @@
     # example - You can give authority to all user with => <id>@`%`
     > GRANT DELETE, INSERT, SELECT, UPDATE ON class.* TO `dev`@`%` IDENTIFIED BY '1111';
 
-##### Types of Authorities
+##### ✔️ Types of Authorities
 |controler|authorities|
 |------|---|
 |developer|DELETE, INSERT, SELECT, UPDATE|
@@ -71,7 +71,7 @@
 ----------------------------------------------------------------
 
 
-## Qurey
+## ✏️ Qurey
 Char => with '' | Int => without ''
 
   #### SELECT 
@@ -94,7 +94,7 @@ Char => with '' | Int => without ''
    
 ---------------------------------------------------------------------
 
-## Function
+## ⚽ Function
 
   #### 1. Number function
   
