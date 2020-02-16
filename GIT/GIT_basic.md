@@ -32,6 +32,18 @@
 #### modify previous commit and reuse commit message - 이전 커밋을 수정하고 커밋 메시지를 재사용하기
     $ git commit -C HEAD - -amend
 
+## stash command
+#### save into stash
+    $ git stash     // = git stash save
+#### check stash list
+    $ git stash list
+#### check certain stash detail 
+    $ git stash <file>
+#### apply stash - by removing files from stash lists
+    $ git stash pop
+#### apply stash - by leaving files from stash lists
+    $ git stash apply
+
 ## branch
 #### see local branch - 지역 브랜치 목록 확인
     $ git branch
