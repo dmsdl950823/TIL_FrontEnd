@@ -118,6 +118,11 @@ Char => with '' | Int => without ''
   #### DELETE 
   
     DELETE FROM <table name> WHERE column1 = 'value1';
+  
+  #### ALTER
+  
+    ALTER TABLE <table name> add <column's new name> <type> <option>;   # add column into table
+
    
    
 ---------------------------------------------------------------------
