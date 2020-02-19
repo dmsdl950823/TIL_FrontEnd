@@ -9,8 +9,9 @@
 
 <!-- localhost:3000/form.html -->
 <body>
-    <!-- 폼 -->
-    <form action="email_post" method="post">
+    <!-- 폼 (모듈화 전/후) -->
+    <!-- <form action="email_post" method="post"> -->
+    <form action="/email/form" method="post">
         email: <input type="text" name="email">
         <br />
 
@@ -31,7 +32,11 @@
         document.querySelector('.ajaxsend')
                 .addEventListener('click', function(){
                     var inputdata = document.forms[0].elements[0].value;
-                    sendAjax('http://192.168.219.106:3000/ajax_send_email', inputdata);
+                    //// 모듈화 전
+                    // sendAjax('http://192.168.219.106:3000/ajax_send_email', inputdata);
+
+                    //// 모듈화 후
+                    sendAjax('http://192.168.219.106:3000/email/ajax', inputdata);
                 })
                 
                 
