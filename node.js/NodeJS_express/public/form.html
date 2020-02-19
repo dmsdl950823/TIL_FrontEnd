@@ -51,8 +51,9 @@
                 var result = JSON.parse(xhr.responseText);
                 //  app.js의  var responseData = { result: "ok", email: req.body.email };
                 
-                if(result.result !== 'ok') return;
-                document.querySelector('.result').innerHTML = result.email;
+                var resultDiv = document.querySelector(".result");
+                if(result.result !== 'ok') resultDiv.innerHTML = "your email was not found!"
+                else resultDiv.innerHTML = result.name
             })
         }
     </script>
