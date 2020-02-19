@@ -34,17 +34,6 @@
           
   
 
-  #### See type of tables
-      > DESCRIBE <table name>;
-          +------------+-------------+------+-----+---------+----------------+
-          | Field      | Type        | Null | Key | Default | Extra          |
-          +------------+-------------+------+-----+---------+----------------+
-          | _id        | int(11)     | NO   | PRI | NULL    | auto_increment |
-          | name       | varchar(30) | NO   |     | NULL    |                |
-          | department | varchar(30) | YES  |     | NULL    |                |
-          | wage       | int(10)     | YES  |     | NULL    |                |
-          | enter_dt   | datetime    | YES  |     | NULL    |                |
-          +------------+-------------+------+-----+---------+----------------+
 
 ---------------------------------------------------------------
 ## 🧱 Manage Tables
@@ -56,6 +45,16 @@
         column3 VARCHAR(12) DEFAULT 'FOO',
         column4 VARCHAR(12)
       ) ENGINE=INNODB;
+      
+      
+  #### See all the tables
+      > SHOW TABLES;
+          +------------------+
+          | Tables_in_dbname |
+          +------------------+
+          | example_info     |
+          | table_name       |
+          +------------------+
     
 
   #### Look inside the Table
