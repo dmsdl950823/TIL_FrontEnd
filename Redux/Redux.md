@@ -40,7 +40,7 @@ Other than type, the structure of an action object is really up to you.
       text: 'Build my first Redux app',
       index: 5
     }
-
+-------------------------------------------------------------
 
 ### Action Creator
 functions that create actions - return an action: by getting parameter
@@ -58,7 +58,7 @@ dispatch를 초기화하기 위해서는 ```displatch()``` 함수에 넘겨주�
 
 ```
     dispatch(addTodo(text))
-    dispatch(completeTodo(index))```
+    dispatch(completeTodo(index))
 
 ```
     # Alternative way (the same way)
@@ -66,12 +66,13 @@ dispatch를 초기화하기 위해서는 ```displatch()``` 함수에 넘겨주�
     const boundCompleteTodo = index => dispatch(completeTodo(index))
     
     boundAddTodo(text)
-    boundCompleteTodo(index)```
+    boundCompleteTodo(index)
 
 
 ```dispatch()``` function can be accessed directly from the store as ```store.dispatch()```, but more likely you'll access it using a helper like react-redux's ```connect()```.
 ```dispatch()``` 함수는 ```store.dispatch()```로도 접근 가능하지만 react-redux의 ```connect()```로도 접근 가능하다.
 
+-------------------------------------------------------------
 
 ### Reducer
 Function for occuring changes. Get two parameters
@@ -81,6 +82,8 @@ Function for occuring changes. Get two parameters
       // 상태 업데이트 로직
       return alteredState;
     }
+    
+    
     
 ### Store
 
