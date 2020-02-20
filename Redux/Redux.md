@@ -1,5 +1,23 @@
-# Redux Basic
+# 🐱‍🚀 Redux Basic
 
+## What it is?
+It helps you write applications that behave consistently, run in different environments
+다른 환경에서 같은 작업을 하는 앱 작성/테스트 를 도와주는 도구
+React 등 다른 view library와 함께 이용 가능
+
+## Install
+
+    # NPM
+    npm install redux
+    # Yarn
+    yarn add redux
+
+## Redux Toolkit
+It's a tool for redux to help using it more easily.
+Redux 사용을 더 편하게 해줄 수 있는 도구
+
+
+##
 ### Action
 When states have some change, it occurs Action <br/>
 상태에 어떠한 변화가 필요하게 될 때 액션 발생, 하나의 객체로 표현
