@@ -17,32 +17,33 @@ It's a tool for redux to help using it more easily.
 Redux 사용을 더 편하게 해줄 수 있는 도구
 
 
+# Getting Started
+
 ### Action
 Actions are payloads of information that send data from your application to your store. <br/>
 They are the only source of information for the store. <br/>
-You send them to the store using ```store.dispatch()```
+You send them to the store using ```store.dispatch()```. <br/>
+Actions are plain JavaScript objects.
 
 Action은 app에서 store로 데이터를 보내는 정보 루트이며 store를 위한 유일한 정보소스이다.
 ```store.dispatch()```를 이용하여 store에 전송할 수 있다.
-
 상태에 어떠한 변화가 필요하게 될 때 액션 발생, 하나의 객체로 표현
 
+Actions must have a type property that indicates the type of action being performed.
+action은 수행할 방식을 가리키는 TYPE 필드를 필수적으로 가지고 있어야 한다.
+
+Other than type, the structure of an action object is really up to you.
+그 외의 값은 개발자 마음대로 넣을 수 있다.
+
     {
-        type: "TOGGLE_VALUE"
+      type: ADD_TODO,
+      text: 'Build my first Redux app',
+      index: 5
     }
 
-액션 객체는 TYPE 필드를 필수적으로 가지고 있어야 하며, 그 외의 값은 개발자 마음대로 넣을 수 있음
-
-    {
-      type: "ADD_TODO",
-      data: {
-        id: 0,
-        text: "리덕스 배우기"
-      }
-    }
 
 ### Action Creator
-Function for action - Create Action object by getting parameter
+functions that create actions - return an action: by getting parameter
 액션을 만드는 함수 - 파라미터를 받아와서 액션 객체 제작
 
     function addTodo(data) {
@@ -52,11 +53,25 @@ Function for action - Create Action object by getting parameter
       };
     }
 
-    // 화살표 함수로도 만들 수 있습니다.
-    const changeInput = text => ({ 
-      type: "CHANGE_INPUT",
-      text
-    });
+To actually initiate a dispatch, pass the result to the ```dispatch()``` function:
+dispatch를 초기화하기 위해서는 ```displatch()``` 함수에 넘겨주면 됨.
+
+```
+    dispatch(addTodo(text))
+    dispatch(completeTodo(index))```
+
+```
+    # Alternative way (the same way)
+    const boundAddTodo = text => dispatch(addTodo(text))
+    const boundCompleteTodo = index => dispatch(completeTodo(index))
+    
+    boundAddTodo(text)
+    boundCompleteTodo(index)```
+
+
+```dispatch()``` function can be accessed directly from the store as ```store.dispatch()```, but more likely you'll access it using a helper like react-redux's ```connect()```.
+```dispatch()``` 함수는 ```store.dispatch()```로도 접근 가능하지만 react-redux의 ```connect()```로도 접근 가능하다.
+
 
 ### Reducer
 Function for occuring changes. Get two parameters
