@@ -17,9 +17,14 @@ It's a tool for redux to help using it more easily.
 Redux 사용을 더 편하게 해줄 수 있는 도구
 
 
-##
 ### Action
-When states have some change, it occurs Action <br/>
+Actions are payloads of information that send data from your application to your store. <br/>
+They are the only source of information for the store. <br/>
+You send them to the store using ```store.dispatch()```
+
+Action은 app에서 store로 데이터를 보내는 정보 루트이며 store를 위한 유일한 정보소스이다.
+```store.dispatch()```를 이용하여 store에 전송할 수 있다.
+
 상태에 어떠한 변화가 필요하게 될 때 액션 발생, 하나의 객체로 표현
 
     {
