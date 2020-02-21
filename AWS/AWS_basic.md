@@ -33,5 +33,27 @@ OS 선택 가능 (UBUNTU, CentOS 등)
 14. ```인스턴스 시작``` 클릭
 15. 생성 완료
 
+--------------
+# Ip address check
+
+
+---------------
+
+
+# Application distribute
+
+    // 1. 다운로드한 키젠 파일의 권한을 열어준다
+    $ cd <keyPair directory>
+    $ chmod 400 keyPair.pem
+    
+    // 
+    $ ssh -i keyPair.pem ec2-user@ < asssigned ip address >
+
+
+
+
+
+
+
 
 
