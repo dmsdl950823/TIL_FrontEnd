@@ -57,6 +57,25 @@ OS 선택 가능 (UBUNTU, CentOS 등)
 
 ---------------
 
+## Remove EC2 Server
+
+1. ```keyPair.pem``` 파일 삭제
+2. ```작업``` - ```인스턴스상태``` - ```종료```
+
+#### security group remove
+
+1. ```[네트워크 및 보안]``` - ```보안그룹``` - ```작업``` - ```보안그룹 삭제``` - ``예``` 클릭
+
+#### key pair remove
+
+1.  ```[네트워크 및 보안]``` - 삭제할 키 체크 ✔ - ```Delete``` 클릭
+
+### double check if it is removed
+
+> ```[EC2 대시보드]``` - 상태 체크
+
+---------------
+
 ## Concerned images
 
 ...
