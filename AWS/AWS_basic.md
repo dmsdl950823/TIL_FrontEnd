@@ -34,21 +34,32 @@ OS 선택 가능 (UBUNTU, CentOS 등)
 15. 생성 완료
 
 --------------
-# Ip address check
+
+## Application distribute
+
+1. 다운로드한 키젠 파일의 권한을 열어준다
+
+```
+    $ cd <keyPair directory>
+    $ chmod 400 keyPair.pem
+```   
+
+2. key를 사용하여 ssh 연결
+
+```
+    $ ssh -i keyPair.pem ec2-user@ < asssigned ip address >
+```
+
+3. 외부에 포트 열기 <br />
+```작업``` - ```네트워킹``` - ```보안그룹 변경``` 의 포트 등록 여부 확인<br />
+```보안그룹``` - ```인바운드``` 탭 - ```편집``` - ```규칙 추가``` - 포트범위 입력(ex 30000)
 
 
 ---------------
 
+## Concerned images
 
-# Application distribute
-
-    // 1. 다운로드한 키젠 파일의 권한을 열어준다
-    $ cd <keyPair directory>
-    $ chmod 400 keyPair.pem
-    
-    // 
-    $ ssh -i keyPair.pem ec2-user@ < asssigned ip address >
-
+...
 
 
 
