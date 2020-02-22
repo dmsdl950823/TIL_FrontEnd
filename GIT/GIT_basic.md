@@ -25,7 +25,7 @@
     $ git commit -m “message” -a
 #### recover the changes of working tree - 작업 tree의 변경 사항 복구
     $ git checkout HEAD <file> [<file>]
-#### ? - 커밋되지 않고 스테이징된 변경 사항 재설정
+#### cancel uploaded files on stage - add 로 업로드된 파일 취소하기
     $ git reset HEAD <file> [<file>]
 #### modify last commit - 마지막 커밋 수정
     $ git commit -m “message” - -amend
