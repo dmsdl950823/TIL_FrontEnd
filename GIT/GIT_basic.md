@@ -31,7 +31,10 @@
     $ git commit -m “message” - -amend
 #### modify previous commit and reuse commit message - 이전 커밋을 수정하고 커밋 메시지를 재사용하기
     $ git commit -C HEAD - -amend
+#### rewind before updating - 수정 이전으로 돌리기
+    $ git reset --hard
 
+----------------------
 ## stash command
 #### save into stash
     $ git stash     // = git stash save
