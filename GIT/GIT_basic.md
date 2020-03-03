@@ -33,6 +33,8 @@
     $ git commit -C HEAD - -amend
 #### rewind before updating - 수정 이전으로 돌리기
     $ git reset --hard
+#### rewind specific file only before updating - 특정파일만 수정 이전으로 되돌리기
+    $ git checkout -- <file>
 
 ----------------------
 ## stash command
