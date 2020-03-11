@@ -129,13 +129,110 @@ Observer for reacting changes. You can use this Attribute while using async or w
       },
 
 
-  
-
-
-
-  
-  
   <hr/>
->   <strong> </strong> <br />
-<small> </small> <br />
-  <br />
+  
+  # Class / Style binding
+  
+  #### v-bind:class
+        // if 'isactive' is true, add 'active' class
+        <div v-bind:class="{ active: isActive }"> </div>
+        
+        // It will be with 'static' class
+        <div
+          class="static"
+          v-bind:class="{ active: isActive, 'text-danger': hasError }"
+         ></div>
+         
+         // data: { activeClass: 'active', errorClass: 'text-danger' }
+         <div v-bind:class="[activeClass, errorClass]"></div>
+         
+         <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+         
+         <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+         
+  #### v-bind:style
+        // data: { activeColor: 'red', fontSize: 30 }
+        <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+        
+        // styleObject: { color: 'red', fontSize: '13px' }
+        <div v-bind:style="styleObject"></div>
+         
+        <div v-bind:style="[baseStyles, overridingStyles]"></div>
+        
+<hr />
+
+# Logic rendering
+
+#### v-if
+        // if 'ok' is true, render
+        <h1 v-if="ok"> Yes </h1>
+        <h1 v-else> No </h1>
+        
+        <div v-if="Math.random() > 0.5">
+         Now you can see me
+        </div>
+        <div v-else>
+          Not now!
+        </div>
+        
+        // 2.1.0 +
+        <div v-if="type === 'A'">       A </div>
+        <div v-else-if="type === 'B'">  B  </div>
+        <div v-else-if="type === 'C'">  C </div>
+        <div v-else>                    Not A/B/C </div>
+        
+#### v-show
+        // simply, display toggle
+        <h1 v-show="ok">안녕하세요!</h1>
+
+<hr />
+
+# List rendering
+
+#### v-for
+        
+        // ... items: [ { message: 'Foo' }, { message: 'Bar' } ]
+        // You can use 'of' instead of 'in'
+        <div v-for="item of items"></div>
+        
+        // second parameter is index
+        <ul id="example-1">
+          <li v-for="(item, index) in items">
+            {{ item.message }} + {{ index }}
+          </li>
+        </ul>
+        
+<small></small> <br />
+        
+        // v-for object 
+        <ul id="v-for-object" class="demo">
+          <li v-for="(value, name) in object">
+            {{ value }} : {{ value }}
+          </li>
+        </ul>
+        
+        //... object: {
+        //  title: 'How to do lists in Vue',
+        //  author: 'Jane Doe',
+        //  publishedAt: '2016-04-10'
+        //}
+        
+        
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
