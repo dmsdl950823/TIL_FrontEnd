@@ -62,9 +62,77 @@
     <!-- shorthand with dynamic argument (2.6.0+) -->
     <a @[event]="doSomething"> ... </a>
   
+
+# Computed, watch
+        <div id="example">
+          <p> original message : "{{ message }}" </p>
+          <p> reverse message : "{{ reversedMessage }}" </p>
+        </div>
+
+        var vm = new Vue({
+          el: '#example',
+          data: {
+            message: '안녕하세요'
+          },
+          computed: {
+            // computed getter
+            reversedMessage: function () {
+              // `this` = vm instance(data)
+              return this.message.split('').reverse().join('')
+            }
+          }
+        });
+        
+        console.log(vm.reversedMessage) // => '요세하녕안'
+        vm.message = 'Goodbye';
+        console.log(vm.reversedMessage) // => 'eybdooG'
+
+* Method vs Computed
+
+Both can initiate function/method inside of them. But the diference is <strong> 'Computed' is cached(saved) along with subjected object. When the object has changed, it works their function. </strong> 
+
+        computed: {
+          now: function () {
+            return Date.now()  // => never update.
+          }
+        }
+
+* 'Computed' 's setter function
+
+computed has basically 'getter' function, but you can generate setter if you need.
+
+        computed: {
+          fullName: {
+            // getter
+            get: function () {
+              return this.firstName + ' ' + this.lastName
+            },
+            // setter
+            set: function (newValue) {
+              var names = newValue.split(' ')
+              this.firstName = names[0]
+              this.lastName = names[names.length - 1]
+            }
+          }
+        }
+
+
+#### Watch 
+Observer for reacting changes. You can use this Attribute while using async or works eating up a lot of time.
+
+        watch: {
+        // it works whenever input text is changing.
+        question: function (newQuestion) {
+          this.answer = '입력을 기다리는 중...'
+          this.getAnswer()
+        }
+      },
+
+
   
-  
-  
+
+
+
   
   
   <hr/>
