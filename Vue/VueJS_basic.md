@@ -232,14 +232,78 @@ Observer for reacting changes. You can use this Attribute while using async or w
 <hr />
 
 
+# Event Handling
+#### v-on
+         
+        // data : { counter: 0 }
+        <button v-on:click="counter += 1">Add 1</button>
+        <p> {{ counter }} </p>
 
+        <button v-on:click="greet"> Greet </button>
+        
+        // Generate 'great()' method 
+        ... greet: function(event) {
+                        alert('hello! You clicked ' + event.target.tagName)
+                   }
 
+        // Inline method 
+        <button v-on:click="say('hi')"> Say hi </button>
+        
+        // Generate 'say()' function
+        ... say: function (message) {
+              alert(message)
+            }
+            
+        // $event : DOM Event
+        <button v-on:click="warn('Form cannot be submitted yet.', $event)">  Submit  </button>
+        
+        ... warn: function (message, event) {
+            // now you can acess to Native Event
+            if (event) event.preventDefault()
+            alert(message)
+          }
 
+        // .stop : stop click event 
+        <a v-on:click.stop="doThis"></a>
 
+        // .pervent = e.preventDefault()
+        <form v-on:submit.prevent="onSubmit"></form>
 
+        // chaining
+        <a v-on:click.stop.prevent="doThat"></a>
 
+        // simply use without method
+        <form v-on:submit.prevent></form>
 
+        // .capture : Using event capturing 
+        <!-- 즉, 내부 엘리먼트를 대상으로 하는 이벤트가 해당 엘리먼트에서 처리되기 전에 여기서 처리합니다. -->
+        <div v-on:click.capture="doThis">...</div>
 
+        // .self : handle trigger if event.target is only element itself(Not child element)
+        <div v-on:click.self="doThat">...</div>
 
+        // 2.1.4 + 
+        // .once : click event can be triggered only once
+        <a v-on:click.once="doThis"></a>
+        
+        // 2.3.0 + 
+        // .passive : addEventListner's passive option
+        <div v-on:scroll.passive="onScroll">...</div>
 
-
+#### Event key
+        // only call `submit()` when the `key` is `Enter`
+        <input v-on:keyup.enter="submit">
+        
+        // keycode usage
+        <input v-on:keyup.13="submit">
+        
+        // .enter  .tab  .delete  .space  .up  .down  .left  .right
+        // .ctrl  .alt  .shift  .meta
+        <input @keyup.alt.67="clear"> => Alt + C
+        <div @click.ctrl="doSomething"> Ctrl + Click </div>
+        
+        // .exact : press certain key's comination exactly
+        <button @click.ctrl.exact="onCtrlClick"> only work when ctrl key is pressed </button>
+        
+        // mouse button
+        // .left  .right  .middle
