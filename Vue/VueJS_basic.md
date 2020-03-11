@@ -195,9 +195,9 @@ Observer for reacting changes. You can use this Attribute while using async or w
         // You can use 'of' instead of 'in'
         <div v-for="item of items"></div>
         
-        // second parameter is index
+        // second parameter is index, key is mandatory.
         <ul id="example-1">
-          <li v-for="(item, index) in items">
+          <li v-for="(item, index) in items" v-bind:key="item.id">
             {{ item.message }} + {{ index }}
           </li>
         </ul>
@@ -217,12 +217,19 @@ Observer for reacting changes. You can use this Attribute while using async or w
         //  publishedAt: '2016-04-10'
         //}
         
+
+##### Filtered result with v-for
+        <li v-for="n in evenNumbers">{{ n }}</li>
         
-        
+        // evenNumbers: function () {
+            return this.numbers.filter(function (number) {
+              return number % 2 === 0
+            })
+          }
             
+* If there are `v-for` and `v-if` in a one node, `v-for` has higher priority than `v-if` 
 
-
-
+<hr />
 
 
 
