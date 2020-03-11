@@ -307,3 +307,82 @@ Observer for reacting changes. You can use this Attribute while using async or w
         
         // mouse button
         // .left  .right  .middle
+
+<hr />
+
+# Form binding
+#### v-model
+
+        <input v-model="message" placeholder="여기를 수정해보세요">
+        <p>메시지: {{ message }}</p>
+
+        <p style="white-space: pre-line">{{ message }}</p>
+        <br>
+        <textarea v-model="message" placeholder="여러줄을 입력해보세요"></textarea>
+
+        // checkbox
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+
+        // checked array
+        // data : { chekedNames : [] }
+        <div>
+          <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+          <label for="jack">Jack</label>
+          <input type="checkbox" id="john" value="John" v-model="checkedNames">
+          <label for="john">John</label>
+          <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+          <label for="mike">Mike</label>
+          <br>
+          <span> checked names: {{ checkedNames }}</span>
+        </div>
+
+        // radio
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>선택: {{ picked }}</span>
+        
+        // select - one
+        // data: { selected: '' }
+        <select v-model="selected">
+          <option disabled value="">Please select one</option>
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
+        <span> Selected : {{ selected }}</span>
+        
+        // select - multiple
+        <select v-model="selected" multiple>
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
+        <br>
+        <span>Selected: {{ selected }} </span>
+
+#### Binding values
+        //`picked` is "a" when it's selected
+        <input type="radio" v-model="picked" value="a">
+
+        // `toggle` is true or false 
+        <input type="checkbox" v-model="toggle">
+
+        // `selected` is "abc" when "ABC" is selected
+        <select v-model="selected">
+          <option value="abc">ABC</option>
+        </select>
+        
+#### Modifiers
+        // .lazy : sync after 'change' event
+        <input v-model.lazy="msg" >
+        
+        // .number : Use if you want user input to be automatically changed as a Number
+        <input v-model.number="age" type="number">
+        
+        // .trim : Use if you want to trim whitespace from user input automatically
+        
