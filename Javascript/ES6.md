@@ -162,10 +162,11 @@ key, value 값을 같은 이름에 할당함
 ```
 ------
 
-## Set, weakset - 특별한자료구조
+## Set, WeakSet - 특별한자료구조
+Array 를 개선한 자료구조
 
 #### Set
-set: 중복 없이 유일한 값을 저장하려고 할때사용. 이미 존재하는지 체크할때 유용
+et: 중복 없이 유일한 값을 저장하려고 할때사용. 이미 존재하는지 체크할때 유용
 ```
     let mySet = new Set();
     console.log(toString.call(mySet));     // [object Set]
@@ -184,8 +185,8 @@ set: 중복 없이 유일한 값을 저장하려고 할때사용. 이미 존재�
     mySet.delete("crong");  // "hary"
 ```
 
-#### weakset
-weackset: 참조를 가지고 있는 객체만 저장이 가능하다 <br />
+#### WeakSet
+WeakSet: 참조를 가지고 있는 객체만 저장이 가능하다 <br />
 객체형체를 중복없이 저장하려고 할 때 유용함
 ```
     let arr = [1,2,3,4];
@@ -207,8 +208,175 @@ weackset: 참조를 가지고 있는 객체만 저장이 가능하다 <br />
     
     console.log( ws );  //  WeakSet {(4) [5, 6, 7, 8], [1, 2, 3, 4], function, Object {arr: Array(4), arr2: Array(4)}}
     console.log( ws.has(arr), ws.has(arr2) )    // false, true  =>  실제로는 null로 인해 지워져있는 상태
-    
 ```
+------
+## Map & WeakMap
+Object를 조금 개선한 자료구조
+
+#### Map
+key/value 뿐 아니라 관련 정보도 저장할 수 있음
+```
+    let wm = new WeakMap();
+    let myfunc = function() {};
+    
+    // 이 함수가 몇번 실행됐는지 확인 할 때
+    wm.set(myfunc, 0);
+    console.log(wm);                // 0번째 돌아감
+    
+    for (let i = 0; i < 0; i++) {
+        count = wm.get(myfunc);     // get value
+        count++;
+        wm.set(myfunc, count);
+    }
+    console.log(wm);                // 10번째 돌아감
+    
+    myfunc = null;
+    console.log(wm.get(myfunc));    // undefined -> null로 없애버렸음
+```
+
+
+#### WeakMap
+```
+    let wm = new WeakMap();
+    let myfunc = function(){};
+```
+
+활용 -> ★
+```
+    WeakMap 클래스 인스턴스 변수 보호하기
+```
+------
+## Template
+#### Template 처리
+```
+    const data = 'text';
+    const template = `<div> ${data} </div>`;
+```
+
+#### Tagged Template literals
+```
+    function fn(tags, name, items) {
+        console.log(tags);
+        if(typeof items === "undefined") {
+            items = "주문가능한 상품이 없습니다.";
+        }
+        return (tags)
+    }
+    const data = [{...}, {...}];
+    data.forEach((v) => {
+        const template = fn`<div> ${data.} </div>`;
+        console.log(template);
+    });
+    
+    const template = fn`<div> ${data.} </div>`
+    console.log(template);
+```
+------
+## function
+#### Arrow function 
+```
+    // 함수를 () => {} 로 표현
+    let newArr = [1,2,3,4,5].map(() => {
+        return value * 2;
+    });
+    
+    // return이 생략된 표현법
+    let newArr = [1,2,3,4,5].map(() => value * 2 );
+```
+#### Arrow function의 this context
+```
+   const myObj = {
+        runTimeOut_1() {
+            setTimeOut(function(){      // 일반 callback 함수
+                console.log(this === window);
+            }.bind(this), 200);         // => this 객체는 window이기 때문에 함수를 bind 시켜줘야함
+        },
+        runTimeOut_2() {
+            setTimeOut(() => {          // arrow 함수
+                console.log(this === window);
+                this.printData();       // arrow함수는 this를 포함하고있음
+            }, 200);
+        },
+        printData() {
+            console.log("hi codesquad!")
+        }
+   }
+    
+    myObj.runTimeout_1();       // true
+    myObj.runTimeout_2();       // false, "hi codesquad!"
+```
+-------
+#### function default parameters
+default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사용되는 변수
+```
+    function sum(value, size = 1) {     
+        // size = size || 1;
+        return value * size;
+    }
+    
+    function sumObj(value, size{ value: 1 }) {
+        return value * size;
+    }
+    
+    console.log(sum(3));    // 3
+    console.log(sumObj(3, { value: 3 }));  // 9
+```
+------
+#### rest parameters
+```
+    // ES5
+    function checkNum() {
+        // argument는 Array가 아님 -> Array로 변경해주어야함
+        const argArray = Array.prototype.slice.call(argumetns);
+        console.log(toString.call(argArray));
+        const result = argArray.every((v) => typeof v === "number")
+        console.log(result);
+    }
+    
+    // ES6
+    function checkNum(...argArray) {   // argArray로 argument를 Array로 변경할 수 있음
+        console.log(toString.call(argArray));
+        const result = argArray.every((v) => typeof v === "number")
+        console.log(result);
+    }
+    
+    const result = checkNum(10,2,3,4,5,"55");       // false
+
+```
+------
+## Object
+#### ES6 Class
+```
+    // ES5 object
+    function Health() {
+        this.name = name;
+    }
+    
+    Health.prototype.showHealth = function() {
+        console.log(this.name + " 님 안녕하세요")
+    }
+    
+    const h = new Health("crong");
+    h.showHealth();             // "crong 님 안녕하세요"
+```
+
+```
+    // ES6 class  -  내부적으로는 함수가 작용하는것(위 코드와 동일)
+    class Health {
+        constructor(name, lastTime) {
+            this.name = name;
+            this.lastname = lastTime;
+        }
+        
+        showHealth() {
+            console.log("안녕하세요" + this.name);
+        }
+    }
+    const myHealth = new Health("crong")
+    myHealth.showHealth();      // "crong 님 안녕하세요"
+```
+-----
+
 
 
 ------
