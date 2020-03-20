@@ -22,6 +22,12 @@ export class MyLogger {
         return this.lectures;
     }
 }
+
+// const/let 은 export default와 함께 쓸 수 없다
+export const log3 = () => { ... }  // 방법 1.
+const log3 = () => { ... } // 방법 2.
+export default log3;
+
 ```
     
 #### import
