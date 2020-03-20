@@ -1,3 +1,33 @@
+## new String Method - ES6
+#### startsWith() , endsWith() , include()
+두 단어가 앞/뒤에 정확히 매칭하고 있는지 확인 (boolean)
+```
+    let str = "Hello world!";
+    let matchstr = "hello";
+    console.log( str.startsWith(matchstr) );  // true
+    console.log( str.endsWith(matchstr) );  // false
+    console.log( str.includes("!") );  // true
+```
+
+## Array - for of
+
+```
+    var data = [1, 2, undefined, NaN, null, ""];
+    data.forEach(function(value) {  // 방법 1.
+        console.log(value);
+    })
+    
+    for (let idx in data) { // 방법 2. -> 별로 좋지 않은 방법
+        console.log(data[idx]);
+    }
+    
+    for (let value of data) { // 방법 3. 배열을 순회하는 새로운 방법 - string 순회도 가능
+        console.log(value);
+    }
+```
+
+
+------
 ## Module
 webpack, babel등을 이용하여 module 사용 가능
 
