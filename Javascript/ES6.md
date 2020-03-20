@@ -100,6 +100,66 @@
 
 ```
 
+---------
+
+## Destructing
+### Array 에서
+```
+    let data = ["crong", "honux", "jk", "hinny"];
+    /*  // 기존 방법
+        let myname = data[0];
+        let jisu = data[0];    */
+    
+    // es6
+    let [jisu,,jung] = data;    // jisu = data[0], jung = data[2]
+    console.log(jisu, jung);    // "crong", "jk"
+```
+
+### Object 에서
+key, value 값을 같은 이름에 할당함
+```
+    let obj = {
+        name = "crong",
+        address = "Korea",
+        age:  10
+    }
+    
+    let {name, age} = obj;
+    console.log( name, age );    // "crong", 10
+
+    let {name: myName, age: myAge} = obj;
+    console.log( myNAme, age );  // "crong", 10
+````
+
+### Json parsing
+```
+    // destructing 활용 json 파싱 방법
+    var news = [
+        { title: "sbs", "imgurl": 123, "newsList" : ["news1", "news2", "news3"]},
+        { title: "mbc", "imgurl": 456, "newsList" : ["news4", "news5", "news6"]},
+    ]
+    
+    let [,mbc] = news;
+    console.log(mbc);   // { imgurl: 456, newsList : ["news4", "news5", "news6"]}, title: "mbc" }
+    
+    let {title, imgurl} = mbc;
+    console.log(title, imgurl)  // "mbc", 456
+    
+    function getNewsList( [, { newsList }] ) {  // 2번째 데이터에 newsList
+    function getNewsList( [{ newsList }] ) {    // 1번째 데이터의 newsList
+        console.log(newsList);
+    }
+    
+    getNewsList(mbc);
+```
+
+### Event 객체 전달
+```
+    element.addEventListner("click", ( {target, type} ) => {  // event객체의 target, type선택
+        console.log(target.tagName)
+    })
+```
+
 ------
 ## Module
 webpack, babel등을 이용하여 module 사용 가능
