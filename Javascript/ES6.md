@@ -375,7 +375,77 @@ default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사
     const myHealth = new Health("crong")
     myHealth.showHealth();      // "crong 님 안녕하세요"
 ```
------
+
+#### Object.assign() -> JS object 제작
+```
+    // ES5
+    const healthObj = {
+        showHealth : function() {
+            console.log("오늘 운동시간" + this.healthTime);
+        }
+    }
+    const myHealth = Object.create(healthObj);
+    
+    myHealth.healthTime = "11:20";
+    myHealth.name = "crong";
+
+    console.log(myHealth);      // Object {healthTime: "11:20", name: "crong"}
+```
+```
+    // ES6
+    const healthObj = {
+        showHealth : function() {
+            console.log("오늘 운동시간" + this.healthTime);
+        }
+    }
+    const myHealth = Object.assign(Object.create(healthObj), {
+        name : "crong",
+        lastTime: "11:20"
+    });
+   
+    console.log(myHealth);      // Object {lastTime: "11:20", name: "crong"}
+```
+
+##### Object.assign() - Immutable 객체 만들기
+new가 필요없이 만들 수 있음
+```
+    const previousObj = {
+        name: "crong",
+        lastTime: "11:20"
+    }
+    const myHealth = Object.assign({}, previousObj, {   // previousObj 내용에서 변경사항을 적용
+        "lastTime" : "12:30",
+        "name": "honux",
+        "age": 99
+    });
+    
+    console.log(previousObj);      // Object {lastTime: "12:30", name: "honux", "age": 99}
+    console.log(myHealth);      // Object {lastTime: "11:20", name: "crong"}
+    // 둘은 다른값 => 참조X
+```
+
+#### setPrototypeOf()
+프로토타입 지정
+```
+    const healthObj = {
+        showHealth : function() {
+            console.log("오늘 운동시간" + this.healthTime);
+        },
+        setHealth: function(time) {
+            this.healthTime = newTime;
+        }
+    }
+    
+    // 특정객체에 healthObj를 프로토타입으로 지정
+    // Object.__proto__ 로 사용해도 괜찮음 -> 권장하지는 않음
+    const newObj = Object.setPrototypeOf({
+        name: "crong",
+        lastTime: "11:20"
+    }, healthObj);     
+    
+    
+    console.log(newObj);      // Object {lastTime: "11:20", name: "crong"} , -> prototype: showHealth(), setHealth()
+```
 
 
 
