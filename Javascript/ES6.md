@@ -8,6 +8,7 @@
     console.log( str.endsWith(matchstr) );  // false
     console.log( str.includes("!") );  // true
 ```
+----------
 
 ## Array - for of
 
@@ -45,6 +46,31 @@
     let pre = [100, 200, 300];
     console.log( sum.apply(null, pre) );    // 600
     console.log( sum(...pre) )              // 600
+```
+
+# Array - from()
+```
+    // 기존 방식
+    function addMark() {
+        let newData = [];
+        for (let i = 0; i < arguments.length; i++) {
+            newData.push(arguments[i]) + "!");
+        }
+        console.log(newData);
+    }
+    addMark(1,2,3,4,5,6,7,8,9);     // ["1!", "2!", "3!", "4!", "5!", "6!", "7!", "8!", "9!"]
+```
+
+```
+    // from()을 사용한 방식
+    function addMark() {
+        let newArray = Array.from(arguments);  // arguments는 진짜 배열이 아니라 배열의 형태를 한 
+        let newData = newArray.map(function(value) {
+            return value + "!";
+        });
+        console.log(newData);
+    }
+    addMark(1,2,3,4,5,6,7,8,9);     // ["1!", "2!", "3!", "4!", "5!", "6!", "7!", "8!", "9!"]
 ```
 
 ------
