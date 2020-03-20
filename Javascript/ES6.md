@@ -26,6 +26,26 @@
     }
 ```
 
+## Array - spread operator(펼침 연산자)
+```
+    let pre = ["apple", "orange", 100];
+    let newData = [...pre];
+    console.log(newData);           // ["apple", "orange", 100]
+    console.log(pre === newData);   // false (같은참조를 유지하지 않음 - 배열 복사)
+```
+활용
+```
+    let pre = [100, 200, "hello", null];
+    let newData = [0, 1, 2, 3, ...pre, 4];
+    console.log(newData);           // [0, 1, 2, 3, 100, 200, "hello", null, 4]
+```
+
+```
+    function sum(a, b, c) { return a + b + c }
+    let pre = [100, 200, 300];
+    console.log( sum.apply(null, pre) );    // 600
+    console.log( sum(...pre) )              // 600
+```
 
 ------
 ## Module
