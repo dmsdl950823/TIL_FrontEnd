@@ -525,8 +525,45 @@ log1('my first data');
 const logger = new MyLogger();
 log1(logger.getLectures());
 ```
-    
 
+---------
+
+## Proxy
+오브젝트를 가로채서 다른작업을 추가로 할 수 있도록 해줌
+```
+    const myObj = {name: "crong"};
+    const proxy = new Proxy( myObj, {} )       // 1. target object, 2. handler
+    
+    proxy.name;             // "crong"
+    proxy.name = "jisu"     
+    proxy.name;             // "jisu"
+    
+    toString.call(proxy)    // [object Object]
+    proxy;                  // Proxy {name: "jisu"}
+    myObj;                  // Object {name: "jisu"}
+    proxy === myObj;        // false
+    proxy.name === myObj.name   // true
+```
+```
+    const myObj = {name: "crong", changedValue: 0};
+    const proxy = new Proxy( myObj, {
+        // target => {name: "crong"}
+        get: function(target, property, receiver) {
+            console.log('get value');
+            return target[property];        // return Reflect.get() ... 검색하기 무슨말인지 모르겠음
+        },
+        set: function(target, property, value) {
+            console.log("set value");
+            target['changedValue']++;
+            target[property] = value;
+        }
+    }); 
+    
+    proxy.name;                     // "get value" "crong"
+    proxy.name = "codesquad";       // "set value" "codesquad"
+    proxy.name;                     // "get value" "codesquad"
+    myObj;                          // "get value"  Object {name: "codesquad", changedValue: 1}
+```
 
 
 
