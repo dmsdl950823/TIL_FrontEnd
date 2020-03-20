@@ -1,3 +1,5 @@
+# ES6
+
 ## new String Method - ES6
 #### startsWith() , endsWith() , include()
 두 단어가 앞/뒤에 정확히 매칭하고 있는지 확인 (boolean)
