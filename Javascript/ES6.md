@@ -444,10 +444,37 @@ new가 필요없이 만들 수 있음
     }, healthObj);     
     
     
-    console.log(newObj);      // Object {lastTime: "11:20", name: "crong"} , -> prototype: showHealth(), setHealth()
+    console.log(newObj);      
+    // Object {lastTime: "11:20", name: "crong"} , -> prototype: showHealth(), setHealth()
 ```
 
+prototype chain 활용
 
+```
+    // parent object (위와 동일)
+    const healthObj = { ... }
+    
+    // child object
+    const healthChildObj = {
+        getAge: function() {
+            return this.age;
+        }
+    }
+    
+    // chain 만들기!
+    const lastHealthObj = Object.setPrototypeOf(healthChildObj, healthObj)
+    
+    const childObj = Object.setPrototypeOf({
+        age: 22,
+    }, healthChildObj);
+    
+    console.log(childObj);      
+    // Object {age: 22} -> prototype: getAge() -> prototype: showHealth(), setHealth()
+    
+    childObj.setHealth("11:55");
+    childObj.showHealth();
+    // 오늘 운동시간 : 11:50
+```
 
 ------
 ## Module
