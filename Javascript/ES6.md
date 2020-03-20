@@ -10,7 +10,8 @@
 ```
 ----------
 
-## Array - for of
+## Array
+#### for of
 
 ```
     var data = [1, 2, undefined, NaN, null, ""];
@@ -27,7 +28,7 @@
     }
 ```
 
-## Array - spread operator(펼침 연산자)
+#### spread operator(펼침 연산자)
 ```
     let pre = ["apple", "orange", 100];
     let newData = [...pre];
@@ -48,7 +49,7 @@
     console.log( sum(...pre) )              // 600
 ```
 
-## Array - from()
+#### from()
 ```
     // 기존 방식
     function addMark() {
@@ -103,7 +104,7 @@
 ---------
 
 ## Destructing
-### Array 에서
+#### Array 에서
 ```
     let data = ["crong", "honux", "jk", "hinny"];
     /*  // 기존 방법
@@ -115,7 +116,7 @@
     console.log(jisu, jung);    // "crong", "jk"
 ```
 
-### Object 에서
+#### Object 에서
 key, value 값을 같은 이름에 할당함
 ```
     let obj = {
@@ -131,7 +132,7 @@ key, value 값을 같은 이름에 할당함
     console.log( myNAme, age );  // "crong", 10
 ````
 
-### Json parsing
+#### Json parsing
 ```
     // destructing 활용 json 파싱 방법
     var news = [
@@ -153,12 +154,37 @@ key, value 값을 같은 이름에 할당함
     getNewsList(mbc);
 ```
 
-### Event 객체 전달
+#### Event 객체 전달
 ```
     element.addEventListner("click", ( {target, type} ) => {  // event객체의 target, type선택
         console.log(target.tagName)
     })
 ```
+------
+
+## Set - 특별한자료구조
+
+#### Set
+set: 중복 없이 유일한 값을 저장하려고 할때사용. 이미 존재하는지 체크할때 유용
+```
+    let mySet = new Set();
+    console.log(toString.call(mySet));     // [object Set]
+
+    mySet.add( "crong" );
+    mySet.add( "hary" );
+    mySet.add( "crong" );
+
+    // 배열에 "crong"이 있는지 확인
+    console.log(mySet.has("crong"))     // true
+
+    mySet.forEach(function(v) {
+        console.log(v);         // "crong" "hary"
+    })
+    
+    mySet.delete("crong");  // "hary"
+```
+
+
 
 ------
 ## Module
