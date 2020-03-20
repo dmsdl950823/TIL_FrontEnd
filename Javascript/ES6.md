@@ -48,7 +48,7 @@
     console.log( sum(...pre) )              // 600
 ```
 
-# Array - from()
+## Array - from()
 ```
     // 기존 방식
     function addMark() {
@@ -71,6 +71,33 @@
         console.log(newData);
     }
     addMark(1,2,3,4,5,6,7,8,9);     // ["1!", "2!", "3!", "4!", "5!", "6!", "7!", "8!", "9!"]
+```
+------
+## Generate Object
+```
+    function getObj() {
+        const name = "crong";
+        
+        const getName = function() {
+            return name;
+        }
+        
+        const setName = function(newname) {
+            name = newname;
+        }
+        const printName = function() {
+            console.log(name);
+        }
+        return {
+            getName,    // getName = getName()
+            setName     // setName = setName()
+            name        // name = name
+        }
+    }
+    
+    var obj = getObj();
+    console.log(obj.getName());
+
 ```
 
 ------
