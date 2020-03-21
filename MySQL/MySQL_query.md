@@ -46,14 +46,16 @@ Char => with '' | Int => without ''
     <img src="./images/img_fulljoin.gif" width="150" style="float:left;"/>
   </div>
   
-  #### JOIN
-    SELECT <column3>, <column2>, ... <table name> INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
   #### INNER JOIN
+    SELECT <column> FROM <table name1> INNER JOIN <table name2> ON <table name1>.<column> = <table name2>.<column>;
   #### LEFT JOIN
+    SELECT <column> FROM <table name1> LEFT JOIN <table name2> ON <table name1>.<column> = <table name2>.<column>;
   #### RIGHT JOIN
+    SELECT <column> FROM <table name1> RIGHT JOIN <table name2> ON <table name1>.<column> = <table name2>.<column>;
   #### FULL JOIN
+    SELECT <column> FROM <table name1> FULL OUTER JOIN <table name2> ON <table name1>.<column> = <table name2>.<column> WHERE <condition>;
   #### SELF JOIN
-  
+    SELECT <column> FROM <table name1>, <table name2> WHERE <condition>;
    
 ---------------------------------------------------------------------
 
