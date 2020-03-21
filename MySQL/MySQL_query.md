@@ -27,12 +27,27 @@ Char => with '' | Int => without ''
   
     SELECT <column1>, <column2> ... FROM <table name> ORDER BY <column1>, <column2>, ... ASC|DESC;
   
+  ### UNION & JOIN's difference
+  <div style="overflow:hidden">
+     <img src="./images/VisualDepictionOfUnion.png" width="300" style="float:left"/>
+     <img src="./images/VisualDepictionOfJoin.png" width="300" style="float:left"/>
+  </div>
   
   #### UNION
     SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name>;
     SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name> ORDER BY <column1> DESC;
   
+  ### JOINS type
+  <img src="" />
+  
   #### JOIN
+    SELECT <column3>, <column2>, ... <table name> INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+  #### INNER JOIN
+  #### LEFT JOIN
+  #### RIGHT JOIN
+  #### FULL JOIN
+  #### SELF JOIN
+  
    
 ---------------------------------------------------------------------
 
