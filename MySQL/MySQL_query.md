@@ -30,6 +30,7 @@ Char => with '' | Int => without ''
   ### UNION & JOIN's difference
   <div style="overflow:hidden">
      <img src="./images/VisualDepictionOfUnion.png" width="300" style="float:left"/>
+      　  　  　  　
      <img src="./images/VisualDepictionOfJoin.png" width="300" style="float:left"/>
   </div>
   
@@ -38,7 +39,12 @@ Char => with '' | Int => without ''
     SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name> ORDER BY <column1> DESC;
   
   ### JOINS type
-  <img src="" />
+  <div style="overflow:hidden">
+    <img src="./images/img_innerjoin.gif" width="150" style="float:left;"/>  
+    <img src="./images/img_leftjoin.gif" width="150" style="float:left;"/>  
+    <img src="./images/img_rightjoin.gif" width="150" style="float:left;"/> 
+    <img src="./images/img_fulljoin.gif" width="150" style="float:left;"/>
+  </div>
   
   #### JOIN
     SELECT <column3>, <column2>, ... <table name> INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
