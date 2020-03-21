@@ -1,7 +1,7 @@
-# ES6
+# 🌯 ES6
 
-## new String Method - ES6
-#### startsWith() , endsWith() , include()
+## 💕new String Method - ES6
+#### ✔ startsWith() , endsWith() , include()
 두 단어가 앞/뒤에 정확히 매칭하고 있는지 확인 (boolean)
 ```
     let str = "Hello world!";
@@ -12,8 +12,8 @@
 ```
 ----------
 
-## Array
-#### for of
+## 💕 Array
+#### ✔ for of
 
 ```
     var data = [1, 2, undefined, NaN, null, ""];
@@ -30,7 +30,7 @@
     }
 ```
 
-#### spread operator(펼침 연산자)
+#### ✔ spread operator(펼침 연산자)
 ```
     let pre = ["apple", "orange", 100];
     let newData = [...pre];
@@ -51,7 +51,7 @@
     console.log( sum(...pre) )              // 600
 ```
 
-#### from()
+#### ✔ from()
 ```
     // 기존 방식
     function addMark() {
@@ -76,7 +76,7 @@
     addMark(1,2,3,4,5,6,7,8,9);     // ["1!", "2!", "3!", "4!", "5!", "6!", "7!", "8!", "9!"]
 ```
 ------
-## Generate Object
+## 💕 Generate Object
 ```
     function getObj() {
         const name = "crong";
@@ -105,8 +105,8 @@
 
 ---------
 
-## Destructing
-#### Array 에서
+## 💕 Destructing
+#### ✔ Array 에서
 ```
     let data = ["crong", "honux", "jk", "hinny"];
     /*  // 기존 방법
@@ -118,7 +118,7 @@
     console.log(jisu, jung);    // "crong", "jk"
 ```
 
-#### Object 에서
+#### ✔ Object 에서
 key, value 값을 같은 이름에 할당함
 ```
     let obj = {
@@ -134,7 +134,7 @@ key, value 값을 같은 이름에 할당함
     console.log( myNAme, age );  // "crong", 10
 ````
 
-#### Json parsing
+#### ✔ Json parsing
 ```
     // destructing 활용 json 파싱 방법
     var news = [
@@ -156,7 +156,7 @@ key, value 값을 같은 이름에 할당함
     getNewsList(mbc);
 ```
 
-#### Event 객체 전달
+#### ✔ Event 객체 전달
 ```
     element.addEventListner("click", ( {target, type} ) => {  // event객체의 target, type선택
         console.log(target.tagName)
@@ -164,10 +164,10 @@ key, value 값을 같은 이름에 할당함
 ```
 ------
 
-## Set, WeakSet - 특별한자료구조
+## 💕 Set, WeakSet - 특별한자료구조
 Array 를 개선한 자료구조
 
-#### Set
+#### ✔ Set
 et: 중복 없이 유일한 값을 저장하려고 할때사용. 이미 존재하는지 체크할때 유용
 ```
     let mySet = new Set();
@@ -187,7 +187,7 @@ et: 중복 없이 유일한 값을 저장하려고 할때사용. 이미 존재�
     mySet.delete("crong");  // "hary"
 ```
 
-#### WeakSet
+#### ✔ WeakSet
 WeakSet: 참조를 가지고 있는 객체만 저장이 가능하다 <br />
 객체형체를 중복없이 저장하려고 할 때 유용함
 ```
@@ -212,10 +212,10 @@ WeakSet: 참조를 가지고 있는 객체만 저장이 가능하다 <br />
     console.log( ws.has(arr), ws.has(arr2) )    // false, true  =>  실제로는 null로 인해 지워져있는 상태
 ```
 ------
-## Map & WeakMap
+## 💕 Map & WeakMap
 Object를 조금 개선한 자료구조
 
-#### Map
+#### ✔ Map
 key/value 뿐 아니라 관련 정보도 저장할 수 있음
 ```
     let wm = new WeakMap();
@@ -237,7 +237,7 @@ key/value 뿐 아니라 관련 정보도 저장할 수 있음
 ```
 
 
-#### WeakMap
+#### ✔ WeakMap
 ```
     let wm = new WeakMap();
     let myfunc = function(){};
@@ -248,14 +248,14 @@ key/value 뿐 아니라 관련 정보도 저장할 수 있음
     WeakMap 클래스 인스턴스 변수 보호하기
 ```
 ------
-## Template
+## 💕 Template
 #### Template 처리
 ```
     const data = 'text';
     const template = `<div> ${data} </div>`;
 ```
 
-#### Tagged Template literals
+#### ✔ Tagged Template literals
 ```
     function fn(tags, name, items) {
         console.log(tags);
@@ -274,8 +274,8 @@ key/value 뿐 아니라 관련 정보도 저장할 수 있음
     console.log(template);
 ```
 ------
-## function
-#### Arrow function 
+## 💕 function
+#### ✔ Arrow function 
 ```
     // 함수를 () => {} 로 표현
     let newArr = [1,2,3,4,5].map(() => {
@@ -285,7 +285,7 @@ key/value 뿐 아니라 관련 정보도 저장할 수 있음
     // return이 생략된 표현법
     let newArr = [1,2,3,4,5].map(() => value * 2 );
 ```
-#### Arrow function의 this context
+#### ✔ Arrow function의 this context
 ```
    const myObj = {
         runTimeOut_1() {
@@ -308,7 +308,7 @@ key/value 뿐 아니라 관련 정보도 저장할 수 있음
     myObj.runTimeout_2();       // false, "hi codesquad!"
 ```
 -------
-#### function default parameters
+#### ✔ function default parameters
 default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사용되는 변수
 ```
     function sum(value, size = 1) {     
@@ -324,7 +324,7 @@ default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사
     console.log(sumObj(3, { value: 3 }));  // 9
 ```
 ------
-#### rest parameters
+#### ✔ rest parameters
 ```
     // ES5
     function checkNum() {
@@ -346,8 +346,8 @@ default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사
 
 ```
 ------
-## Object
-#### ES6 Class
+## 💕 Object
+#### ✔ ES6 Class
 ```
     // ES5 object
     function Health() {
@@ -378,7 +378,7 @@ default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사
     myHealth.showHealth();      // "crong 님 안녕하세요"
 ```
 
-#### Object.assign() -> JS object 제작
+#### ✔ Object.assign() -> JS object 제작
 ```
     // ES5
     const healthObj = {
@@ -408,7 +408,7 @@ default parameter -> 매개변수가 전달되지 않은 경우 자동으로 사
     console.log(myHealth);      // Object {lastTime: "11:20", name: "crong"}
 ```
 
-##### Object.assign() - Immutable 객체 만들기
+##### ✔ Object.assign() - Immutable 객체 만들기
 new가 필요없이 만들 수 있음
 ```
     const previousObj = {
@@ -426,7 +426,7 @@ new가 필요없이 만들 수 있음
     // 둘은 다른값 => 참조X
 ```
 
-#### setPrototypeOf()
+#### ✔ setPrototypeOf()
 프로토타입 지정
 ```
     const healthObj = {
@@ -479,10 +479,10 @@ prototype chain 활용
 ```
 
 ------
-## Module
+## 💕 Module
 webpack, babel등을 이용하여 module 사용 가능
 
-#### export
+#### ✔ export
 다른 스크립트 내에서 사용하기 위해서는 export를 해주어야함
 ```
 // location.js
@@ -511,7 +511,7 @@ export default log3;
 
 ```
     
-#### import
+#### ✔ import
 스크립트에 파일을 불러올때 사용
 ```
 // export시 {객체}로 넘어오기 때문에 {} 사용 
@@ -528,7 +528,7 @@ log1(logger.getLectures());
 
 ---------
 
-## Proxy
+## 💕 Proxy
 오브젝트를 가로채서 다른작업을 추가로 할 수 있도록 해줌
 ```
     const myObj = {name: "crong"};
