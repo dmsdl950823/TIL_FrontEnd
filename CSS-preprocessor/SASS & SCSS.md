@@ -3,6 +3,21 @@ Css, Sass, Scss 와 완벽호환되며, Ruby와 node에서 사용 할 수 있다
 scss는 {}를 사용하지만, <br />
 sass는 {} 대신 tab을 사용하며, 세미콜론(;)을 사용하지 않는다 - indented syntax사용
 
+-------
+## variable : $
+sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 수 없음
+<strong>!default</strong>를 변수와 함께 할당될 경우 해당값이 변수에 기본으로 할당됨
+```
+  $myval1: null;
+  $myval1: "Sass was developed" !default;
+  
+  p:after {
+    content: $myval1;   // content: "Sass was developed"
+  }
+```
+
+
+-------
 ## @use
 ```
   /* scss */
@@ -50,7 +65,7 @@ sass는 {} 대신 tab을 사용하며, 세미콜론(;)을 사용하지 않는다
     @include reset-list;
 ```
 
-## function
+## @function
 ```
   @function pow($base, $exponent) {
     $result: 1;
@@ -97,6 +112,31 @@ file이름과 line위치의 값을 표시한다.
     @debug "divider offset: #{$divider-offset}";
   }
 ```
+
+## @at-root
+상속된 규칙의 모음 - 스타일 블럭을 문서의 가장 루트노드에 만들 수 있다.
+```
+  @media print {
+    .style {
+      height: 8px;
+      @at root (without: media) {
+        color: #808000;
+      }
+    }
+  }
+  
+  // result => 
+  // @media print {
+  //    .style {
+  //      height: 8px
+  //    }
+  // }
+  // .style {
+  //    color: #808000;
+  // }
+
+```
+
 --------
 # Data Type
 Data type에는 <strong> Numbers, Booleans, Maps, Strings, Null, colors, Space and Comma </strong> 가 있다
