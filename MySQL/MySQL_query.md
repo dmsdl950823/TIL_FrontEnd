@@ -26,6 +26,9 @@ Char => with '' | Int => without ''
   #### ORDER BY
   
     SELECT <column1>, <column2> ... FROM <table name> ORDER BY <column1>, <column2>, ... ASC|DESC;
+    
+  #### GROUP BY
+    SELECT <column> FROM <table name> WHERE <condition> GROUP BY <column>;
   
   ### UNION & JOIN's difference
   <div style="overflow:hidden">
@@ -35,7 +38,7 @@ Char => with '' | Int => without ''
   </div>
   
   #### UNION
-    SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name>;
+    SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name> ... ;
     SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name> ORDER BY <column1> DESC;
   
   ### JOINS type
