@@ -26,6 +26,13 @@ Char => with '' | Int => without ''
   #### ORDER BY
   
     SELECT <column1>, <column2> ... FROM <table name> ORDER BY <column1>, <column2>, ... ASC|DESC;
+  
+  
+  #### UNION
+    SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name>;
+    SELECT <column1> FROM <table name> UNION SELECT <column1> FROM <table name> ORDER BY <column1> DESC;
+  
+  #### JOIN
    
 ---------------------------------------------------------------------
 
