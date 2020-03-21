@@ -23,7 +23,9 @@ Char => with '' | Int => without ''
   
     ALTER TABLE <table name> add <column's new name> <type> <option>;   # add column into table
 
-   
+  #### ORDER BY
+  
+    SELECT <column1>, <column2> ... FROM <table name> ORDER BY <column1>, <column2>, ... ASC|DESC;
    
 ---------------------------------------------------------------------
 
