@@ -1,3 +1,3 @@
 # TIL
-This repository will be stacked width what I learned today
+This repository will be stacked with what I learned today
 
