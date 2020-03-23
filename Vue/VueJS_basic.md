@@ -1,26 +1,39 @@
-# VueJS_basic.md
+# 🥫VueJS_basic.md
 
 ## Template Syntax
 
 ### Interploation  
-> <strong> String :: {{ }} </strong>  <br />
-<small> You can print normal string with {{}} </small> <br />
-``` <span> message: {{ message }} </span> ```<br />
-<small> You can designate not to modify the text with v-once directive </small> <br />
-``` <span v-once> Can't modify this text : {{ message }} </span> ```
+#### 1. String :: {{ }}
+문자열을 출력 할 수 있습니다<br />
+You can print normal string with {{}}
 
-> <strong> Native HTML :: v-html  </strong> <br />
-<small> You can print raw HTML tags with v-html directive </small> <br />
-```<p> Using v-html: <span v-html="rawHTML"></span> </p>```
+    <span> message: {{ message }} </span> 
 
-> <strong> Attribute :: v-bind  </strong> <br />
-<small> You can not use {{ }} in HTML attribute </small> <br />
-```<div v-bind:id="dynamicId"></div>```  <br />
-<small> When v-bind's variable is boolean(false), undefined, null, `disabled` attribute wouldn't be included in `<button>` element </small> <br />
-```<button v-bind:disabled="isButtonDisabled"> Button </button>```
+한번만 출력하여 수정할 수 없게 지정할 수 있습니다. <br />
+You can designate not to modify the text with v-once directive
 
-> <strong> Javascript expression </strong> <br />
-<small> You can use simple Javascript syntax inside of {{ }} => But if! </small> <br />
+    <span v-once> Can't modify this text : {{ message }} </span>
+
+#### 2. Native HTML :: v-html 
+HTML태그를 그대로 프린트 할 수 있습니다. <br />
+You can print raw HTML tags with v-html directive<br />
+
+    <p> Using v-html: <span v-html="rawHTML"></span> </p>
+
+#### 3. Attribute :: v-bind
+HTML attribute에 {{ }}는 사용할 수 없습니다. <br />
+You can not use {{ }} in HTML attribute <br />
+
+    <div v-bind:id="dynamicId"></div>
+    
+v-bind의 변수가 boolean, undefined, null, `disabled` 일경우 `button` 요소가 반영되지 않습니다.<br />
+When v-bind's variable is boolean(false), undefined, null, `disabled` attribute wouldn't be included in `<button>` element. <br />
+
+    <button v-bind:disabled="isButtonDisabled"> Button </button>
+
+#### 6. Javascript expression
+간단한 JS 문법을 {{ }}에 사용할 수 있습니다. (if 는 안됩니다)<br />
+You can use simple Javascript syntax inside of {{ }} => But if! <br />
 
     {{ ok ? 'YES' : 'NO' }}
 
@@ -30,15 +43,15 @@
 
 <hr />
 
-### Directive
+### 🛴 Directive ★
 
     <p v-if="seen"> You can see me now! </p>
     
-#### dynamic argument ( 2.6.0 + )
-<small> You can use Javascript syntax inside [] :: exception exists</small>
+### Dynamic argument ( 2.6.0 + )
+JS 문법을 [] 안에 넣을 수도 있습니다. - 예외 존재<br />
+You can use Javascript syntax inside [] :: exception exists
 
     <a v-bind:[attributeName]="url"> ... </a>
-
 
 
 ### simple vue syntax
@@ -62,8 +75,9 @@
     <!-- shorthand with dynamic argument (2.6.0+) -->
     <a @[event]="doSomething"> ... </a>
   
+------
+# Computed, Watch
 
-# Computed, watch
         <div id="example">
           <p> original message : "{{ message }}" </p>
           <p> reverse message : "{{ reversedMessage }}" </p>
@@ -88,7 +102,8 @@
         console.log(vm.reversedMessage) // => 'eybdooG'
 
 * Method vs Computed
-
+두 개 모두 function/method를 안에 입력할 수 있지만, 'Computed'는 목표된 객체와 함께 cached(저장)됩니다.
+object가 변화가 생길때, function에서 작동합니다. <br />
 Both can initiate function/method inside of them. But the diference is <strong> 'Computed' is cached(saved) along with subjected object. When the object has changed, it works their function. </strong> 
 
         computed: {
@@ -99,7 +114,8 @@ Both can initiate function/method inside of them. But the diference is <strong> 
 
 * 'Computed' 's setter function
 
-computed has basically 'getter' function, but you can generate setter if you need.
+Computed는 'getter' function을 가지고있지만, 원한다면 setter를 만들수도 있습니다. <br />  
+Computed has basically 'getter' function, but you can generate setter if you need.
 
         computed: {
           fullName: {
@@ -118,6 +134,7 @@ computed has basically 'getter' function, but you can generate setter if you nee
 
 
 #### Watch 
+지속적으로 변화를 관찰합니다. async나 작업을 할때 attribute를 사용할 수 있습니다.<br />
 Observer for reacting changes. You can use this Attribute while using async or works eating up a lot of time.
 
         watch: {
@@ -202,7 +219,7 @@ Observer for reacting changes. You can use this Attribute while using async or w
           </li>
         </ul>
         
-<small></small> <br />
+<br />
         
         // v-for object 
         <ul id="v-for-object" class="demo">
@@ -227,7 +244,8 @@ Observer for reacting changes. You can use this Attribute while using async or w
             })
           }
             
-* If there are `v-for` and `v-if` in a one node, `v-for` has higher priority than `v-if` 
+* 만약 `v-for`과 `v-if`가 같은 노드에 있을경우, `v-for`가 더 높은 우선권을 가집니다. <br />
+If there are `v-for` and `v-if` in a one node, `v-for` has higher priority than `v-if` 
 
 <hr />
 
