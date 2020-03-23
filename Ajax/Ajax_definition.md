@@ -45,6 +45,35 @@ HTML 페이지를 업데이트 함
 # 사용 예시
 
 1. XMLHttpRequest 사용시
+```
+  function Ajax_request() {
+    var httpRequest;
+    document.getElementById("ajaxButton").onclick = function() { makeRequest('test.html'); };
+
+    function makeRequest(url) {
+      httpRequest = new XMLHttpRequest();   // XMLHttpRequest 객체 생성(IE7.0+, firefox, safari, opera)
+
+      if (!httpRequest) {                   // XMLHttpRequest 객체가 없을 경우
+        alert('Giving up :( Cannot create an XMLHTTP instance');
+        return false;
+      }
+      httpRequest.onreadystatechange = alertContents;
+      httpRequest.open('GET', url);       // 'GET' 방식으로, URL파일의 http 요청 준비
+      httpRequest.send();                 // 요청을 서버로 보냄
+    }
+
+    function alertContents() {            
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {        // 요청한 객체의 상태가 200일경우 (통신 가능) - 문자열로 이루어진 서버의 응답을 알림
+          alert(httpRequest.responseText);
+        } else {                                 // 요청 실패한 경우
+          alert('There was a problem with the request.');
+        }
+      }
+    }
+  };
+
+```
 
 
 2. Jquery 사용시
