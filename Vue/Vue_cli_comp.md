@@ -7,7 +7,10 @@
           <!-- id(attribute)에 data.num 데이터 바인딩 -->
           {{num}}
         </p>
-        <HelloWorld />
+        
+       <!-- props(msg)를 해당 컴포넌트에 넘겨줌 --> 
+        <HelloWorld msg="Welcome to Your Vue.js App"/> 
+        
       </div>
     </template>
 ```
@@ -24,6 +27,7 @@
 
       // props
       props: {
+        // msg props를 String 으로 설정
         msg: String,
       },
 
