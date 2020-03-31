@@ -7,10 +7,17 @@
           <!-- id(attribute)에 data.num 데이터 바인딩 -->
           {{num}}
         </p>
+        <HelloWorld />
       </div>
     </template>
+```
 
+```
     <script>
+    import HelloWorld from '../components/HelloWorld.vue';
+    // import HelloWorld from '@/components/HelloWorld.vue'; // router 있을 때
+    
+    
     export default {
       // 해당 component의 이름
       name: 'HelloWorld',
@@ -36,10 +43,18 @@
         decrement () {
           this.num--;
         }
-      }
+      },
+      
+      // 사용할 component 등록
+      components: {
+        HelloWorld,
+      },
+      
     };
     </script>
+```
 
+```
     <!-- Add "scoped" attribute to limit CSS to this component only -->
     <style scoped lang="scss">
     h3 {
