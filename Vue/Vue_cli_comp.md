@@ -12,6 +12,7 @@
 
     <script>
     export default {
+      // 해당 component의 이름
       name: 'HelloWorld',
 
       // props
