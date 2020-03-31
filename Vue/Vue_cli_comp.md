@@ -38,6 +38,11 @@
           uuid: 'abc1234'
         }
       },
+      
+      // console 찍어보기
+      created () {
+        console.log(JSON.stringify(ths.data)
+      },
 
       // method definition
       methods: {
