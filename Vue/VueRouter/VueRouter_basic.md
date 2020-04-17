@@ -25,3 +25,34 @@ const router = new VueRouter({
 |/user/:username|	/user/evan|```{ username: 'evan' }```|
 |/user/:username/post/:post_id|/user/evan/post/123|```{ username: 'evan', post_id: '123' }```|
 
+## 중첩된 라우트
+여러단계로 중첩된 컴포넌트로 이루어진 UI에 쉽게 사용 가능
+```
+const User = {
+  template: `
+    <div class="user">
+      <h2>User :: {{ $route.params.id }}</h2>
+      <router-view></router-view>
+    </div>
+  `
+}
+
+const router = new VueRouter({
+// User, UserHome, UserProfile, UserPosts component가 있다는 가정
+  routes: [
+    { path: '/user/:id', component: User,
+      children: [
+        { path: '', component: UserHome }, 
+        { path: 'profile', component: UserProfile },
+        { path: 'posts', component: UserPosts }
+      ]
+    }
+  ]
+})
+
+// 결과
+'user/foo'         => User :: foo / home
+'user/foo/profile' => User :: foo / profile
+'user/foo/posts'   => User :: foo / posts
+```
+
