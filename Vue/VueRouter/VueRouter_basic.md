@@ -112,7 +112,7 @@ router.push와 같은 역할을 하지만 유일한 차이는 새로운 히스�
 
 -----------
 ## 이름을 가지는 뷰
-
+여러 개의 뷰를 중첩하지 않고 동시에 표시해야 하는 경우 ```name```
 ```
 <router-view class="view one"></router-view>
 <router-view class="view two" name="a"></router-view>
