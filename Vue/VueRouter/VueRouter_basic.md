@@ -74,7 +74,7 @@ const router = new VueRouter({
   // object
   router.push({ path: 'home' })
 
-  // 이름을 가지는 라우트, 넘길 파라미터
+  // 이름을 가지는 라우트, 해당 라우트에 넘길 파라미터
   router.push({ name: 'user', params: { userId: 123 }})
 
   // 쿼리와 함께 사용, 결과는 /register?plan=private 입니다.
