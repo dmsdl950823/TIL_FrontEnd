@@ -74,3 +74,16 @@
   })
 
 ```
+
+---------
+
+### 스크롤 동작
+
+```
+  const router = new VueRouter({
+    routes: [...],
+    scrollBehavior (to, from, savedPosition) {
+      // 원하는 위치로 돌아가기
+    }
+  })
+```
