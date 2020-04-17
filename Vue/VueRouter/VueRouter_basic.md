@@ -135,6 +135,42 @@ class="view two" name="a"   =>  Bar
 class="view three" name="b" =>  Baz
 ```
 
+-----------
+
+## 리다이렉트(리디렉션)
+사용자가 `/a`를 방문했을 때 URL이 `/b`로 대체 된 다음 `/b`로 매칭된다는 것을 의미
+```
+  /* '/a' 에서 'b'로 리디렉션 */
+  const router = new VueRouter({
+    routes: [
+      { path: '/a', redirect: '/b' }
+    ]
+  })
+  
+  /* 이름이 지정된 라우트 지정 */
+  const router = new VueRouter({
+    routes: [
+      { path: '/a', redirect: { name: 'foo' }}
+    ]
+  })
+  
+  /* 동적 리디렉션을 위한 함수 사용 */
+  const router = new VueRouter({
+  routes: [
+      { path: '/a', redirect: to => {
+        // 함수는 인수로 대상 라우트를 받습니다.
+        // 여기서 path/location 반환합니다.
+      }}
+    ]
+  })
+```
+
+### 별칭
+`/a`의 별칭은 `/b`는 사용자가 `/b`를 방문했을 때 URL은 `/b`을 유지하지만 사용자가 `/a`를 방문한 것처럼 매칭
+
+-----------------
+
+
 
 
 
