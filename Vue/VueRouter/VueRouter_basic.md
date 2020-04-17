@@ -167,15 +167,67 @@ class="view three" name="b" =>  Baz
 
 ### 별칭
 `/a`의 별칭은 `/b`는 사용자가 `/b`를 방문했을 때 URL은 `/b`을 유지하지만 사용자가 `/a`를 방문한 것처럼 매칭
+```
+const router = new VueRouter({
+  routes: [
+    { path: '/a', component: A, alias: '/b' }
+  ]
+})
+```
 
 -----------------
 
 
 ## 라우트 컴포넌트에 속성 전달
 
+1. `$route` 에 의존성 추가
+
+```
+  const User = {
+    template: '<div>User {{ $route.params.id }}</div>'
+  }
+  const router = new VueRouter({
+    routes: [
+      { path: '/user/:id', component: User }
+    ]
+  })
+```
+
+2. 속성 의존성 해제
+```
+  const User = {
+    props: ['id'],
+    template: '<div>User {{ id }}</div>'
+  }
+  const router = new VueRouter({
+    routes: [
+      { path: '/user/:id', component: User, props: true },
+    ]
+  })
+```
+
+3. boolean 모드
+```props = true``` 일경우 ```route.params```가 컴포넌트 ```props```로 설정
 
 
+4. 객체모드 
+```props```가 객체일때 컴포넌트 ```props```가 있는 그대로 설정 - 정적일 때 유용
+```
+  const router = new VueRouter({
+    routes: [
+      { path: '/promotion/from-newsletter', component: Promotion, props: { newsletterPopup: false } }
+    ]
+  })
+```
 
-
+5. 함수모드
+`props`를 반환하는 함수를 만들 수 있음. 이를 통해 전달인자를 다른 타입으로 캐스팅하고 적정인 값을 라우트 기반 값과 결합
+```
+  const router = new VueRouter({
+    routes: [
+      { path: '/search', component: SearchUser, props: (route) => ({ query: route.query.q }) }
+    ]
+  })
+```
 
 
