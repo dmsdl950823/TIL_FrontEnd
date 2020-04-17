@@ -138,19 +138,24 @@ class="view three" name="b" =>  Baz
 -----------
 
 ## 리다이렉트(리디렉션)
-사용자가 `/a`를 방문했을 때 URL이 `/b`로 대체 된 다음 `/b`로 매칭된다는 것을 의미
+사용자가 `/a`를 방문했을 때 URL이 `/b`로 대체 된 다음 `/b`로 매칭된다는 것을 의미 <br>
+사용자가 `/a`를 입력하여 방문을 시도할 때, URL이 `/b`로 이동하는것
+
 ```
-  /* '/a' 에서 'b'로 리디렉션 */
+  /* 'a'를 입력했을 때 - '/a' 에서 'b'로 리디렉션 */
   const router = new VueRouter({
     routes: [
       { path: '/a', redirect: '/b' }
     ]
   })
   
-  /* 이름이 지정된 라우트 지정 */
+  /* '/a'를 입력했을 때 - 이름(name)이 'foo'로 지정된 라우트로 이동 */
   const router = new VueRouter({
     routes: [
-      { path: '/a', redirect: { name: 'foo' }}
+      {
+        path: '/a',
+        redirect: { name: 'foo' }
+      }
     ]
   })
   
