@@ -95,7 +95,45 @@ router.push와 같은 역할을 하지만 유일한 차이는 새로운 히스�
 -----------
 
 ## 이름을 가지는 라우트
+이름을 가진 라우트에 링크하려면, 객체를 ```router-link```, 컴포넌트의 ```to``` prop로 전달할 수 있습니다.
+```
+  routes: [
+    {
+      path: '/user/:userId',
+      name: 'user', 👈🏻
+      component: User
+    }
+  ]
+  ...
+  router.push({ name: 'user', params: { userId: 123 }})
+  <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+  // 두 경우 모두 라우터는 /user/123 경로로 이동합니다.
+```
 
+-----------
+## 이름을 가지는 뷰
+
+```
+<router-view class="view one"></router-view>
+<router-view class="view two" name="a"></router-view>
+<router-view class="view three" name="b"></router-view>
+
+routes: [
+  {
+    path: '/',
+    components: {
+      default: Foo,
+      a: Bar,
+      b: Baz
+    }
+  }
+]
+
+// 결과
+class="view one"            =>  Foo
+class="view two" name="a"   =>  Bar
+class="view three" name="b" =>  Baz
+```
 
 
 
