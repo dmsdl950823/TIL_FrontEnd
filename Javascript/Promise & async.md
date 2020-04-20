@@ -1,4 +1,6 @@
-# Promise
+# Promise & async
+
+## Promise
 
 ### Promise 3가지 상태 (states)
 > 프로미스의 처리 과정 - `new Promise()`로 프로미스를 생성하고 종료될 때까지 3가지 상태 <br>
@@ -51,3 +53,8 @@ promise에 등록된 내용이 있다면, 먼저 pass 하고, 가능한 나머�
     }, 2000)
 ```
 
+---------
+
+## async / await 함수
+await는 항상 async 함수 안에 들어있어야 한다. (여러개 가능)
+async 함수는 await 함수를 만나면 일단 먼춘다.
