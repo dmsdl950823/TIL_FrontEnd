@@ -1,7 +1,7 @@
 # lodash
 
 ### underscore vs loadash 
-> underscore ? 자바스크립트의 함수형 프로그래밍에 초점을 맞춘 유틸리티성 라이브러리
+> underscore ? 자바스크립트의 함수형 프로그래밍에 초점을 맞춘 유틸리티성 라이브러리 <br>
 > lodash ? underscore의 superset의 형태로 함수, 문서, 유닛 테스트, 성능이 더 뛰어남
 
 ### Array method
