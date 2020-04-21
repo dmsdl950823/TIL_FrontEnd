@@ -60,7 +60,8 @@ const router = new VueRouter({
 
 ## <router-view />
 
-```<router-view>```는 Routing이 필요한 부분에만 입력하고, 이외에는 ```children```을 사용하여 해당하는 범위에 라우팅을 한다. <br>
+```<router-view>```는 url이 바뀔 경우 변경될 해당 레이아웃을 의미한다. <br>
+```children```을 사용하여 변경될 범위 라우팅을 한다. <br>
 해당 부분에서 routing 된 페이지가 움직이므로 많이 쓰지 않는게 좋다.
 
 -------------
