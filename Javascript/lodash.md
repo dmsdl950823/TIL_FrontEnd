@@ -18,4 +18,9 @@
 |`_.initial(array, [callback=1], [thisArg])`||
 |`_.intersection([array])`|주어진 모든 배열에 공통적으로 있는 값을 포함한 array를 생성한다|
 |`_.intersectionBy([arrays], [iteratee=_.identity])`||
-|`_.intersectionWith([arrays], [comparator])`||
+|`_.intersectionWith([arrays], [comparator])`|`comparator`가 있는것 외에는 `_.intersection`과 유사|
+|`_.join(array, [separator=','])`|array안의 모든 문자요소들을 seperator로 연결해줌|
+|`_.last(array)`|array의 마지막 요소를 가져옴|
+|`_.lastIndexOf(array, value, [fromIndex=array.length-1])`|우->좌로 요소의 인덱스를 찾는 것 외에는 `_.indexOf`와 유사|
+|`_.nth(array, [n=0])`|array의 n번째 요소를 가져옴|
+|||
