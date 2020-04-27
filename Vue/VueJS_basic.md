@@ -132,9 +132,21 @@ Computed has basically 'getter' function, but you can generate setter if you nee
           }
         }
 
+* methods vs computed
+
+computed는 data 속성에 변화가 있을때 자동으로 다시 연산을 한다.<br><br>
+
+computed에서 사용하고 있는 data의 프로퍼티에 변화가 있을때만 다시 연산을하고 한번 연산한 값을 캐싱 해놓았다가 필요한 부분에 다시 재사용한다. <br>
+같은 페이지내에서 같은 연산을 여러번 반복해야 할 경우에 성능면에서 효율적으로 사용할 수 있다. <br>
+
+반면 methods는 캐싱이라는 개념이 없기 때문에 매번 재 렌더링된다. <br>
+<strong>캐싱 효과가 필요하다면 computed를 사용하고 캐싱이 필요없다면 methods를 사용하도록 하자.</strong>
+
 
 #### Watch 
-지속적으로 변화를 관찰합니다. async나 작업을 할때 attribute를 사용할 수 있습니다.<br />
+지속적으로 data 변화를 관찰합니다. async나 작업을 할때 attribute를 사용할 수 있습니다.<br />
+computed는 내장 api를 사용하는 간단한 연산정도에 적합하고 <br>
+watch는 <strong>데이터 호출과 같이 시간이 상대적으로 더 많이 소모되는 비동기 처리에 적합합니다.</strong><br>
 Observer for reacting changes. You can use this Attribute while using async or works eating up a lot of time.
 
         watch: {
