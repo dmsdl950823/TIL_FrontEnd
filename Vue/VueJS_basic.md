@@ -104,7 +104,9 @@ You can use Javascript syntax inside [] :: exception exists
 * Method vs Computed
 두 개 모두 function/method를 안에 입력할 수 있지만, 'Computed'는 목표된 객체와 함께 cached(저장)됩니다.
 object가 변화가 생길때, function에서 작동합니다. <br />
-Both can initiate function/method inside of them. But the diference is <strong> 'Computed' is cached(saved) along with subjected object. When the object has changed, it works their function. </strong> 
+상태를 변경하고 싶다면 computed를 사용하는 것이 좋습니다. <br>
+Both can initiate function/method inside of them.<br>
+But the diference is <strong> 'Computed' is cached(saved) along with subjected object. When the object has changed, it works their function. </strong> 
 
         computed: {
           now: function () {
