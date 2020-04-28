@@ -16,13 +16,24 @@
   color = 'yellow';
   color = 'green'; // 에러 발생!
 ```
+
+#### Define function type
 ```
   function greeter(person: number) {
       return "Hello, " + person;
   }
   let user = [0, 1, 2];
-  document.body.textContent = greeter(user);
+  greeter(user);
+  
+  function sum(x: number, y: number): number {
+    return x + y;
+  }
+  sum(1, 2);
 ```
+
+
+---------
+
 
 ### Interface - 인터페이스
 ```
@@ -36,8 +47,10 @@
   }
 
   let user = { firstName: "Jane", lastName: "User" };
-  document.body.textContent = greeter(user);
+  greeter(user);
 ```
+
+---------
 
 ### Class - 클래스
 
@@ -59,6 +72,6 @@
   }
 
   let user = new Student("Jane", "M.", "User");
-  document.body.textContent = greeter(user);
+  greeter(user);
 
 ```
