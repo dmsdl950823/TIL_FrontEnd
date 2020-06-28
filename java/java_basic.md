@@ -72,3 +72,4 @@ JAVA는 문자(`Character`)와 문자열(`String`)을 구분한다. <br>
 ```
 
 ## Data Type
+Java의 데이터 타입은 JS와 다르게 정말로 데이터 타입(`byte`, `short`, `int`, `long`)를 의미한다.
