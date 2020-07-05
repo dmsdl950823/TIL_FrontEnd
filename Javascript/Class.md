@@ -1,0 +1,148 @@
+# Class
+
+class는 도입된지 얼마 되지 않았음 <br>
+도입되기 전에는 바로 object를 생성했음
+
+캡슐화- 상속.다양성 가능 => 객체지향언어
+```
+class Person {
+  constructor() { // 생성자
+    // fields = 속성
+    this.name = name;
+    this.age = age;
+  }
+  
+  // method = 행동/방식
+  speak() {
+    console.log(`${this.name}: hello!`)
+  }
+}
+```
+
+# Object
+class의 인스턴스
+여러번 생성될 수 있음
+
+```
+  const ellie = new Person('ellie', 20)
+  
+  console.log(ellie.name);
+  console.log(ellie.name);
+  ellie.speak();
+```
+
+# Getteer and Setter
+incapsulation - 사용자가 조작시에 접근 불가능한 값을 입력할 수 없도록 사전에 방어/제한하는것
+
+```
+class User {
+  constructor (firstName, lastName, age) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+  }
+  
+  get age () {
+    return this._age; // 무한 콜스택을 방지하기 위함입니다.
+  }
+  
+  set age (value) {
+    if (value < 0) { // 사용자가 0 미만의 값을 입력했을 경우!
+      throw Error('age can not be negative');
+    }
+    this._age = value < 0 ? 0 : value;
+  }
+}
+
+
+const user1 = new User('Steve', 'job', -1)
+console.log(user1.age) // error! 0
+```
+
+# Public, private
+
+아직 지원되는 브라우저가 많지않습니다.
+
+constructor를 쓰지않고 밖에 선언하는경우 = public <br>
+#로 선언한 경우 = private
+
+```
+class Experiment {
+  publicField = 2;   // public
+  #privateField = 0; // private
+}
+
+const experiment = new Experiment();
+console.log(experiment.publicField); // 2
+console.log(experiment.publicField); // undefined
+```
+
+# Static
+아직 지원되는 브라우저가 많지 않습니다.
+
+```
+class Article {
+  static publisher = 'Dream Coding';
+  constructor(articleNumber) {
+    this.articleNumber = articleNumber;
+  }
+  
+  static printPublisher () {
+    console.log(Article.publisher);
+  }
+}
+
+const article1 = new Article(1);
+const article2 = new Article(2);
+
+console.log(article1.publisher); // undefined
+console.log(Article.publisher); // Dream Coding
+Article.printPublisher(); // Dream Coding
+Article
+```
+
+# extends - 상속
+다른 클래스를 하나의 클래스에 상속하는 방법
+
+```
+  class Shape {
+    constructor() {
+      this.width = width;
+      this.height = height;
+      this.color = color;
+    }
+    
+    draw() {
+      console.log(`drawing ${this.color} color of`);
+    }
+    
+    getArea () {
+      return width * this.height;
+    }
+  }
+
+class Rectangle extends Shape {}
+class Triangle extends Shape {
+  // 필요한 메서드/field만 오버라이딩해서 사용하면 됨
+  draw() {
+    super.draw(); // 부모의 메서드를 먼저 호출하여 사용하는 방법
+    console.log(`triangle!`); // 그냥 호출하게되면 부모의 메서드를 대체합니다.
+  }
+  getArea () {
+    return (this.width * this.height) / 2;
+  }
+}
+
+const rectangle = new Rectangle(20, 20, 'blue');
+rectangle.draw();
+const triangle = new Triangle(20, 20, 'blue');
+triangle.draw();
+```
+
+# instanceof
+해당 오브젝트가 특정 클래스의 instance인지 확인하는방법
+
+```
+console.log(rectangle instanceof Rectangle);
+console.log(rectangle instanceof Object);
+```
