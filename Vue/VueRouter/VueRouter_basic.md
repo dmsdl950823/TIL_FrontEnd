@@ -25,6 +25,19 @@ const router = new VueRouter({
 |/user/:username|	/user/evan|```{ username: 'evan' }```|
 |/user/:username/post/:post_id|/user/evan/post/123|```{ username: 'evan', post_id: '123' }```|
 
+## Params 변경 사항에 반응하기
+동일한 컴포넌트의 params 변경 사항에 반응하려면 `$route` 객체를 `watch`하면 됩니다.
+```
+const User = {
+  template: '...',
+  watch: {
+    '$route' (to, from) {
+      // 경로 변경에 반응하여...
+    }
+  }
+}
+```
+
 ## 중첩된 라우트
 여러단계로 중첩된 컴포넌트로 이루어진 UI에 쉽게 사용 가능
 ```
