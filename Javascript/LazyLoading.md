@@ -40,3 +40,6 @@ lazyloading의 한 형태는 infinity scroll 인데, 유저가 스크롤을 내�
 
 *  lazy loading may affect the website’s ranking on search engines sometimes, due to improper indexing of the unloaded content.
   > 올라가지 않은 컨텐츠의 부적절한 indexing 때문에 검색 엔진에서 웹사이트의 랭킹에 영향이 갈 수 있습니다.
+
+
+source: https://www.geeksforgeeks.org/what-is-lazy-loading/
