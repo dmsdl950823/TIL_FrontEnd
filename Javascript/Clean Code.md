@@ -179,8 +179,246 @@ Javascript를 사용할 때 많은 보일러 플레이트 없이 바로 객체�
   }
 ```
 
+### 함수명은 함수가 무엇을 하는지 알 수 있어야 합니다.
+```
+  // bad example
+  function AddToDate(date, month) {
+    ...
+  }
+  const date = new Date();
+  AddToDate(date, 1) // 뭘 추가하는지 이름만 보고 알 수 없습니다.
+  
+  // good example
+  function AddMonthToDate(date, month) {
+    // ...
+  }
+  const date = new Date();
+  AddMonthToDate(date, 1);
+```
+
+### 함수는 단일 행동을 추상화 해야 합니다.
+추상화된 이름이 여러 의미를 내포하고 있다면 그 함수는 너무 많은 일을 하게끔 설계된 것입니다. 함수들을 나누어서 재사용 가능하고 테스트하기 쉽게 만드세요.
+
+### 중복된 코드를 작성하지 마세요
+중복된 코드를 작성하지 않기 위해 최선을 다하세요. 중복된 코드가 있다는 것은 어떤 로직을 수정해야 할 일이 생겼을 때 수정해야할 코드가 한 곳이상이른 것을 뜻합니다.
+
+만약 당신이 레스토랑을 운영하면서 토마토나 양파, 마늘, 고추같은 것들의 재고 관리를 해야한다고 생각해보세요. 재고가 적혀있는 종이가 여러장 있다면 토마토나 양파의 재고가 변동되었을 때 재고가 적혀있는 모든 종이를 수정해야합니다. 재고를 관리하는 종이가 한장이었다면 한 장의 재고 목록만 수정하면 됐겠죠.
+
+종종 코드를 살펴보면 사소한 몇몇의 차이점 때문에 중복된 코드를 작성한 경우가 있고 이런 차이점들은 대부분 똑같은 일을 하는 분리된 함수들을 갖도록 강요합니다. 즉 중복코드를 제거한다는 것은 함수/모듈/클래스를 사용하여 이 여러가지 사소한 차이점을 처리 할 수 있는 추상화를 만드는 것을 의미합니다.
+
+그리고 추상화 할 부분이 남아있는 것은 위험하기 때문에 '클래스' 섹션에 제시된 여러 원칙들을 따라야합니다. 잘 추상화 하지 못한 코드는 중복된 코드보다 나쁠 수 있으므로 조심하세요. 즉 추상화를 잘 할 수 있다면 그렇게 하라는 말입니다. 코드의 중복을 피한다면 여러분이 원할 때 언제든 한 곳만 수정해도 다른 모든 코드에 반영되게 할 수 있습니다.
+
+### Object.assign 을 사용해 기본 객체를 만드세요.
+```
+  // bad example
+  const menuConfig = {
+    title: null,
+    body: 'Bar',
+    buttonText: null,
+    cancellable: true
+  }
+  
+  function createMenu (config) {
+    config.title = config.title || 'Foo';
+    config.body = config.body || 'Bar';
+    config.buttonText = config.buttonText || 'Baz';
+    config.cancellable = config.cancellable !== undefined ? config.cancellable : true;
+  }
+  
+  // good example
+  const menuConfig = {
+    title: 'Order',
+    // 유저가 'body' key의 value를 정하지 않았습니다.
+    buttonText: 'Send',
+    cancellable: true
+  }
+  
+  function createMenu(config) {
+    config = Object.assign({
+      title: 'Foo',
+      body: 'Bar',
+      buttonText: 'Baz',
+      cancellabel: true
+    }, config);
+  }
+  // config는 이제 다음과 동일합니다: {title: "Order", body: "Bar", buttonText: "Send", cancellable: true
+  createMenu(menuConfig);
+```
+
+### 매개변수로 플래그를 사용하지 마세요
+플래그를 사용하는 것 자체가 그 함수가 한가지 이상의 역할을 하고있다는 것을 뜻합니다. <strong>boolean 기반으로 함수가 실행되는 코드가 나뉜다면 함수를 분리</strong>하세요.
+
+```
+  // bad example
+  function createFile(name, temp) {
+    if (temp) {
+      fs.create(`./temp/${name}`);
+    } else {
+      fs.create(name);
+    }
+  }
+  
+  // good example
+  function createFile(name) {
+    fs.create(name);
+  }
+  
+  function createTempFile(name) {
+    createFile(`./temp/${name}`);
+  }
+```
+
+### 사이드 이펙트를 피하세요 1
+함수는 값을 받아서 어떤 일을 하거나 값을 리턴할 때 사이드 이펙트를 만들어냅니다. 사이드 이펙트는 파일에 쓰여질 수 도 있고, 전역 변수를 수정할 수도 있으며, 실수로 모든 돈을 다른 사람에게 보낼 수도 있습니다.
+
+때때로 프로그램에서 사이드 이펙트를 만들어야 할 때가 있습니다. 아까 들었던 예들 중 하나인 파일 작성을 할 때와 같이 말이죠. 이 때 여러분이 해야할 일은 파일 작성을 하는 한 개의 함수를 만드는 일입니다. 파일을 작성하는 함수나 클래스가 여러개 존재하면 안됩니다. 반드시 하나만 있어야 합니다.
+
+즉, 어떠한 구조체도 없이 객체 사이의 상태를 공유하거나, 무엇이든 쓸 수 있는 변경 가능한 데이터 유형을 사용하거나, 같은 사이드 이펙트를 만들어내는 것을 여러개 만들거나 하면 안됩니다. 여러분들이 이러한 것들을 지키며 코드를 작성한다면 대부분의 다른 개발자들보다 행복할 수 있습니다.
+
+```
+  // bad example
+  let name = 'Ryan McDermott`;
+  
+  function splitIntoFirstAndLastName() {
+    name = name.split(' ');
+  }
+  
+  splitIntoFirstAndLastName();
+  console.log(name);  // ['Ryan', 'McDermott'];
+  
+  
+  // good example
+  function splitIntoFirstAndLastName(name) {
+    return name.split(' ');
+  }
+  
+  const name = 'Ryan McDermott';
+  const newName = splitIntoFirstAndLastName(name);
+  
+  console.log(name);    // Ryan McDermott'
+  console.log(newName); // ['Ryan', McDermott]
+```
+
+### 사이드 이펙트를 피하세요 2
+자바스크립트에서는 기본타입 자료형은 값을 전달하고 객체와 배열은 참조를 전달합니다. 객체와 배열인 경우를 봅시다. 우리가 만든 함수는 장바구니 배열에 변화를 주며 이 변화는 구매 목록에 어떤 상품을 추가하는 기능 같은 것을 말합니다. 만약 `장바구니` 배열을 사용하는 어느 다른 함수가 있다면 이러한 추가에 영향을 받습니다. 이것은 좋을 수도있지만, 안좋을 수도 있습니다. 안좋은 예를 한번 살펴봅시다.
+
+유저가 구매하기 버튼을 눌러 구매 함수를 호출합니다. 이는 네트워크 요청을 생성하고 서버에 장바구니 배열을 보냅니다. 하지만 네트워크 연결이 좋지않아서 구매 함수는 다시한번 네트워크 요청을 보내야 하는 상황이 생겼습니다. 이때, 사용자가 네트워크 요청이 시작되기 전에 실수로 원하지 않는 상품의 "장바구니에 추가" 버튼을 실수로 클릭하면 어떻게될까요? 실수가 있고난 뒤, 네트워크 요청이 시작되면 장바구니에 추가 함수 때문에 실수로 변경된 장바구니 배열을 서버에 보내게 됩니다.
+
+가장 좋은 방법은 장바구니에 추가는 항상 장바구니 배열을 <strong>복제</strong>하여 수정하고 제본을 반환하는 것입니다. 이렇게하면 장바구니 참조를 보유하고있는 다른 함수가 다른 변경 사항의 영향을 받지 않게됩니다.
+
+이 접근법에대해 말하고 싶은 것이 두가지 있습니다.
+
+1. 실제로 입력된 객체를 수정하고 싶은 경우가 있을 수 있지만 이러한 예제를 생각해보고 적용해보면 그런 경우는 거의 없다는 것을 깨달을 수 있습니다. 그리고 대부분의 것들이 사이드 이펙트 없이 리팩토링 될 수 있습니다.
+
+2. 큰 객체를 복제하는 것은 성능 측면에서 값이 매우 비쌉니다. 운좋게도 이런게 큰 문제가 되지는 않습니다. 왜냐하면 이러한 프로그래밍 접근법을 가능하게해줄 좋은 라이브러리가 있기 때문입니다. 이는 객체와 배열을 수동으로 복제하는 것처럼 메모리 집약적이지 않게 해주고 빠르게 복제해줍니다.
+
+```
+  // bad example
+  const addItemToCart = (cart, item) => {
+    cart.push({ item, date: Date.now() });
+  }
+  
+  // good example
+  const addItemToCart = (cart, item) => {
+    return [...cart, { item, date: Date.now() }] 
+  }
+```
+
+### 전역 함수를 사용하지 마세요.
+전역 환경을 사용하는 것은 JS 에서 나쁜 관행입니다. 왜냐하면 다른 라이브러리들과 충돌이 일어날 수 있고, 당신의 API를 쓰는 유저들은 운영환경에서 예외가 발생하기 전까지는 문제를 인지하지 못할 것이기 때문입니다. 
+
+JS의 Native Array 메소드를 확장하여 두 배열간의 차이를 보여줄 수 있는 `diff` 메소드를 이용하려면 어떻게 해야할까요? 새로운 함수를 `Array.prototype`에 사용할 수도 있지만, 똑같은 일을 시도한 다른 라이브러리와 충돌할 수도 있습니다. 다른 라이브러리가 `diff` 메소드를 사용하여 첫번째 요소와 마지막 요소의 차이점을 찾으면 어떻게 될까요? 이것이 그냥 ES2015/ES6 classes를 사용해서 `Array`를 상속해버리는 것이 훨씬 더 나은 이유입니다.
+
+```
+  // bad example
+  Array.prototype.diff = function diff(comparisonArray) {
+    const hash = new Set(comparisonArray);
+    return this.filter(elem => !hash.has(elem));
+  }
+  
+  // good example
+  class SuperArray extends Array {
+    diff (comparisonArray) {
+      const hash = new Set(comparisonArray);
+      return this.filter(elem => !hash.has(elem);
+    }
+  }
+```
+
+### 명령형 프로그래밍보다 함수형 프로그래밍을 지향하세요.
+JS는 Hackell 처럼 함수형 프로그래밍 언어는 아니지만 함수형 프로그래밍처럼 작성할 수 있습니다. 함수형 언어는 더 깔끔하고 테스트하기 쉽습니다. 가능하면 이 방식을 사용하도록 해보세요.
+```
+const programmerOutput = [
+  {
+    name: 'Uncle Bobby',
+    linesOfCode: 500
+  }, {
+    name: 'Suzie Q',
+    linesOfCode: 1500
+  }, {
+    name: 'Jimmy Gosling',
+    linesOfCode: 150
+  }, {
+    name: 'Gracie Hopper',
+    linesOfCode: 1000
+  }
+];
+
+// bad example
+let totalOutput = 0;
+
+for (let i = 0; i < programmerOutput.length; i++) {
+  totalOutput += programmerOutput[i].linesOfCode;
+}
+
+// good example
+const totalOutput = programmerOutput
+  .map(programmer => programmer.linesOfCode)
+  .reduce((acc, linesOfCode) => acc + linesOfCode, INITIAL_VALUE);
+```
+
+### 조건문을 캡슐화 하세요.
+```
+  // bad example
+  if (fsm.state === 'fetching' && isEmpty(listNode)) {
+    // ...
+  }
+  
+  // good example
+  function shouldShowSpinner(fsm, listNode) {
+    return fsm.state === 'fetching' && isEmpty(listNode);
+  }
+  if (shoudShowSpinner(fsmInstance, listNodeInstance)) {
+    // ...
+  }
+```
+
+### 부정 조건문을 사용하지 마세요.
+```
+  // bad example
+  function isDOMNodeNotPresent (node) {
+    // ...
+  }
+  
+  if (!isDOMNodeNotPresent(node)) {
+    // ...
+  }
+  
+  // good example
+  function isDOMNodePresent(node) {
+    // ...
+  }
+
+  if (isDOMNodePresent(node)) {
+    // ...
+  }
+```
 
 출처 : https://github.com/qkraudghgh/clean-code-javascript-ko#%EB%B3%80%EC%88%98variables
+
+
+
+
 
 
 
