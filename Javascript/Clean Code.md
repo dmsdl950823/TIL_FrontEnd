@@ -414,6 +414,231 @@ const totalOutput = programmerOutput
   }
 ```
 
+### 조건문 작성을 피하세요.
+조건문 작성을 피하라는 것은 매우 불가능한 일로 보입니다. 그러나 다형성을 이용하면 동일한 작업을 수행할 수 있습니다. 함수는 단 하나의 일만 수행하여야 합니다. 당신이 함수나 클래스에 if 문을 쓴다면 그것은 그 함수나 클래스가 한가지 이상의 일을 수행하고 있다고 말하는 것과 같습니다.
+
+```
+  // bad example
+  class Airplane {
+    // ...
+    getCruisingAltitude() {
+      switch (this.type) {
+        case '777':
+          return this.getMaxAltitude() - this.getPassengerCount();
+        case 'Air Force One':
+          return this.getMaxAltitude();
+        case 'Cessna':
+          return this.getMaxAltitude() - this.getFuelExpenditure();
+      }
+    }
+  }
+  
+  // good example
+  class Airplane {
+    // ...
+  }
+
+  class Boeing777 extends Airplane {
+    // ...
+    getCruisingAltitude() {
+      return this.getMaxAltitude() - this.getPassengerCount();
+    }
+  }
+
+  class AirForceOne extends Airplane {
+    // ...
+    getCruisingAltitude() {
+      return this.getMaxAltitude();
+    }
+  }
+
+  class Cessna extends Airplane {
+    // ...
+    getCruisingAltitude() {
+      return this.getMaxAltitude() - this.getFuelExpenditure();
+    }
+  }
+```
+
+### 타입 - 체킹을 피하세요 1
+JavaScript는 타입이 정해져있지 않습니다. 이는 당신의 함수가 어떤 타입의 인자든 받을 수 있다는 것을 의미합니다. 이런 JavaScript의 자유로움 때문에 여러 버그가 발생했었고 이 때문에 당신의 함수에 타입-체킹을 시도 할 수도 있습니다. 하지만 타입-체킹 말고도 이러한 화를 피할 많은 방법들이 존재합니다. 첫번째 방법은 일관성 있는 API를 사용하는 것입니다.
+
+```
+  // bad example
+  function travelToTexas(vehicle) {
+    if (vehicle instanceof Bicycle) {
+      vehicle.pedal(this.currentLocation, new Location('texas'));
+    } else if (vehicle instanceof Car) {
+      vehicle.drive(this.currentLocation, new Location('texas'));
+    }
+  }
+  
+  // good example
+  function travelToTexas(vehicle) {
+    vehicle.move(this.currentLocation, new Location('texas'));
+  }
+```
+
+### 타입 - 체킹을 피하세요 2
+당신이 문자열, 정수, 배열등 기본 자료형을 사용하고 다형성을 사용할 수 없을 때 여전히 타입-체킹이 필요하다고 느껴진다면 TypeScript를 도입하는 것을 고려해보는 것이 좋습니다. TypeScript는 표준 JavaScript 구문에 정적 타입을 제공하므로 일반 JavaScript의 대안으로 사용하기에 좋습니다. JavaScript에서 타입-체킹을 할 때 문제점은 가짜 type-safety 를 얻기위해 작성된 코드를 설명하기 위해서 많은 주석을 달아야한다는 점입니다. JavaScript로 코드를 작성할땐 깔끔하게 코드를 작성하고, 좋은 테스트 코드를 짜야하며 좋은 코드 리뷰를 해야합니다. 그러기 싫다면 그냥 TypeScript(이건 제가 말했듯이, 좋은 대체재입니다!)를 쓰세요.
+
+```
+  // bad example
+  function combine(val1, val2) {
+    if (typeof val1 === 'number' && typeof val2 === 'number' ||
+        typeof val1 === 'string' && typeof val2 === 'string') {
+      return val1 + val2;
+    }
+
+    throw new Error('Must be of type String or Number');
+  }
+  
+  // good example
+   function combine(val1, val2) {
+    return val1 + val2;
+  }
+```
+
+### 과도한 최적화를 지양하세요
+
+최신 브라우저들은 런타임에 많은 최적화 작업을 수행합니다. 대부분 당신이 코드를 최적화 하는 것은 시간낭비일 가능성이 많습니다. 최적화가 부족한 곳이 어딘지를 알려주는 좋은 자료가 여기 있습니다. 이것을 참조하여 최신 브라우저들이 최적화 해주지 않는 부분만 최적화를 해주는 것이 좋습니다.
+
+- 좋은 자료 :: https://github.com/petkaantonov/bluebird/wiki/Optimization-killers
+
+### 죽은 코드를 지우세요.
+죽은 코드(사용하지 않는 코드 )는 중복된 코드 만큼이나 좋지 않습니다. 죽은 코드는 당신의 코드에 남아있을 어떠한 이유도 없습니다. 호출되지 않는 코드가 있다면 그 코드는 지우세요! 그 코드가 여전히 필요해도 그 코드는 버전 히스토리에 안전하게 남아있을 것입니다.
+
+
+## 객체와 자료 구조 (Objects and Data Structures);
+
+### getter와 setter를 사용하세요.
+JS는 인터페이스와 타입을 가지고 있지 않고 이러한 패턴을 적용하기가 힘듭니다. 왜냐하면 `public`이나 `private` 같은 키워드가 없기 때문이죠. 그렇기 때문에 getter 및 setter를 사용하여 객체의 데이터에 접근하는 것이 객체의 속성을 찾는 것보다 훨씬 낫습니다. 
+* 객체의 속성을 얻는 것 이상의 많은 것을 하고싶을 때, 코드에서 모든 접근자를 찾아 바꾸고 할 필요가 없습니다.
+* `set` 할때 검증 로직을 추가하는 것이 코드를 더 간단하게 만듭니다.
+* 내부용 API를 캡슐화 할 수 있습니다.
+* 서버에서 객체 속성을 받아올 때 lazy load 할 수 있습니다.
+
+```
+  // bad example
+  function makeBankAccount () {
+    // ...
+    return {
+      // .. 
+      balance: 0
+    }
+  }
+  const account = makeBankAccount();
+  account.balance = 100;
+  
+  // good example
+  function makeBankAccount() {
+    // private으로 선언된 변수
+    let balance = 0;
+
+    // 아래 return을 통해 public으로 선언된 "getter"
+    function getBalance() {
+      return balance;
+    }
+
+    // 아래 return을 통해 public으로 선언된 "setter"
+    function setBalance(amount) {
+      // ... balance를 업데이트하기 전 검증로직
+      balance = amount;
+    }
+
+    return {
+      // ...
+      getBalance,
+      setBalance
+    };
+  }
+
+  const account = makeBankAccount();
+  account.setBalance(100);
+```
+
+### 객체에 비공개 멤버를 만드세요
+클로져를 이용하면 가능합니다.
+```
+  // bad example
+  const Employee = function (name) {
+    this.name = name;
+  }
+  
+  Employee.prototye.getName = fuction getName() {
+    return this.name;
+  }
+  
+  const employee = new Employee('John Doe');
+  console.log(`Employee name: ${employee.getName()}`); // 'John Doe'
+  delete employee.name;
+  console.log(`Employee name: ${employee.getName()}`); // Employee name: undefined
+  
+  // good example
+  function makeEmployee(name) {
+    return {
+      getName () {
+        return name;
+      }
+    }
+  }
+  
+  const employee = makeEmployee('John Doe');
+  console.log(`Employee name: ${employee.getName()}`) // 'John Doe'
+  delete employee.name;
+  console.log(`Employee name: ${employee.getName()}`); // Employee name: John Doe
+```
+
+## 클래스 Class
+
+### ES5의 함수보다 ES2015/ES6의 클래스를 사용하세요.
+기존 ES5의 클래스에서 이해하기 쉬운 상속, 구성 및 메소드 정의를 하는 건 매우 어렵습니다. 매번 그런것은 아니지만 상속이 필요한 경우라면 클래스를 사용하는 것이 좋습니다. 하지만 크고 복잡한 객체가 필요한 것이 아니라면 클래스보다 작은 함수를 사용하세요.
+
+### 메소드 체이닝을 사용하세요
+JS에서 메소드 체이닝은 매우 유용한 패턴이며 jQuery나 Lodash같은 많은 라이브러리에서 이 패턴을 찾아볼 수 있습니다. 이는 코드를 간결하고 이해하기 쉽게 만들어줍니다. 이런 이유들로 메소드 체이닝을 쓰는 것을 권하고, 사용해 본 뒤 얼마나 코드가 깔끔해졌는지 꼭 확인해 보길 바랍니다. 클래스 함수에서 단순히 모든 함수에 `this`를 리턴해주는것으로 메소드를 추가로 연결 할 수 있습니다.
+
+```
+  // good example
+  class Car {
+  constructor() {
+    this.make = 'Honda';
+    this.model = 'Accord';
+    this.color = 'white';
+  }
+
+  setMake(make) {
+    this.make = make;
+    // 메모: 체이닝을 위해 this를 리턴합니다.
+    return this;
+  }
+
+  setModel(model) {
+    this.model = model;
+    // 메모: 체이닝을 위해 this를 리턴합니다.
+    return this;
+  }
+
+  setColor(color) {
+    this.color = color;
+    // 메모: 체이닝을 위해 this를 리턴합니다.
+    return this;
+  }
+
+  save() {
+    console.log(this.make, this.model, this.color);
+    // 메모: 체이닝을 위해 this를 리턴합니다.
+    return this;
+  }
+}
+
+const car = new Car()
+  .setColor('pink')
+  .setMake('Ford')
+  .setModel('F-150')
+  .save();
+```
+
+
 출처 : https://github.com/qkraudghgh/clean-code-javascript-ko#%EB%B3%80%EC%88%98variables
 
 
