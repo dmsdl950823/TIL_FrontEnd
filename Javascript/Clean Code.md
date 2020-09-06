@@ -897,6 +897,119 @@ Javascript에서 이것을 보여주는 가장 좋은 예는 방대한 양의 �
   })
 
 ```
+
+-----------------------------
+
+## 동시성(Concurrency)
+
+### callback 대신 Promise를 사용하세요.
+
+callback은 깔끔하지 않습니다. 그리고 엄청나게 많은 중괄호 중첩을 만들어냅니다. ES2015/ES6에서는 Promise가 내장되어있습니다. 사용하세요!
+
+```
+  // bad example
+  require('request').get('https//...', (requestErr, response) => {
+    if (requestErr) {
+      console.error(requestErr);
+    } else {
+      require('fs').wrhiteFile('article.html', response.body, (writeErr) => {
+        if (writeErr) {
+          console.error(writeErr);
+        } else {
+          console.log('File written');
+        }
+      })
+    }
+  })
+  
+  // good example
+  require('request-promise').get('https:// ... ')
+    .then((response) => {
+      return require('fs-promise').writeFile('article.html', response);
+    })
+    .then(() => {
+      console.log('File written')
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+```
+
+### Async/Await는 Promise 보다 더 깔끔합니다.
+Promise도 Callback에 비해 정말 깔끔하지만 ES2017/ES8 에선 async / await가 있습니다. 이들은 callback에 대한 더욱 깔끔한 해결책을 줍니다 오직 필요한 것은 함수 앞에 async를 붙이는 것 뿐입니다. 그러면 함수를 논리적으로 연결하기 위해 더이상 `then`을 쓰지 않아도 됩니다. ES2017/ES8을 사용할 수 있다면 사용하세요
+
+```
+  // bad example
+  require('request-promise').get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin')
+  .then(response => {
+    return require('fs-promise').writeFile('article.html', response);
+  })
+  .then(() => {
+    console.log('File written');
+  })
+  .catch(err => {
+    console.error(err);
+  })
+  
+  // good example
+  async function getCleanCodeArticle() {
+    try {
+      const response = await require('requestpromise').get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin');
+      await require('fs-promise').writeFile('article.html', response);
+      console.log('File written');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+```
+
+## 에러 처리 (Error Handling)
+에러를 뱉는다는 것은 좋은 것입니다! 즉, 프로그램에서 무언가가 잘못되었을 때 런타임에서 성공적으로 확인되면 현재 스택에서 함수 실행을 중단하고 (노드에서) 프로세스를 종료하고 스택 추적으로 콘솔에서 사용자에게 그 이유를 알려줍니다.
+
+### 단순히 에러를 확인만 하지 마세요.
+
+단순히 에러를 확인하는 것만으로 그 에러가 해결되거나 대응 할 수 있게 되는 것은 아닙니다. console.log를 통해 콘솔에 로그를 기록하는 것은 에러 로그를 잃어버리기 쉽기 때문에 좋은 방법이 아닙니다. 만약에 try/catch로 어떤 코드를 감쌌다면 그건 당신이 그 코드에 어떤 에러가 날지도 모르기 때문에 감싼 것이므로 그에대한 계획이 있거나 어떠한 장치를 해야합니다.
+
+```
+  // bad example
+  try {
+    functionThatMightThrow();
+  } catch (err) {
+    console.log(err);
+  }
+  
+  // good example
+  try {
+    functionTantMightThrow();
+  } catch (error) {
+    // 1. console.error() 를 이용 하여 에러 로그라는 것을 보여줍니다.
+    console.error(error);
+    // 2. 유저에게 알리는 방법입니다.
+    notifyUserIfError(error);
+    // ...
+  }
+```
+
+### Promise가 실패된 것을 무시하지 마세요.
+```
+  // good example
+  getData()
+  .then(data => {
+    functionThatMightThrow(data);
+  })
+  .catch(error => {
+    // 1. console.error() 를 이용 하여 에러 로그라는 것을 보여줍니다.
+    console.error(error);
+    // 2. 유저에게 알리는 방법입니다.
+    notifyUserIfError(error);
+    // ...
+  })
+```
+
+### 포맷팅(Formatting)
+
+포맷팅은 주관적입니다. 
+
 출처 : https://github.com/qkraudghgh/clean-code-javascript-ko#%EB%B3%80%EC%88%98variables
 
 
