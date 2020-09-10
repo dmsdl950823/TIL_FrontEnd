@@ -107,28 +107,121 @@ For in 루프를 사용할 때는 객체에서 접근할 수 있고 나열(enume
 
 ECMAScript 5판의 Object.keys() 메서드를 통해 객체 인스턴스에서 나열 가능한 프로퍼티의 전체 목록을 얻을 수 있습니다. Object.keys() 메서드는 객체를 매개변수로 받은 다음 나열 가능한 프로퍼티 이름을 문자열 형태로 포함하는 배열을 반환합니다.
 
-
-```
-  function Person () { }
-
-  Person.prototype.name = 'JJD'
-  Person.prototype.age = 26
-  Person.prototype.sayName = function () {
-    console.log(this.name)
-  }
-
-  const keys = Object.keys(Person.prototype)
-  console.log(keys)  // ['name', 'age', 'sayName']
-
-  const p1 = new Person()
-  p1.name = 'BBD'
-  p1.age = 31
-  const p1_keys = Object.keys(p1)
-  console.log(p1_keys)  // ['name', 'age']
-```
-
 나열 가능 여부와 관계 없이 인스턴스 프로퍼티 전체 목록을 얻으려면 Object.getOwnPropertyNames() 메서드를 같은 방법으로 사용합니다. 
-
-const keys = Object.getOwnPropertyNames(Person.prototype)
-console.log(keys) // ['constructor', 'name', 'age', 'sayName']
+```
+  const keys = Object.getOwnPropertyNames(Person.prototype)
+  console.log(keys) // ['constructor', 'name', 'age', 'sayName']
+  ```
 나열 불가능한 constructor 프로퍼티가 결과 배열에 있습니다. Object.keys()와 Object.getOwnPropertyNames() 모두 for-in 대신 사용할 수 있습니다.
+
+
+### 프로토타입의 대체 문법
+
+매번 프로퍼티와 메서드를추가할 때마다 한줄 씩 따로따로 프로토타입을  추가하는 것보다, 다음과 같이 모든 프로퍼티와 메서드를 담은 객체 리터럴로 프로토타입을 덮어써서 반복을 줄이고 프로토타입에 기능을 더 가독성 있게 캡슐화 하는 패턴이 널리 쓰이게 되었습니다.
+
+```
+Person.prototype = {
+  name: "JJD",
+  age: 28,
+  job: "Software Engineer",
+  sayName: function () {
+    alert(this.name)
+  }
+}
+```
+이 예제는 `Person.prototype` 프로퍼티에 객체 리터럴로 생성한 객체를 덮어썼습니다. `Constructor` 프로퍼티가 `Person` 을 가리키지 않는다는 점만 빼면 최종 결과는 완전히 같습니다. 
+
+함수가 생성되면 prototytype 객체가 생성되고 `constructor`는 자동으로 할당됩니다. 요약하면 `constructor` 프로퍼티는 함수 자체가 아닌 완전히 새로운 객체의 생성자(Object 생성자)와 같습니다. Instanceof 연산자는 여전히 올바르게 동작하지만 constructor가 객체의 타입을 정확히 나타낼 수 업세 됩니다.
+```
+const friend = new Person()
+console.log(friend instanceof Object)       // true
+console.log(friend instanceof Person)       // true
+console.log(friend.constructor === Person)  // false
+console.log(friend.constructor === Object)  // true
+```
+그러나 `constructor`의 값이 중요하다면 적절한 값을 직접 지정할 수 있습니다.
+
+```
+Person.prototype = {
+  constructor: Person,
+  name: "JJD"
+  ...
+}
+```
+
+이런 방식으로 constructor 생성자를 재설정하면 프로퍼티의 [[Enumerable]] 속성이 true로 지정된다는 점은 알아둬야 합니다. 네이티브 constructor 프로퍼티는 기본적으로 나열 불가능한 프로퍼티이므로 ECMAScript 5판을 구현한 자바스크립트 엔진이라면 다음과 같이 Object.defineProperty()를 쓰는 편이 좋습니다.
+
+```
+function Person () { }
+
+Person.prototype = {
+  name: "JJD",
+  age: 29,
+  job: "Software Engineer,
+  sayName: function () {
+  	console.log(this.name)
+  }
+}
+Object.defineProperty(Person.prototype, "constructor", {
+  enumerable: false,
+  value: Person
+})
+```
+
+### 프로토타입의 동적 성질
+
+프로토타입에서 값을 찾는 작업은 적시(런타임)검색이므로 프로토타입이 바뀌면 그 내용이 즉시 인스턴스에도 반영됩니다. 심지어는 프로토타입이 바뀌기 전에 빠져나온 인스턴스도 바뀐 내용을 반영합니다. 다음 예제를 보세요...
+
+```
+const friend = new Person()
+
+Person.prototype.sayHi = function () {
+  alert("Hi")
+}
+
+friend.sayHi()  // "Hi"
+```
+
+이 예제는 `sayHi()`라는 메서드를 `person.prototype`에 추가합니다.`friend` 인스턴스는 `sayHi()`가 추가되기 전에 만들어졌지만 이 메서드에 접근할 수 있습니다. 이러한 일이 가능한 것은 인스턴스와 프로토타입 사이의 느슨한 연결 때문입니다. Friend.sayHi()를 호출하면 먼저 인스턴스에서 sayHi라는 프로퍼티를 검색하는데, 찾을 수 없으므로 범위를 프로토타입으로 옮깁니다. 인스턴스와 프로토타입은 포인터를 통해 연결되었을 뿐 인스턴스를 생성할 때 sayHi 없는 프로토타입을 복사한 것이 아니므로, 프로토타입에서 sayHi 프로퍼티를 찾아 여기 저장된 함수를 반환합니다.
+
+프로퍼티와 메서드를 언제든 프로토타입에 추가할 수 있고 이들을 즉시 객체 인스턴스에서 사용할 수 있긴 하지만, 전체 프로토타입을 덮어썼을때는 다르게 동작할 수 있습니다.
+
+[[Prototype]] 포인터는 생성자가 호출될 때 할당되므로 프로토타입을 다른 객체로 바꾸면 생성자와 원래 프로토타입 사이의 연결이 끊어집니다. 인스턴스는 프로토타입을 가리키는 포인터를 가질 뿐 생성자와 연결된 것이 아닙니다.
+```
+function Person() { }
+
+const friend = new Person();
+
+Person.prototype = {
+  constructor: Person,
+  name: "JJD",
+  age: 29,
+  sayName: function () {
+    alert(this.name)
+  }
+}
+
+friend.sayName();  // error
+```
+이 예제는 프로토타입 객체를 덮어 쓰기 전에 person의 인스턴스를 생성했습니다. Freind.sayNAme()을 호출하면 에러가 발생하는데 friend가 가리키는 프로토타입에는 그러한 프로퍼티가 존재하지 않기 때문입니다.
+
+생성자의 프로토타입을 바꾸면 그 이후에 생성한 인스턴스는 새로운 프로토타입을 참조하지만, 그 이전에 생성한 인스턴스는 바꾸기 전의 프로토타입을 참조합니다.
+
+ --------
+
+### 네이티브 객체 프로토타입
+
+프로토타입 패턴은 커스텀 타입을 정의할 때도 유용하지만 네이티브 참조 타입역시 프로토타입 패턴으로 구현되어있으므로 중요합니다. 네이티브 참조 타입(object, Array, String0 등) 의 메서드 역시 기본적으로 생성자의 프로토타입에 정읟되어 있습니다.
+예를들어 sort() 메서드는 Array.prototype에 존재하고, substring()메서드는 String.prototype에 정의되어있습니다.
+
+네이티브 객체의 프로토타입을 통해 기본 메서드를 참조할 수 있고 새 메서드를 정의할 수도 있습니다. 네이티브 객체의 프로토타입도 커스텀 객체의 프로토타입과 마찬가지로 수정할 수 있고 메서드도 언제든지 추가할 수 있습니다.
+
+...
+
+네이티브 객체 프로토타입을 수정할 수 있기는 하지만 배포하는 코드에서는 가급적 피하길 권장합니다. 네이티브 객체 프로토타입을 수정하면 혼란스럽기도 하고, 같은 이름의 메서드가 어떤 브라우저에서는 지원되고 다른 브라우저에서는 지원되지 않는 상황에서는 충돌이 발생할 수 있습니다. 자칫하면 네이티브 메서드를 실수로 덮어쓸 수도 있기 때문에 위험합니다.
+
+### 프로토타입의 문제점
+
+프로토타입 패턴은 초기화 매개변수를 생성자에 전달할 수 없게 하므로 모든 인스턴스가 기본적으로 같은 프로퍼티 값을 갖게 됩니다. 이 점도 불편하긴 하지만 프로토타입의 가장 큰 문제는 "공유"라는 성질입니다.
+
+프로토타입에 존재하는 프로퍼티는 모두 인스턴스에서 공유되는데 이런 특징은 함수에는 이상적입니다. 원시 값을 포함하는 프로퍼티에도 별 문제는 없는데, 이전 예제에서 살펴봤든 인스턴스 프로퍼티에 값을 할당하면 prototype 프로퍼티를 가릴 수 있기 때문입니다. 진짜 문제는 프로퍼티가 참조값을 포함한 경우입니다.
