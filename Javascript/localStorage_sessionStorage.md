@@ -10,6 +10,15 @@
 
 ## localStorage
 
+데이터를 서버에 저장하지 않고, 브라우저에 저장하는것
+
+특징
+- HTML5 부터 사용가능
+- cookie는 4kb 최고 용량이지만 < localstorage는 2.5 ~ 5 mb 까지 가능하며, 서버로 전송하지는 않음.
+- localStorage 의 storage 이름은 아무거나 사용 가능 (setItem, contactData.. 등)
+- localStorage는 string으로만 저장됩니다. :: 저장시 JSON.stringify() 이용
+- object 로 사용시에는 JSON.parse()
+
 1. ```setItem()``` : 특정 이름의 데이터 저장
 ```
   localStorage.test = '123';
