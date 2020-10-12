@@ -1,25 +1,29 @@
-Bom - 브라우저 객체모델은 정말로 웹에서 사용하는 자바스크립트의 핵심입니다. BOM은 웹 페이지 콘텐츠와 무관하게 브라우저 기능을 노출하는 객체 입니다. 제대로된 명세가 없는 기간이 길었기 때문에 브라우저 제조사들은 자신들이 원하는 대로 bom을 확장했고, 이는 흥미로운 결과를 낳기도 했지만 문제도 많이 생겼습니다. 브라우저 사이의 공통점이 사실상의 표준이 되었고, 브라우저 개발 목적은 거의 상호작용성에 치중하게 되었습니다.
+BOM
+브라우저 객체모델(BOM)은 웹에서 사용하는 자바스크립트의 핵심입니다.
+
+BOM은 웹 페이지 콘텐츠와 무관하게 브라우저 기능을 노출하는 객체 입니다. 제대로된 명세가 없는 기간이 길었기 때문에 브라우저 제조사들은 각 회사가 원하는 대로 BOM을 확장했고, 이는 문제를 많이 발생시켰습니다. 브라우저 사이의 공통점이 사실상의 표준이 되었고, 브라우저 개발 목적은 거의 상호작용성에 집중 되었습니다.
 
 Window 객체
-Bom의 핵심에는 브라우저의 인스턴스인 window 객체가 있습니다. Bom-( window )
+BOM의 핵심에는 브라우저의 인스턴스인 window 객체가 있습니다.
 
-Window 객체는 브라우저 창의 자바스크립트 인터페이스 구실을 하고 다른 한편으로는 ECMAScript global 객체로 기능합니다.
-따라서 웹 페이지에서 정의한 모든 객체, 변수, 함수에서는 window가 global 객체 구실을 하며 window에 정의된 parseInt() 등의 메서드를 이용합니다. 
+
+이미지 출처: https://learn.javascript.ru/article/browser-environment/windowObjects.png
+ window 객체는 브라우저 창의 자바스크립트 인터페이스 구실을 하고 다른 한편으로는 ECMAScript global 객체로 기능합니다. 따라서 웹 페이지에서 정의한 모든 객체, 변수, 함수에서 window 가 global 객체 구실을 하며  window 에 정의된 parseInt() 등의 메서드를 이용합니다. 
 
 전역 스코프
-Window 객체가 EcmaScript의 global 객체 구실을 하므로 전역에서 선언한 변수와 함수는 모두 window 객체와 프로퍼티 및 메서드가 됩니다. 
+ window 객체가 ECMAScript의 global 객체 구실을 하므로 전역에서 선언한 변수와 함수는 모두  window 객체와 프로퍼티 및 메서드가 됩니다.
 
-const age = 29
+var age = 29             // window 객체에 정의할 땐 var를 사용합니다
 function foo () {
-  alert(this.age)
+  console.log(this.age)
 }
 
-alert(window.age)   // 29
-foo()				// 29
-window.foo()   		// 29  ㅇㅣㅇㅖㅈㅔㄴㅡㄴ ㅇㅏㄴㄷㅗㅣㅁ
-변수 age와 함수 foo는 전역스코프에서 정의되었으므로 자동으로 window 객체에 속합니다
+console.log(window.age)  // 29
+foo()                    // 29
+window.foo()             // 29
+변수 age와 함수  foo 는 전역스코프에서 정의되었으므로 자동으로  window 객체에 속합니다
 
-전역변수가 window 객체의 프로퍼티가 되긴 하지만 전역 변수를 정의하는 것과 window에 프로퍼티를 직접 정의하는 것은 조금 다릅니다. 전역변수는 delete 연산자로 제거할 수 없지만 window에 직접 정의한 프로퍼티는 가능합니다.
+전역변수가  window 객체의 프로퍼티가 되긴 하지만 전역 변수를 정의하는 것과  window 에 프로퍼티를 직접 정의하는 것은 조금 다릅니다. 전역변수는  delete 연산자로 제거할 수 없지만  window에 직접 정의한 프로퍼티는 가능합니다.
 
 var age = 29
 window.color = 'red'
@@ -27,80 +31,94 @@ window.color = 'red'
 console.log(window.color)
 
 // under ie9 => error && other => false
-console.log(delete window.age)   // var
+console.log(delete window.age)     // false
 
 // under ie9 => error && other => true
 console.log(delete window.color)   // true
 
-console.log(window.color)
-var 연산자를 써서 window에 추가한 프로퍼티는 [[Configurable]] 속성이 false로 지정되므로 delete 연산자를 통해 삭제할 수 없습니다. IE 8 및 이전 버전은 window 프로퍼티가 생성된 방법을 가리지 않고 delete 연산자를 강제 적용하여 에러가 발생했습니다. IE 9 이후 버전에서는 에러가 발생하지 않습니다.
+console.log(window.color)   // undefined
+ var 연산자를 써서  window 에 추가한 프로퍼티는 [[Configurable]] 속성이 false로 지정되므로 delete 연산자를 통해 삭제할 수 없습니다.
 
-중요한점은, 선언한적 없는 변수에 접근하려 하면 에러가 발생하지만 선언하지 않았을 가능성이 있는 변수의 존재 여부는 window 객체를 통해 확인 가능합니다.
+IE 8 및 이전 버전은  window 객체window 프로퍼티가 생성된 방법을 가리지 않고 delete 연산자를 강제 적용하여 에러가 발생했습니다. IE 9 이후 버전에서는 에러가 발생하지 않습니다.
+
+여기서 특이한 점은, 선언한적 없는 변수에 접근하려 하면 에러가 발생하지만 선언하지 않았을 가능성이 있는 변수의 존재 여부는  window 객체를 통해 확인 가능합니다.
 
 // error -> not defined
 // var newVal = oldVal
 
 // property searching
 var newVal = window.oldVal   // newVal = undefined
-Location, navigator 등 자바스크립트에서 무심코 전역이라 생각하는 많은 객체가 사실 window객체의 프로퍼티입니다.
+ location , navigator 등 자바스크립트에서 전역이라 생각하는 많은 객체가 사실 window 객체의 프로퍼티입니다.
 
-창 사이의 관계와 프레임
-페이지에 프레임이 들어있으면 프레임은 독자적인 window 객체를 가지며 이 객체들은 frames 컬렉션에 저장됩니다. Frames 컬렉션에서 각 window 객체 등은 인덱스(왼 -> 오, 오른쪽 끝 -> 다음줄) 와 프레임 이름 두가지로 색인합니다. Window 객체는 프레임의 name을 프로퍼티로 가집니다.
+창 사이의 관계와 Frame
+페이지에 Frame이 있으면 프레임내부에는 독자적인 window 객체를 가지며 이 객체들은 frames 객체에 저장됩니다. frames 객체에서 각  window 객체 등은 인덱스(왼쪽 => 오른쪽, 오른쪽 끝 => 다음줄) 와 프레임 이름 두가지로 색인합니다. window 객체는 프레임의 name을 프로퍼티로 가집니다.
 
 <html>
   <head>...</head>
   <frameset rows="160, 0">
-    <frame src="frame.htm" name="topFrame">
+    <frame src="frame.htm" name="frame_one">
     
     <frameset cols="50%, 50%">
-      <frame src="frame1.htm" name="leftFrame">
-      <frame src="frame2.htm" name="rightFrame">
+      <frame src="frame1.htm" name="frame_two">
+      <frame src="frame2.htm" name="frame_three">
     </frameset>
   </frameset>
 </html>
-상단 프레임은 window.frames[0]으로도, window.frames["topFrame"]으로도 접근 가능합니다.
+상단 프레임은 window.frames[0] , window.frames['frame_one'] 두가지 방식으로 접근 가능합니다.
 
-Top 객체는 항상 최상위(가장 밖에있는) 프레임을 가리키는데, 이는 곧 브라우저 창입니다. 따라서 top 객체를 참조하는 코드는 모두 브라우저 창이 아니라 프레임의 고유한 인스턴스를 가리킵니다. 
+top 객체는 항상 최상위(가장 밖에있는) 프레임을 가리키는데, 이는 브라우저 창을 가리킵니다. top 객체를 참조하는 코드는 모두 브라우저 창이 아니라 프레임의 고유한 인스턴스를 가리킵니다. 
 
-Window 객체중에는 parent도 있습니다. Parent 객체는 항상 현재 프레임의 바로 상위인 부모 프레임입니다. Parent와 top 이 같은 객체일 때도 있으며 프레임이 전혀 없을 때는 parent와 top 모두 window와 일치합니다. 
+window 객체중에는 parent도 있습니다.  parent객체는 항상 현재 프레임의 상위 부모 프레임입니다.  parent와 top 이 같은 객체일 때도 있으며 프레임이 전혀 없을 때는  parent와 top 모두 window 와 일치합니다. (frame에 대한 자세한 사용방법은 외부 예제를 참조하세요)
 
-..... 먼소리야..(다시 읽으셈)
+self 라는 window 객체도 있습니다. 이 객체는 항상  window 를 가리킵니다. 사실  window 와  self 는 서로 바꿔서 써도 됩니다.  self 에 특별한 의미가 있는 건 아니지만 호환성 때문에 top 과  parent객체에 포함됩니다.이 객체는 모두 window 객체의 프로퍼티여서  window.parent ,  window.top 등으로 접근할 수있습니다.
 
-마지막 window 객체는 self 입니다. 이 객체는 항상 window를 가리킵니다. 사실 window와 self 는 서로 바꿔서 써도 됩니다. Self에 특별한 의미가 있는 건 아니지만 호환성 때문에 top과 parent 객체에 포함됩니다.
-
-사실 이들 객체는 모두 window 객체의 프로퍼티여서 window.parent, window.top 등으로 접근할 수있습니다. 즉 window 객체를 체인처럼, window.parent.parent.frames[0] 같이 쓰는 일도 가능합니다.
-
-- 프레임을 사용하면 브라우저에 global 객체가 여럿 존재하게 됩니다. 각 프레임에 정의된 전역 변수는 해당 프레임의 window 객체의 프로퍼티인 것으로 정의됩니다. 각 window 객체마다 네이티브타입 생성자가 존재하므로 프레임마다 제각기 생성자가 존재하는것이고 이들은 서로 일치하지않습니다. 
+프레임을 사용하면 브라우저에 global 객체가 여럿 존재하게 됩니다. 각 프레임에 정의된 전역 변수는 해당 프레임의  window 객체의 프로퍼티인 것으로 정의됩니다. 각  window 객체마다 네이티브타입 생성자가 존재하므로 프레임마다 제각기 생성자가 존재하는것이고 이들은 서로 일치하지 않습니다. 
 
 창의 위치
-창의 위치를 가져오거나 설정하는 프로퍼티와 메서드도 다양합니다. 인터넷 익스플로러, 사파리, 오페라, 크롬 모두 screenLeft/screenTop 프로퍼티를 지원하는데, 이는 화면을 기준으로 창이 왼쪽 위에서 각각 얼마나 떨어졌는지를 나타냅니다. 파이어폭스는 이 기능을 screenX/screenY로 지원하는데, 사파리와 크롬도 이 프로퍼티를 지원합니다. - 오페라 역시 이 프로퍼티를 지원하지만 이 값은 screenLeft/screenTop과 다르므로 오페라에서는 screenX/screenY를 쓰지말아야 합니다. - 크로스브라우저 필요
+브라우저 창의 위치를 가져오거나 설정하는 프로퍼티와 메서드도 다양합니다.
 
-이 값에는 다소 혼란스러운 점이 있습니다. 인터넷 익스플로러와 오페라, 크롬에서 screenLeft/screenTop은 window에서 사용하는 페이지 영역이 화면의 왼쪽 위에서 얼마나 떨어졌는지 나타냅니다. 즉 window 객체가 최 상위이고 브라우저 창이 화면 맨 위 (y좌표 0) 에 있다면 screenTop 값은 브라우저 툴바가 차지하는 높이입니다. 파이어폭스와 사파리는 이 좌표를 전체 브라우저와 관련하여 계산하므로 브라우저 창이 화면 맨 위에 있다면 0을 반환합니다.
 
-더 혼란스러운 것은 파폭, 사파리, 크롬에서는 페이지의 모든 프레임에서 항상 top.screenX/top.screenY 값을 반환한다는 것입니다. 페이지에 마진이 있더라도 screenX/screenY를 window 객체와 연관해 쓸 때마다 같은 값을 반환합니다. Ie 와 오페라는 프레임 좌표를 화면에 상대적으로 정확히 반환합니다.
+이미지 출처 https://o7planning.org/en/12397/javascript-window-tutorial
+screenLeft ,  screenTop 또는  screenX , screenY (Firefox, Safari, Chrome 전용 :: 오페라 역시 이 프로퍼티를 지원하지만 이 값은 screenLeft/screenTop과 다르므로 오페라에서는 screenX/screenY를 쓰지말아야 합니다) 프로퍼티는 화면을 기준으로 창이 왼쪽 위에서 각각 얼마나 떨어졌는지를 나타냅니다. 
 
-따라서 브라우저 창의 좌표를 정확히, 브라우저에 무관하게 일관적으로 구할 방법은 없습니다.
+이 값에는 다소 혼란스러운 점이 있습니다. 모든 브라우저에서 반환하는 값이 다르기 때문에 브라우저 창의 좌표를 정확히, 브라우저에 무관하게 일관적으로 구할 방법은 없습니다.
 
-하지만 moveTo()/moveBy() 메서드로 정확한 위치로 옮기는 일은 가능합니다. 각 메서드는 매개변수를 두 개 받습니다.
-MoveTo() - 1. 이동할 x좌표 2. 이동할 y좌표 // moveBy() - 각 방향으로 몇 픽셀 이동할지 나타내는 숫자를 받습니다. 
+하지만 moveTo() , moveBy() 메서드로 정확한 위치로 옮기는 일은 가능합니다. 각 메서드는 매개변수를 두 개 받습니다.
 
-window.moveTo(0, 0)
+window.moveTo(0, 0)      // 현재 위치에서 (0px, 0px) 로 이동
 
-window.moveBy(10, -100)
-Ie7 이상과 크롬, 오페라에서는 기본적으로 비활성화 되어있으며, 이 메서드 중 프레임에서 동작하는 것은 없습니다.
+window.moveBy(10, -100)  // 현재 위치에서 (10px, -100px) 만큼 이동
+IE7 이상과 크롬, 오페라에서는 기본적으로 비활성화 되어있으며, 이 메서드 중 프레임에서 동작하는 것은 없습니다.
 
 창 크기
-창 크기를 알아내는 방법은 무슨 브라우저든 상당히 복잡합니다. 모든 브라우저에서 InnerWidth, innerHeight, outerWidth, outerHeight - 를 지원합니다. 
+창 크기를 알아내는 방법은 어느 브라우저든 상당히 복잡합니다. 모든 브라우저에서 InnerWidth ,  InnerHeight , outerWidth ,  outerHeight 를 지원합니다. 
 
-Ie9, safari, firefox, chrome 에서 outerWidth와 outerHeight는 최상위 창 or 프레임에서 호출하면 브라우저 창 크기를 반환합니다. 오페라에서 이 값은 페이지 뷰포트 크기입니다. InnerWidth와 innerHeight 프로퍼티는 브라우저 창 내부으 ㅣ페이지 뷰포트 크기를 나타넵니다. 테두리와 툴바는 포함되지 않습니다.
+Ie9, safari, firefox, chrome 에서 outerWidth ,  outerHeight 는 최상위 창 or 프레임에서 호출하면 브라우저 창 크기를 반환합니다. 오페라에서 이 값은 페이지 viewport 크기입니다.  InnerWidth ,  InnerHeight 프로퍼티는 브라우저 창 내부의 페이지 viewport 크기를 나타냅니다. 테두리와 툴바는 포함되지 않습니다.
 
-Ie 8 이전버전에서는 브라우저 창의 현재 크기를 알아낼 방법이 없지만 dom을 통해 페이지의 '가시영역viewable area에 대한 정보를 알 수는 있습니다.
+IE 8 이전버전에서는 브라우저 창의 현재 크기를 알아낼 방법이 없지만 DOM을 통해 페이지의 '가시영역viewable area에 대한 정보를 알 수는 있습니다.
 
-모든 프라우저에서 document.documentElement.clientWidth와 document.documentElement.clientHeight 프로퍼티는 각각 페이지 뷰포트의 너비와 높이를 나타냅니다. 인터넷 익스플로러 6은 표준모드에서만 이들 프로퍼티를 지원하며 쿽스모드에서는 document.body.clientWidth와 document.body.clientHeight 프로퍼티가 해당 정보를 제공합니다. 크롬이 쿽스모드로 동작할 때는 document.documentElement와 document.body의 clientWidth/clientHeight가 모두 뷰포트 크기를 나타냅니다.
 
-결국 브라우저 창 크기를 정확히 알아낼 방법도 없지만 뷰 포트 크기를 알 수 있습니다 (코드....)
+이미지 출처 https://www.quirksmode.org/mobile/viewports.html  ::  Measuring the viewport
+모든 프라우저에서 document.documentElement.clientWidth 와 document.documentElement.clientHeight 프로퍼티는 각각 페이지 viewport의 너비와 높이를 나타냅니다. IE6은 표준모드에서만 이들 프로퍼티를 지원하며 쿽스모드에서는  document.body.clientWidth 와  document.body.clientHeight 프로퍼티가 해당 정보를 제공합니다. 크롬이 쿽스모드로 동작할 때는 네가지 프로퍼티 모두 viewport 크기를 나타냅니다.
 
-모바일 장치에서는 window.innerWidth/window.innerHeight 가 뷰 포트 크기이며 이 크기는 화면에 보이는 페이지 크기와 일치합니다. 모바일 인터넷 익스플로러는 이 프로퍼티를 지원하지 않지만 document.documentElement.clientWidth/document.documentElement.clientHeight 를 지원합니다. 이 값은 페이지를 확대/축소할 때 바뀝니다.
+결국 브라우저 창 크기를 정확히 알아낼 방법은 없지만 페이지 viewport 크기는 알 수 있습니다.
+
+let pageW = window.innerWidth
+let pageH = window.innerHeight
+
+if (typeof pageW !== 'number') {
+  if (document.compatMode === 'CSS1Compat') {
+    const docElement = document.documentElement
+    pageW = docElement.clientWidth
+    pageH = docElement.clientHeight
+  } else {
+    pageW = document.body.clientWidth
+    pageH = document.body.clientHeight
+  }
+}
+모바일 장치에서는 window.innerWidth ,  window.innerHeight 가 viewport 크기이며 이 크기는 화면에 보이는 페이지 크기와 일치합니다. 모바일 IE는 이 프로퍼티를 지원하지 않지만  document.documentElement.clientWidth 와 document.documentElement.clientHeight 를 지원합니다. 이 값은 페이지를 확대/축소할 때 변화합니다.
+
+---ㅇㄹㅇㄹ
 
 다른 모바일 브라우저에서는 document.documentElement에서 레이아웃 뷰포트, 즉 렌더링된 페이지의 크기를 알 수 있습니다. - 레이아웃 뷰포트는 페이지 전체를 의미하므로 장치 화면에 보이는 영역과는 다른 뜻입니다. 모바일 ie는 이 정보를 document.body.clientWidth/document.body.clientHeight 에 저장합니다. 이 값은 페이지를 확대/축소해도 바뀌지 않습니다. 
 
@@ -113,6 +131,7 @@ window.resizeBy(100, 50)
 창을 움직이는 메서드와 마찬가지로, 크기를 바꾸는 메서드 역시 ie7 이상, 크롬, 오페라에서는 기본적으로 금지되어있습니다. 최상위 window 객체에만 적용되는점도 마찬가지입니다.
 
 네비게이션과 열기
+
 Window.open() 메서드는 url로 이동한 후 브라우저 창을 새로 엽니다. 매개변수는, 1. 이동할 url 2. 대상 창(_self, _parent, _top, _blank) 3. 기능을 나타내는 문자열 4. 새 페이지가 브라우저 히스토리에서 현재 페이지를 대체할지 나타내는 불리언값(옵션) - 새 창을 열 때는 적용되지 않습니다.
 
 Window.open() 두 번째 매개변수가 이미 존재하는 창이나 프레임 이름이라면 주어진 url은 해당 이름의 창이나 프레임에서 열립니다. 
@@ -166,6 +185,7 @@ Firefox는 버전 1부터 팝업 창의 상태 바를 감출 수 없게 만들�
  
 
 인터벌과 타임아웃
+
 브라우저에서 자바스크립트는 단일 스레드로 실행되지만 타임아웃과 인터벌을 통해 코드가 특정 시간에 실행되게끔 조절 할 수는 있습니다. 타임아웃은 일정 시간 뒤에 코드를 실행하는 것이고, 인터벌은 일정 시간마다 코드를 반복 실행하는 것 입니다.
 
 타임아웃은 window의 setTimeout() 메서드로 설정합니다. 이 메서드는 매개변수를 두가지 받는데, 하나는 1. 실행할 코드(함수)이고, 다른 하나는 2. 코드를 실행할 때 까지 기다리는 시간 입니다.
