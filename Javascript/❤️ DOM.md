@@ -48,4 +48,48 @@ if (h1.nodeType === 1) {
 }
 노드 사이의 관계
 
-모든 노드는 다른 노드와 관계가 있습니다. 이런 관계는 문서 트리를 갖ㄱ ❤️
+모든 노드는 다른 노드와 관계가 있습니다. 이런 관계는 문서 트리를 가족 계보 처럼 생각해서 가족 관계로 설명하곤 합니다. HTML 에서 <body> 요소는 <html> 요소의 자식이며 <html> 요소는 <body> 요소의 부모입니다. <head> 요소는 <body>요소의 형제로 간주하는데, 두 요소가 같은 <html> 요소를 부모로 공유하기 때문입니다.
+
+각 노드에는 childNodes 프로퍼티가 있는데 이 프로퍼티에는 NodeList가 저장됩니다. NodeList는 배열 비슷한 객체인데 노드를 순서있는 목록으로 저장하여 위치 기반으로 접근 할 수 있습니다. NodeList에 length 프로퍼티가 있고 저장된 데이터를 대괄호 표기법으로 접근할 수 있지만 NodeList는 Array의 인스턴스가 아닙니다. NodeList는 사실 DOM구조에 대한 쿼리 겨ㄹ과이며 문서가 바뀌면 NodeList 객체에도 자동으로 반영된다는 점이 독특합니다. NodeList는 처음 호출했을 때 얻은 결과를 저장하고 있는 것이 아니라 계속 바뀌므로 '살아있는' 객체 라고 부르기도합니다.
+
+다음 예제는 NodeList에 저장된 노드를 1. 대괄호 표기법으로 접근하는 법, 2. Item() 메서드로 접근하는 법입니다.
+
+const firstChild = someNode.childNodes[0]
+const secondChild = someNode.childNodes.item[1]
+const count = someNode.childNodes.length
+NodeList가 배열과 비슷하므로 개발자 대부분이 대괄호 표기법을 선호하긴 하지만, item() 메서드나 대괄호 표기법이나 마찬가지이며 어느쪽을 더 권장하지는 않습니다. Length 프로퍼티는 '호출당시' NodeList에 담긴 노드 숫자임을 기억해야 합니다. Length 프로퍼티는 '호출 당시' NodeList에 담긴 노드 숫자임을 기억해야 합니다. Arguments 객체에서 설명 했떤 대로 Array.prototype.slice()를 사용해 NodeList객체를 배열로 바꿀 수 있습니다. 다음 예제를 생각해 보십시오.
+
+const arrayOftenNodes = Array.prototype.slice.all(someNode.childNodes, 0)
+이 방법은 인터넷 익스플로러 0 및 이전 버전을 제외한 모든 브라우저에서 동작합니다. IE 8 및 이전 버전에서는 에러가 발생하는데 NodeList객체가 COM 객체로 구현되어있으므로 JScript 객체가 필요한 곳에서 사용할 수 없기 때문입니다. IE 에서 JScript를 배열로 바꾸려면 멤버 전체를 직접 순회하며 작업 해야합니다. 다음 함수는 모든 브라우저에서 동작합니다.
+
+function convertToArray (nodes) {
+  const array = null
+  try {
+    array = Array.prototype.slice.call(nodes, 0) // IE ㅇㅗㅣ, IE 9+
+  } catch (ex) {
+    array = new Array()
+    len = nodes.length
+    for (var i = 0; i < len; i++) {
+      array.push(nodes[i])
+    }
+  }
+  return array
+}
+해당 함수는 배열을 생성하는 쉬운 방법부터 시작하여, 에러가 생기면(IE 이하) try-catch 블록에서 에러를 받아 배열을 직접 생성합니다. 이 함수도 쿽스 탐지의 한 가지 형태입니다.
+
+각 노드에는 문서 트리에서 부모를 가리키는 parentNode 프로퍼티가 있습니다. ChildNodes 목록에 포함된 노드는 모두 부모가 같으므로 각각의 parentNode 프로퍼티는 같은 노드를 가리킵니다. 또한 childNodes 목록의 각 노드는 형제 관계입니다. 같은 목록에 있는 노드 사이를 previousSibling 및 nextSibling 프로퍼티로 이동할 수 있습니다. 다음 예제와 같이 목록의 첫 번째 노드에서 previousSibling 프로퍼티 값은 null 이며 마지막 노드에서 nextSibling 프로퍼티 값은 null 입니다.
+
+if (someNode.nextSibling === null) {
+  alert("Last node in the parent's childNodes list.")
+} else if (someNode.previousSibling === null) {
+  alert("First node in the parent's childNodes list.")
+}
+자식 노드가 하나 뿐이라면 해당 노드의 nextSibling와 previousSibling 은 모두 null 입니다.
+
+부모 노드와 첫 번째, 마지막 자식 노드 관계를 가리키는 다른 관계도 존재합니다. firstChild와 lastChild 프로퍼티는 각각 childNodes 목록에서 첫 번째와 마지막 노드를 가리킵니다. someNode. 자식 노드가 하나 뿐이라면 firstChild와 lastChild는 같은 노드를 가리킵니다. 자식 노드가 없다면 firstChild와 lastChild는 모두 null 입니다. 이런 관계를 통해 쉽게 노드 사이를 이동할 수 있습니다.
+
+그 외에 편리한 메서드로 hasChildNodes()가 있는데 이 메서드는 노드에 자식 노드가 있다면 true를 반환하며 매번 childNodes 목록에서 length를 호출하는 것 보다 효과적입니다.
+
+마지막 관계는 모든 노드에서 공통입니다. ownerDocument 프로퍼티는 전체 문서를 표현하는 문서 노드에 대한 포인터 입니다. 한 노드가 여러문서에 동시에 존재할 수는 없으니 각 문서는 자기 내부에 있는 노드를 소유하는 것으로 간주합니다. 이 프로퍼티를 이용하면 노드 계층 구조를 따라 위로 거슬러 올라갈 필요없이 문서 노드에 빠르게 접근 가능합니다. 
+
+노드 타입이 모두 Node 를 상속하긴 하지만 노드 타입이 모두 자식 노드를 가질 수 있는건 아닙니다.
