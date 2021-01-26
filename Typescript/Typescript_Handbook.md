@@ -189,3 +189,115 @@ ro.length = 100   // Error! Cannot assign to 'length', it is read-only
 a = ro   // Error! 'readonly number[]' is 'readonly' and cannot be assigned to the mutable type 'number[]'
 a = ro as number[]
 마지막 라인처럼 ReadonlyArray를 일반 array에 할당하는것은 불가능하지만, 할당시에 type assertion을 이용하여 오버라이딩 할 수 있습니다.
+
+----------------------------------------------------------------------
+
+
+Excess Property Checks
+interface SquareConfig {
+  color?: string,
+  width?: number
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || 'red',
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+
+let mySquare = createSquare({ colour: 'red', width: 100 })
+// Error! Argument of type '{ colour: string; ... } is not asssignable to parameter of type SquareConfig
+// Did you mean to write 'color'?
+예제와 같이 SquareConfig 인터페이스의 key값에 colour 라는 키값이 들어온다면, Typescript는 이 코드를 버그라고 생각합니다. 리터럴 형식 {} 의 Object는 다른 변수가 할당될때 체크를 과하게 하는 특별한 검사를 받습니다. 만약 리터럴 Object가 "target type"을 가지고있지 않은 프로퍼티를 가지고 있다면 에러를 가지게 됩니다.
+
+let square = createSquare({ width: 100, opacity: 0.5 } as SquareConfig)
+이 검사를 우회하는 방법은, 간단하게 type assertion을 사용하면 됩니다.
+
+그러나, 만약 object가 추가적인 프로퍼티를 확실하게 가지고 있다면, 더 좋은 방법은 string index 싸인을 더하는 것 입니다.
+
+interface SquareConfig {
+  color?: string;
+  width?: number;
+  [propName: string]: any;
+}
+여기서 SquareConfig는 여러개의 프로퍼티를 가질 수 있습니다. 그리고 명시된 프로퍼티가 (예제에선 color나 width) 아닌 한 그들의 타입은 상관없습니다.
+
+Function Types
+Interface는 다양한 범위의 Javascript Object가 가질 수 있는 모양을 표현할 수 있습니다. interface는 function type도 정의할 수 있습니다.
+
+interface 로 function type을 정의하기 위해서는, interface에게 호출 신호 (call signiture)를 주어야 합니다. 이것은 파라미터 리스트와 주어진 리턴 타입을 이용하여  function 정의와 비슷합니다.(?)  파라미터 리스트의 각 파라미터는 name과 type을 갖습니다.
+
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+
+mySearch = function (source: string, subString: string) {
+  let result = source.search(subString)
+  return result > -1
+}
+Function 파라미터들은 한번에 한개씩 체크되는데, 각각의 일치하는 파라미터 위치의 타입과 비교됩니다. 만약 특정 타입을 구체화하고싶지 않다면, Typescript의 맥락적 type 체크가 function 값이 직접적으로 변수 SearchFunc 타입 변수에게 할당되기 때문에 매개변수의 타입을 추론할 수 있습니다. function의 리턴 타입은 리턴하는 값에 의해 함축됩니다.
+
+let mySearch: SearchFunc;
+
+mySearch = function (src, sub) {
+  let result = src.search(sub)
+  return result > -1
+}
+let mySearch: SearchFunc;
+
+mySearch = function (src, sub) {
+  let result = src.search(sub)
+  return 'string'
+}
+// Error! 'string' is not assignable to type 'SearchFunc'
+Indexable Type
+interface를 이용하여 a[10], ageMap["daniel"] 과 같은 방식으로 인덱스 접근이 가능하도록 정의할 수도 있습니다. Indexable type은 return 타입에 일치하는 object안에 index를 사용할 수 있는 타입을 정의하는 index signature를 가지고있습니다. 
+
+interface StringArray {
+  [index: number]: string
+}
+
+let myArray: StringArray
+myArray = ['Bob', 'Fred']
+
+let myStr: string = myArray[0]
+예제에서, StringArray interface는 index signature를 가지고있습니다. 이 index signature는 StringArray가 number로 index가 붙여졌고, string을 리턴한다는 의미입니다.
+string, number 두가지 index signature가 지원되는데, 숫자 index로부터 리턴된 타입은 string index로부터 리턴된 타입의 서브 타입이어야만 합니다. 숫자로 index되어있을 때, object로 index 붙이기 전에 javascript는 사실 string으로 변환을 하기 때문입니다. 100 => '100' 으로
+
+interface Animal {
+  name: string
+}
+
+interface Dog extends Animal {
+  breed: string
+}
+
+interface NotOkay {
+  [x: number]: Animal // Error! Numeric index type 'Animal' is not assignable to string index type 'Dog'
+  [x: string]: Dog
+}
+ㅑ반면에 string index signature는 '사전적' 패턴을 묘사하기에 가장 강력한 방법입니다. 모든 프로퍼티가 그들의 리턴타입과 일치하는지 강제로 확인합니다. 이것은 string index가 obj.property가 obj["property"]가 가능하도록 정의해주기 때문입니다. 
+
+interface NumberDictionary {
+  [index: string]: number
+  length: number
+  name: string // Error! type of 'name' is not subtype of the indexer
+}
+그러나 다른 타입의 프로퍼티는 index signature가 프로퍼티 타입의 집합이라면 접근 가능합니다.
+
+interface NumberDictionary {
+  [index: string]: number | string
+  length: number
+  name: string
+}
+index signature를 readonly로 만들 수도 있습니다.
+
+interface ReadonlyStringArray {
+  readonly [index: number]: string
+}
+
+let myArray: ReadonlyStringArray = ['Alice', 'Bob']
+myArray[2] = 'Mallory' // Error! index singature in type only permit reading
