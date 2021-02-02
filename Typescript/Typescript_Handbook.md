@@ -448,3 +448,90 @@ class ImageControl implements SelectableControl {
 SelectableControl은 private state 프로퍼티를 포함한 모든 Control 클래스의 멤버를 포함합니다. state가 private member 이므로 Control의 후손에게만 사용 가능합니다. 이것은 오직 Control의 후손이 private멤버를 위한 양립할 수 있는 요구사항인 선언에서 기원한 state private 멤버를 가질 것 이기 때문입니다. 
 
 Control class안에서 SelectableControl의 인스턴스를 통하여 state private멤버들에게 접근 가능합니다. 효과적으로, SelectableControl은 select 메서드를 가지고있는 Control 같이 동작합니다. Button과 TextBox class는 SelectableControl의 subtype들입니다 (그 둘은 모두 Control을 상속하고있고 select 메서드를 가지고 있기 때문에) The ImageControl class는 그 자신만의 state private member를 가지고있으므로, (Control class를 상속하는 대신에) SelectableControl을 implement 할 수 없습니다.
+
+
+
+
+
+---------------------------------------------
+---------------------------------------------
+--------------------------------------------
+
+Typescript에서 Function은 class, namespace, module들이 있긴 하지만, function은 여전히 무언가를 하는데 주요한 역할을 합니다. Typescript는 표준 Javascript function을 더 쉽게 사용, 동작할 수 있도록 하는 새로운 능력을 추가합니다.
+
+Functions
+Javascript 처럼, Typescript function은 named function이나 anonymous function 둘 다 생성될 수 있습니다. 이것은 여러분이 API에서 function 리스트를 작성하거나 하나의 function을 다른 하나의 function에 전달하는 등의 여러분의 애플리케이션을 위해 적절한 접근을 선택하도록 도와줍니다.
+
+Functions Types
+function add(x: number, y: number): number {
+  return x + y
+}
+
+let myAdd = function (x: number, y: number): number {
+  return x + y
+}
+각 parameter에 타입을 더해줄 수 있고, function 자신에게는 return type을 지정할 수 있습니다. Typescript는 return 조건을 확인하므로써 return type을 특정지을 수 있어서, 옵션으로 생략 할 수도 있습니다.
+
+Writing the function type
+이제 function 타입을 지정했으니, 각 function type을 살펴봄으로써 function의 모든 type을 작성해봅시다.
+
+let myAdd: (x: number, y: number) =>
+  number = function ( x: number, y: number ): number {
+    return x + y;
+  };
+function의 타입은 공통된 투가지  arguments와 return type을 가집니다. 전체 function type을 작성할 때, 두가지 모두가 필요합니다. 우리는 parameter list 처럼 parameter types를 적고, 각 parameter에 name과 type을 지정해줍니다. 이 name은 읽을 수 있도록 도와주는 용도입니다. 하단과 같이 작성할 수 있습니다.
+
+let myAdd: (baseValue: number, increment: number) =>
+  number = function (x: number, y: number): number {
+    return x + y;
+  };
+parameter type이 있으므로, function을 위한 적절한 type이 고려되고, name에 상관없이 parameter를 function type에 넘겨줍니다.
+
+return type은 parameter과 return type 사이의 arrow (=>) 를 사용하여 return type을 정의합니다. 이전에 언급했던 바와 같이, 이것은 필요한 function type이므로, 만약 function이 value를 반환하지 않는다면, 그냥 놔두는 것 대신 void 를 사용해야합니다.
+
+parameter과 return type은 function type을 만들어줍니다. 캡쳐된 변수는 type에 반영되지 않습니다. 캡쳐된 변수는 "숨겨진 상태"의 부분입니다.  In effect, captured variables are part of the “hidden state” of any function and do not make up its API.
+
+ 
+
+Inferring the types
+이미 눈치 채셨겠지만, Typescript 컴파일러는 비록 등호(=) 옆에 type을 가지고 있지만 해당 type을 찾을 수 있습니다.
+이것은 "contextual typing"이라고 부르는 type interface의 형태입니다. 이것은 여러분의 프로그래밍 타이핑 노력과 시간을 줄여주는데 도움을 줍니다.
+
+Optional and Default Parameters
+Typescript에서, 모든 parameter는 function에 의해서 요구되어진다고 가정됩니다. 이것은 null이나 undefined로 주어질 수는 없다는 것을 의미하진 않습니다. function이 호출될 때, 컴파일러는 사용자가 각각 parameter에 값을 제공했다는 것을 체크합니다. 컴파일러는 또한 이 제공된 parameter는 function에 전달될 parameter들이라는 것을 가정합니다. 짧게 말해, function에 제공된 매개변수의 숫자는 function이 예상하는 parameter의 숫자에 일치해야합니다.
+
+function buildName(firstName: string, lastName: string) {
+  return firstName + '' + lastName
+}
+
+// Error! Expected 2 arguments..
+let result1 = buildName('bob')
+let result2 = buildName('bob', 'adams', 'Sr.')
+Javascript에서, 모든 parameter는 옵션입니다.  parameter에 값이 없을 때는 undefined가 할당됩니다.
+Typescript에선는 parameter의 끝에 ?를 더하여 해당 parameter는 옵션이라는 것을 알려줄 수 있습니다. 
+
+function buildName(firstName: string, lastName?: string) {
+  return firstName + '' + lastName
+}
+
+let result1 = buildName('bob', 'adams', 'Sr.') // Error! Expected 1-2 arguments..
+let result2 = buildName('bob', 'adams')
+let result3 = buildName('bob')
+
+function buildName(firstName?: string, lastName: string) {
+  return firstName + '' + lastName
+}
+
+let result1 = buildName('bob') // Error! Expected 2 arguments..
+Typescript에서는, 만약 사용자가 parameter를 제공하지 않을 경우, 또는 undefined를 입력한 경우, 필요한 경우에 해당 부분에 설정될 값을 세팅해주어야 합니다.
+
+optional paramete과 기본 parameter는 그들의 타입을 공유한다는 것을 의미하므로, 두가지 방법 모두 (사이트 function 두개 참고) (firstName: string, lastName?: string) => string   type을 공유합니다. 기본 lastName 값은 type에서 사라지고, parameter는 optional 이라는 사실만 남습니다.
+
+일반 optional parameter과는 다르게 기본 생성된(default-initailized) parameters는 필수 parameter후에 일어날 필요는 없습니다ㅏ. 만약 default-initalized parameter가 ㅍ필수 parameter 앞에 올 경우, 사용자는 default initialized 값을 갖기 위하여 구체적으로 undefined를 넘겨주어야 합니다. 
+
+function buildName(firstName = 'Will', lastName: string) {
+  return firstName + ' ' + lastName
+}
+
+buildName('Bob', 'Jae')
+buildName(undefined, 'Jae')
