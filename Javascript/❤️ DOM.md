@@ -1,9 +1,11 @@
 DOM
+
 문서 객체 모델 (DOM) 은 HTML 과 XML 문서에 대한 애플리케이션 프로그래밍 인터페이스 (API) 입니다. DOM은 문서를 노드의 계층 구조 트리로 표현하며 개발자는 이를 통해 페이지 각 부분을 추가, 제거, 수정 합니다. 넷스케이프 & MiocroSoft 에서 초기에 사용하던 동적 HTML(DHTML)을 계승한 DOM은 이제 진정으로 플랫폼과 언어에 독립적인 페이지 표현 및 조작 방법입니다.
 
 DOM level 1 은 1998년 10월에 W3C 권고가 되었으며 기본적인 문서 구조와 쿼리 인터페이스를 제공합니다.
 
 노드의 계층 구조
+
 HTML과 XML 문서는 모두 DOM을 통해 노드의 계층 구조로 표현 가능합니다. 노드 타입에는 여러가지가 있으며 각 타입은 문서에서 서로 다른 정보나 마크업을 표현합니다. 각 노드 타입은 서로 다른 특징, 데이터, 메서드를 가지며 각 노드는 다른 노드와 관계가 있을 수 있습니다.  이러한 관계가 계층 구조를 생성하고 마크업은 이 관계를 통해 특정 노드에 뿌리root를 둔 트리 구조로 표현됩니다.
 
 <html>
@@ -19,6 +21,7 @@ HTML과 XML 문서는 모두 DOM을 통해 노드의 계층 구조로 표현 가
 각 마크업은 트리에서 노드로 표현됩니다. HTML 요소들은 요소 노드로, 속성은 속성노드로, 문서 타입은 문서 타입 노드로, 주석은 주석 노드로 표현됩니다. 총 12가지 노드 타입이 있으며 모든 노드는 기반base 타입을 상속합니다.
 
 노드 타입 - Node Type
+
 DOM level 1 에서는 Node
 
 라는 인터페이스가 있는데, DOM에 존재하는 노드 타입은 모두 이 인터페이스를 구현합니다. Node 인터페이스는 자바스크립트에서 Node 타입으로 구현되며 IE를 제외한 모든 브라우저에서 Node 타입에 접근할 수 있습니다. JS의 노드 타입은 모두 Node를 상속하므로 모든 노드 타입에서 같은 기본 프로퍼티와 메서드를 공유합니다. 
@@ -118,9 +121,9 @@ console.log(newNode == someNode.firstChild) // true
 // ㅁㅏㅈㅣㅁㅏㄱ ㅈㅏㅅㅣㄱ ㅇㅏㅍㅇㅔ ㅅㅏㅍㅇㅣㅂ
 retunredNode = someNode.insertBefore(newNode, someNode.lastChild)
 alert(newNode == someNode.childNodes[someNode.childNodes.length - 2]) // true
- 
 
- 
+
+
 
 ㅁappendChild()와 insertBefore()는 모두 기존의 노드를 제거하는 일 없이 삽입하기만 합니다. 반면 replaceChild() 메서드는 기존 노드를 교체합니다. replaceChild()메서드는 매개변수로 삽입할 노드(A) 교체할 노드(B) 두 개를 받아서 B를 문서 트리에서 제거해 반환하며 B가 있던 자리에 A를 대신 삽입합니다.
 
@@ -199,7 +202,9 @@ Document가 가질 수 있는 또다른 자식 노드는 DocumentType 입니다.
 const doctype = document.doctype // <!DOCTYPE> ㅇㅔ ㄷㅐㅎㅏㄴ ㅈㅓㅇㅂㅗㄹㅡㄹ ㅇㅓㄷㅇㅡㅁ
 document.doctype에 대한 브라우저의 지원은 상당히 다릅니다.
 
-더보기
+IE 8 및 이전 - 문서 타입이 존재할 경우 주석으로 오인되어 Comment 노드로 취급됩니다. document.doctype은 항상 null 입니다.
+IE 9 + , firefox - 문서타입이 존재한다면 문서의 첫 번째 자식 노드입니다. document.doctype은 DocumentType 노드이며 같은 노드에 document.firstChild나 document.childNodes[0]로 접근할 수 있습니다.
+Safari, Chrome, Opera - 문서타입이 존재한다면 파싱하긴 하지만 문서의 자식 노드로 취급하진 않습니다. document.doctype은 DocumentType 노드이긴 하지만 이 노드가 document.childNodes에 속하진 않습니다.
 브라우저마다 document.doctype 을 달리 지원하므로 유용하게 쓰기는 어렵습니다. 
 
 <!-- first comment -->
@@ -209,7 +214,9 @@ document.doctype에 대한 브라우저의 지원은 상당히 다릅니다.
 <!-- second comment -->
 <html> 요소 밖에 있는 주석은 기술적으로는 문서의 자식노드입니다. 이것 또한 브라우저 지원은 각자 달라서 이런 주석을 인식하고 적절히 표현할지는 브라우저에 따라 다릅니다.
 
-더보기
+IE 8 및 이전, safari 3.1 +, Opera, Chrome 은 첫 번째 주석에 대해서는 주석 노드를 생성하지만 두 번째 주석에 대해서는 주석 노드를 생성하지 않습니다. 첫 번째 주석은 document.childNodes의 첫 번째 노드가 됩니다.
+IE 9 + - 첫 번째 주석에 대해 document.childNodes 안에 주석노드를 생성합니다. 두 번째 주석에 대해서는 document.body.childNodes 안에 주석 노드를 생성합니다.
+Firefox, Safari 3.1 미만 - 두 주석을 모두 무시
 브라우저마다 <html> 요소 밖의 주석을 다르게 처리하므로 스크립트에서 이 주석에 접근하려는 시도는 쓸모 없습니다. 
 
 AppendChild() 나 removeChild(), replaceChild() 메서드를 document 에서 호출하는 일은 거의 없는데 문서타입(존재한다면)은 읽기 전용이고 요소 자식 노드는 하나만 가질 수 있는데 <html> 요소가 이미 존재하기 때문입니다.
@@ -310,3 +317,80 @@ style 속성은 CSS 텍스트를 반환하지만 프로퍼티는 객체를 반�
 onclick 같은 이벤트 핸들러 속성은 JS 코드이며 getAttribute()는 해당 코드 문자열을 반환하지만 onclick 프로퍼티는 함수 자체를 반환하고 해당 속성이 없을 경우 null을 반환합니다. 이는 onclick을 비롯한 이벤트 처리 프로퍼티가 자신에게 할당된 함수에 접근할 수 있기 때문입니다.
 
 이러한 차이 때문에 개발자들은 JS로 DOM을 다룰 때 객체 프로퍼티를 주로 사용하며, getAttribute()는 커스텀 속성의 값을 가져올 때 사용합니다.
+
+속성 설정
+
+div.setAttribute('id', 'sample')
+
+div.id = 'new sample'
+setAttribute()는 1. 속성 이름과 2. 설정할 값 두가지를 매개변수로 받습니다. 속성은 모두 프로퍼티이므로 프로퍼티에 직접 할당하는 것은 속성 값을 설정하는것과 마찬가지 입니다.
+
+div.mycolor = 'red'
+alert(div.getAttribute('mycolor')) // null
+그러나 DOM 요소에 커스텀 프로퍼티를 추가해도 요소에 자동으로 속성이 추가되지는 않습니다. 
+
+요소에서 속성을 제거하는 removeAttrebute()는 속성의 값뿐 아니라 요소에서 속성을 완전히 제거합니다.
+
+div.removeAttrivute('class')
+attributes 프로퍼티
+
+Element 타입은 DOM 노드 타입중 attribute프로퍼티를 갖는 유일한 타입입니다. attribute에서는 NameNodeMap이 저장됩니다. 요소의 속성은 모두 Attr 노드로 표현되며 각 Attr 노드는 NameNodeMap 객체에 저장됩니다.
+
+NameNodeMap 객체는 다음 메서드가 있습니다. (그러나 잘 사용하지는 않습니다.)
+
+- getName(name) :: nodeName 프로퍼티가 name인 노드를 반환합니다.
+- removeNamed(name) :: nodeName 프로퍼티가 name인 노드를 목록에서 제거합니다
+- setNamedItem(node) :: node를 목록에 추가하고 nodeName 프로퍼티에 따라 색인합니다
+- item(pos) :: 인덱스가 pos인 노드를 반환합니다.
+
+attribute 프로퍼티 안의 각 노드는 nodeName이 속성이름이며 nodeValue는 속성 값입니다. 
+
+// divㄴㅡㄴ nodeType === 1 (Element ㅌㅏㅇㅣㅂ)
+const attrs = div.attributes
+console.log(attrs)  // [object NamedNodeMap]
+
+console.log(attrs.getNamedItem('id').nodeValue) // div
+console.log(attrs['id'].nodeValue)  // div
+
+attrs['id'].nodeValue = 'new_id'
+
+attrs.removeNamedItem('id') // ㅈㅜㅇㅓㅈㅣㄴ ㅇㅣㄹㅡㅁㅇㅡㅣ ㅅㅗㄱㅅㅓㅇ ㅈㅔㄱㅓ
+attribute가 유용한 경우는 요소의 속성을 대상으로 루프가 필요할 때 입니다. DOM구조를 XML이나 HTML 문자열로 직렬화 할 때가 그런 경우입니다.
+
+function outputAttributes (element) {
+  const pairs = []
+  const attrs = element.attributes
+  
+  for (let i = 0; i < attrs.length; i++) {
+    const attrName = attrs[i].nodeName
+    const attrValue = attrs[i]nodeValue
+
+    pairs.push(`${attrName}='${attrValue}'`)
+  }
+  
+  return pairs.join(' ')
+}
+해당 함수는 이름-값 쌍 순으로 이루어진 배열을 만든 다음 name='value' name='value' 형태의 문자열로 만듭니다.(직렬화 할때 주로 사용) 여기서 눈여겨볼 점은 브라우저에 따라 attribute 객체의 속성을 반환하는순서가 다릅니다.
+
+요소의 자식
+
+요소는 자식 요소나 자손 요소를 가질 수 있으며 숫자 제한이 없습니다. ChildNodes 프로퍼티에는 요소의 자식 요소가 모두 담기는데, 다른 요소나 텍스트노드, 주석, 처리 지침(processing instruction)이 모두 포함됩니다.
+
+for (let i = o, i < element.childNodes.length; i++) {
+  if (element.childNodes[i].nodeType === 1) {
+    // ㅊㅓㄹㅣ
+  }
+}
+childNodes 는 모든 요소를 포함하므로, nodeType을 확인하여 원하는 요소들을 확인하여 사용할 수 있습니다.
+
+
+
+Text 타입
+
+Text 노드는 Text 타입으로 표현됩니다. 이 노드에는 평범한 텍스트가 포함되고, 이스케이프된 HTML 문자는 포함할 수 있지만 HTML 코드는 포함 할 수 없습니다. Text 노드에는 다음과 같은 특징이 있습니다.
+
+- nodeType 은 3입니다.
+- nodeName 은 '#text' 입니다.
+- nodeValue 는 노드에 포함퇸 텍스트입니다.
+- parentNode 는 Element 입니다.
+- 자식 노드를 가질 수없습니다.
