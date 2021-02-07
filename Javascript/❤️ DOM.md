@@ -1,11 +1,9 @@
 DOM
-
 문서 객체 모델 (DOM) 은 HTML 과 XML 문서에 대한 애플리케이션 프로그래밍 인터페이스 (API) 입니다. DOM은 문서를 노드의 계층 구조 트리로 표현하며 개발자는 이를 통해 페이지 각 부분을 추가, 제거, 수정 합니다. 넷스케이프 & MiocroSoft 에서 초기에 사용하던 동적 HTML(DHTML)을 계승한 DOM은 이제 진정으로 플랫폼과 언어에 독립적인 페이지 표현 및 조작 방법입니다.
 
 DOM level 1 은 1998년 10월에 W3C 권고가 되었으며 기본적인 문서 구조와 쿼리 인터페이스를 제공합니다.
 
 노드의 계층 구조
-
 HTML과 XML 문서는 모두 DOM을 통해 노드의 계층 구조로 표현 가능합니다. 노드 타입에는 여러가지가 있으며 각 타입은 문서에서 서로 다른 정보나 마크업을 표현합니다. 각 노드 타입은 서로 다른 특징, 데이터, 메서드를 가지며 각 노드는 다른 노드와 관계가 있을 수 있습니다.  이러한 관계가 계층 구조를 생성하고 마크업은 이 관계를 통해 특정 노드에 뿌리root를 둔 트리 구조로 표현됩니다.
 
 <html>
@@ -21,7 +19,6 @@ HTML과 XML 문서는 모두 DOM을 통해 노드의 계층 구조로 표현 가
 각 마크업은 트리에서 노드로 표현됩니다. HTML 요소들은 요소 노드로, 속성은 속성노드로, 문서 타입은 문서 타입 노드로, 주석은 주석 노드로 표현됩니다. 총 12가지 노드 타입이 있으며 모든 노드는 기반base 타입을 상속합니다.
 
 노드 타입 - Node Type
-
 DOM level 1 에서는 Node
 
 라는 인터페이스가 있는데, DOM에 존재하는 노드 타입은 모두 이 인터페이스를 구현합니다. Node 인터페이스는 자바스크립트에서 Node 타입으로 구현되며 IE를 제외한 모든 브라우저에서 Node 타입에 접근할 수 있습니다. JS의 노드 타입은 모두 Node를 상속하므로 모든 노드 타입에서 같은 기본 프로퍼티와 메서드를 공유합니다. 
@@ -386,7 +383,6 @@ childNodes 는 모든 요소를 포함하므로, nodeType을 확인하여 원하
 
 
 Text 타입
-
 Text 노드는 Text 타입으로 표현됩니다. 이 노드에는 평범한 텍스트가 포함되고, 이스케이프된 HTML 문자는 포함할 수 있지만 HTML 코드는 포함 할 수 없습니다. Text 노드에는 다음과 같은 특징이 있습니다.
 
 - nodeType 은 3입니다.
@@ -394,3 +390,194 @@ Text 노드는 Text 타입으로 표현됩니다. 이 노드에는 평범한 텍
 - nodeValue 는 노드에 포함퇸 텍스트입니다.
 - parentNode 는 Element 입니다.
 - 자식 노드를 가질 수없습니다.
+
+Text 노드에 포함된 텍스트는 nodeValue 프로퍼티나 data 프로퍼티로 가져올 수 있습니다.  둘 중 하나를 바꾸면 노드에 반영됩니다. 다음은 노드의 텍스트를 조작하는 메서드입니다.
+
+- appendData(text) - 노드 마지막에 text를 추가합니다
+- deleteData(offset, count) - offset 부터 count 만큼 삭제합니다.
+- insertData(offset, text) - offset 위치에 text를 삽입합니다.
+- replaceData(offset, count, text) - offset부터 (offset + count) 까지의 텍스트를 text로 교체합니다.
+- splitText(offset) - offset 위치를 기준으로 텍스트 노드를 둘로 나눕니다.
+- substringData(offset, count) - offset 위치부터 (offset + count) 까지의 텍스트를 꺼냅니다.
+- length - 노드의 글자 개수를 반환합니다.
+
+<!-- 콘텐츠가 없으므로 텍스트 노드도 없음 -->
+<div></div>
+
+<!-- 공백 텍스트 노드가 하나 있음 -->
+<div> </div>
+
+<!-- 텍스트 노드가 있음 -->
+<div> Hello World! </div>
+기본적으로 콘텐츠를 가질 수 있는 요소는 모두 최대 하나의 텍스트 노드를 가질 수 있습니다. 다음 코드로 테스트 노드에 접근 가능합니다. 텍스트 노드의 값을 바꿀 때 문서 타입에 따라 HTML 또는 XML에 맞게 인코드 됩니다. 즉 >, <, " 등이 이스케이프 됩니다.
+
+const textNode = div.firstChild // div.childNode[0]도 가능
+
+div.firstchild.nodeValue = "Some other message" // 텍스트 노드 수정
+
+// "Some &lt;strong&gt;other&lt;/string&gt; message"
+div.firstChild.nodeValue = "Some <strong>other</strong> message"
+텍스트 노드 생성
+새 텍스트 노드를 생성할 때는 document.createTextNode() 메서드를 사용합니다. 이 메서드는 매개변수로 삽입할 텍스트를 받습니다. 이미 존재하는 텍스트 노드의 값을 바꿀 때와 마찬가지로 이 메서드 역시 주어진 문자열을 HTML이나 XML에 맞게 인코드 합니다. 
+
+const textNode = document.createTextNode('<strong>Hello</strong> world!')
+새 텍스트 노드를 생성하면 ownerDocument 프로퍼티가 설정되지만 문서 트리에 삽입하기 전에는 브라우저 창에 표시되지 않습니다.
+
+ Comment 타입
+주석은 DOM 에서 Comment 타입으로 표현됩니다. Comment 노드에는 다음 특징이 있습니다.
+
+- nodeType은 8 입니다
+- nodeName은 '#comment'
+- nodeValue는 주석 콘텐츠 입니다.
+- parentNode는 Document 또는 Element 입니다.
+- 자식 노드는 가질 수 없습니다.
+
+Comment 타입은 Text 타입과 같은 원형을 상속하므로 Text 타입에 있는 문자열 메서드를 (splitText() 제외) 대부분 갖고있습니다.  Text 타입과 마찬가지로 nodeValue나 data 프로퍼티로 주석의 콘텐츠를 가져 올 수 있습니다.
+
+// <div id="myDiv"><!-- 주석 --></div>
+
+const comment = div.firstChild.data
+console.log(comment)  // 주석
+CDATASection 타입
+CDATA 섹션은 XML 기반 문서 전용이며 CDATASection 타입으로 표현됩니다. Comment와 마찬가지로 CDATASection 타입 역시 Text 타입과 같은 원형을 상속하므로 splitText()를 제외한 문자열 메서드를 모두 가집니다. CDATASection 노드에는 다음 특징이 있습니다.
+
+- nodeType은 4 입니다
+- nodeName은 '#cdata-section' 입니다
+- nodeValue는 CDATA 섹션의 콘텐츠입니다.
+- parentNode는 Document 또는 Element 입니다
+- 자식 노드는 가질 수 없습니다.
+
+CDATA 섹션은 XML 문서에만 유효하므로 대부분 브라우저에서 CDATA 섹션을 부정확한 Comment나 Element 로 잘못 파싱합니다.
+
+<div id="div"> <![CDATA[ This is some content ]]> </div>
+CDATASection 노드는 <div>의 첫 번째 자식이어야 하지만 주요 브라우저 중에서 이렇게 파싱하는 브라우저는 하나도 없습니다. 유효한 XHTML 페이지에서조차 포함된 CDATA 섹션을 제대로 지원하지 않습니다. 
+
+DocumentType 타입
+DocumentType 타입은 자주 사용하지 않습니다. (FireFox, Safari, Opera)
+
+- nodeType은 10입니다.
+- nodeValue는 독타입 이름입니다.
+- nodeValue는 null 입니다
+- parentNode는 Document 입니다.
+- 자식 노드는 가질 수 없습니다.
+
+DOM 레벨 1 에선 DocumentType 객체를 동적으로 생성할 수 없으며 문서 코드를 파싱하는 동안에만 생성됩니다. 지원하는 브라우저는 DocumentType 객체를 document.doctype에 저장합니다. 프로퍼티는 name (독타입 이름), entities )(독타입이 정의하는 엔티티의 NamedNodeMap), notations (독타입이 정의하는 표기법의 NamedNodeMap)을 지원합니다. 브라우에서 불러오는 문서는 일반적으로 HTML이나 XHTML 이므로 entities와 notations는 보통 빈 목록입니다. name 프로퍼티에 저장되는 독타입 이름은 <!DOCTYPE  바로 뒤에 있는 텍스트입니다.
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+이 독타입의 name 프로퍼티 결과는 "HTML" 입니다.
+
+DocumentFragment
+
+
+
+
+
+
+
+
+<ul id="myList"></ul>
+이 ul 요소에 li 요소를 세 개 추가하려합니다. 각 요소를 직접적으로 추가하면 브라우저가 그 때마다 페이지에 새 정보를 반영하고 다시 렌더링 해야합니다. 다음 코드처럼 문서 버퍼를 생성하고 <li> 요소를 동시에 추가하는 편이 좋습니다.
+
+const fragment = document.createDocumentFragment()
+const ul = document.getElementById('myList')
+const li = null
+
+for (let i = 0; i < 3; i++) {
+  li = document.createElement('li')
+  li.appendChild(document.createTextNode(`Item ${i + 1}`)
+  fragment.appendChild(li)
+}
+
+ul.appendChild(fragment)
+Attr 타입
+요소의 속성은 DOM 에서 Attr 타입으로 표현됩니다. 기술적으로 속성은 요소의 attribute 프로퍼티 안에 존재하는 노드입니다. Attribute 노드에는 다음 특징이 있습니다.
+
+- nodeType은 11 입니다.
+- nodeName은 속성 이름 입니다.
+- nodeValue는 속성 값입니다.
+- parentNode는 null 입니다.
+- HTML 에서는 자식 노드를 가질 수 없습니다.
+- XML 에서는 자식 노드로 Text, EntityReference를 가질 수 있습니다.
+
+속성 역시 노드지만 DOM 문서 트리의 일부분으로 간주되지는 않습니다. Attribute 노드를 직접 참조하는 경우는 드물며 개발자들은 보통 getAttribute(), setAttribute(), removeAttribute()를 더 선호합니다. 
+
+
+
+DOM 다루기
+DOM 조작은 대개 매우 단순하며 자바스크립트를 쓸 때도 일반적인 HTML 코드와 마찬가지로 하면 됩니다. 하지만 이따금은 DOM 조작이 눈에 보이는 것 만큼 단순하진 않을 때도 있습니다. 브라우저는 버그와 비일고나성이 많아서 DOM 코딩을 다른 코딩보다 어렵게 만듭니다.
+
+동적 스크립트
+<script> 요소는 자바스크립트 코드를 페이지에 삽입하는데 src 속성으로 외부 파일을 불러오거나 요소 안에 직접 스크립트 텍스트를 쓸 수 있습니다. 동적 스크립트란 페이지를 불러오는 시점에서는 존재하지 않았지만 DOM을 통해 이후 추가한 <script> 입니다. 동적 스크립트에는 1. 외부 파일을 불러오거나 2. 텍스트를 직접 삽입하는 두 가지 방법이 있습니다.
+
+const script = document.crateElement('script')
+script.type = 'text/javascript'
+script.src = 'client.js'
+document.body.appendChild(script)
+이 코드에서 주의할점은, 마지막 줄에서 <script>요소를 문서 트리에 삽입한 뒤에만 스크립트를 내려받기 시작한다는 점입니다. 한 가지 문제점은, 동적으로 스크립트를 불러올 때 완료 시점을 정확히 알 수 없다는 것 입니다. 이를 정확히 처리할 수 있는 표준 방법이 존재하지 않습니다. 
+
+자바스크립트 코드를 삽입하는 다른 방법은 인라인 스크립트 입니다.
+
+<script type="text/javascript">
+  function sayHi () {
+    console.log('Hi')
+  }
+</script>
+
+
+const script = document.createElement('script')
+script.type = 'text/javascript'
+script.text = 'function sayHi() { console.log("Hi") }'
+try {
+  script.appendChild(document.createTextNode('code') // 그 외 브라우저
+} catch (err) {
+  script.text = 'code' // safari 초기버전 지원
+}
+
+document.body.appendChild(script)
+이런식으로 불러온 코드는 전역 스코프에서 실행되며 스크립트가 실행된 직후 사용 가능합니다. 사실 이는 전역 스코프에서 같은 문자열을 eval()에 넘긴것과 마찬가지입니다.
+
+
+
+
+
+동적 스타일
+CSS 스타일을 HTML 페이지에 삽입하는 요소는 두 가지 입니다. <link> 요소는 외부 CSS파일을 불러올 때 사용하고 <style> 요소는 인라인 스타일에 사용합니다. 동적 스크립트와 마찬가지로 동적 스타일 역시 페이지를 처음 불러왔을 때는 존재하지 않다가 나중에 추가한 스타일입니다.
+
+// <link rel = 'stylesheet' type="text/css" href="styles.css">
+
+const link = document.createElement('link')
+link.rel = 'stylesheet'
+link.type = 'text/css'
+link.href = 'styles.css'
+const head = document.getElementByTagName('head')[0]
+head.appendChild(link)
+외부 파일에서 스타일을 불러오는 과정은 비동기적으로 이루어 지므로 자바스크립트 코드 실행 순서와는 무관하게 로드합니다. 일반적으로 스타일이 완전히 로드된 시점을 알 필요는 없지만 이벤트 등 몇가지 테크닉으로 알 수 있습니다.
+
+const css = 'body { background: red }'
+const style = document.createElement('style')
+style.tyle = 'text/css'
+try {
+  style.appendChild(document.createTextNode(css)
+} catch (ex) {
+  style.styleSheet.cssText = css
+}
+
+const head = document.getElementByTagName('head')[0]
+head.appendChild(style)
+이런 방식으로 명시한 스타일을 페이지에 즉시 추가되며 즉시 반영됩니다. 
+
+노드 리스트 사용
+
+NodeList 객체와 이와 관련된 NamedNodeMap, HTMLCollecton을 이해하면 DOM을 전체적으로 이해하는데 큰 도음이 됩니다. 각 컬렉션은 모두 '살아있는' 것으로 간주되는데, 이 말은 문서 구조가 바뀔 때마다 컬렉션도 업데이트 되므로 항상 정확한 정보를 반환한다는 것 입니다. 달리 말하면 NodeList 객체는 해당 객체에 접근할 때마다 수행되는 쿼리 입니다.
+
+NodeList를 순회해야 할 때는 항상 새 변수에 컬렉션 길이를 저장하여 사용하거나 배열로 변경하여 사용해야합니다.
+
+const divs = document.getElementByTagName('div')
+
+for (let i = 0; i < div.length; i++) {
+  div = document.createElement('div')
+  document.body.appendChild(div)
+}
+일반적으로 말해 NodeList 자체에 접근하는 일은 컬렉션에 접근할 때마다 다시 쿼리하므로 NodeList에서 자주 사용하는 겂은 변수에 저장하여 사용하세요.
+
