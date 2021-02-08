@@ -3,7 +3,7 @@
 출처 : https://www.typescriptlang.org/docs/handbook/intro.html
 
 ## Boolean
-``` js
+``` ts
   let boolType: boolean = false
 ```
 Number
