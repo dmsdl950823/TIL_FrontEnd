@@ -1,8 +1,11 @@
-# Typescript Handbook 요약
+# Typescript Handbook 번역
 
-Typescript 기본 타입 사용법 및 정리
-Boolean
-let boolType: boolean = false
+출처 : https://www.typescriptlang.org/docs/handbook/intro.html
+
+## Boolean
+``` js
+  let boolType: boolean = false
+```
 Number
 let decimal: number = 6
 let hex: number = 0xf00d
