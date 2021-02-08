@@ -1,107 +1,131 @@
 # Typescript Handbook 번역
-
-출처 : https://www.typescriptlang.org/docs/handbook/intro.html
-
   
   -----------------------------------------------------------
   
 # Typescript Interface
 
 ## Interface
-Typescript의 핵심 원리는 그 값이 가지고있는 형태를 중심으로 타입 체크를 한다는 것입니다. 이것은 "duck typing" 이나 "structural subtyping" 이라고 불리웁니다. interface는 이 타입들의 역할을 채우며, 여러분의 코드를 정의하는 강력한 방법입니다.
 
-function printing (obj: { label: string }) {
-  console.log(obj.label)
-}
+TS의 핵심 원리는 그 값이 가지고있는 형태를 이용하여 <b>타입 체크</b>를 한다는 것입니다. 이것은 "duck typing" 이나 "structural subtyping" 이라고 불리웁니다. interface는 이 타입들의 역할을 정의합니다.
 
-let myObj1 = { size: 10, label: "Size 10 Object" }
-let myObj2 = { size: 10 }
-printing(myObj1)
-printing(myObj2) // Property 'label' is missing in type, required in type { label: string }
-예제에서 printing 의 매개변수 obj에는 string 타입의 label 프로퍼티가 들어있는 object가 필요합니다. 해당 프로퍼티가 없을 경우 에러를 반환합니다. 해당 예제는 interface를 사용하여 하단 예제처럼 사용할 수 있습니다.
+``` js
+  function printing (obj: { label: string }) {
+    console.log(obj.label)
+  }
 
-interface LabeledValue { label: string }
+  let myObj1 = { size: 10, label: "Size 10 Object" }
+  let myObj2 = { size: 10 }
+  printing(myObj1)
+  printing(myObj2) // Property 'label' is missing in type, required in type { label: string }
+```
 
-function printLabel (labeledObj: LabeledValue) {
-  console.log(labeledObj.label)
-}
+예제에서 `printing` 의 매개변수 `obj`에는 string 타입의 label 프로퍼티가 들어있는 object가 필요합니다. 해당 프로퍼티가 없을 경우 <b>에러를 반환</b>합니다. 해당 예제는 interface를 사용하여 하단 예제처럼 사용할 수 있습니다.
 
-let myObj1 = { size: 10, label: "Size 10 Object" }
-printLabel(myObj1)
-interface LabeledValue는 여전히 string 타입의 label 프로퍼티를 호출한다는 메세지를 담고있습니다. 
+``` js
+  interface LabeledValue { label: string }
 
-Optional Properties
-interface의 모든 프로퍼티가 필수인 것은 아닙니다. 몇몇은특정한 조건이나 정말 없을 수도 있습니다. 이러한 optional properties들은 여러분이 여러개의 property들을 가진 object를 function에 전달해줄 때 유용합니다.
+  function printLabel (labeledObj: LabeledValue) {
+    console.log(labeledObj.label)
+  }
 
-interface SquareConfig {
-  color?: string
-  width?: number
-}
+  let myObj1 = { size: 10, label: "Size 10 Object" }
+  printLabel(myObj1)
+  interface LabeledValue는 여전히 string 타입의 label 프로퍼티를 호출한다는 메세지를 담고있습니다. 
+```
 
-function createSquare (config: SquareConfig): { color: string; area: number } {
-  let newSquare = { color: 'white', area: 100 }
-  if (config.color) newSquare.color = config.color
-  if (config.width) config.width * config.width
-  return newSquare
-}
+## Optional Properties
 
-let mySquare = createSquare({ color: 'black'})
-console.log(mySquare) // { color: 'black', area: 100 }
-optional properties를 가진 interface들은 ? 를 선언할 프로퍼티 이름 뒤에 붙여 사용합니다.
+interface의 모든 프로퍼티가 필수인 것은 아닙니다. 몇몇은 특정한 조건에 의해 필요하거나, 정말 없을 수도 있습니다. 이러한 optional properties들은 여러개의 property들을 가진 object를 function에 전달해줄 때 유용합니다.
 
-Readonly Properties
-어떤 프로퍼티들은 object가 처음 생성될 때를 제외하고는 편집이 불가능하도록 설정해야할 수도 있습니다. 이럴땐 readonly를 프로퍼티이름 앞에 붙여서 구체화시킵니다.
+``` js
+  interface SquareConfig {
+    color?: string
+    width?: number
+  }
 
-interface Point {
-  readonly x: number;
-  readonly y: number;
-}
+  function createSquare (config: SquareConfig): { color: string; area: number } {
+    let newSquare = { color: 'white', area: 100 }
+    if (config.color) newSquare.color = config.color
+    if (config.width) config.width * config.width
+    return newSquare
+  }
 
-let p1: Point = { x: 10, y: 20 };
-p1.x = 5 // Error! Cannot assign to 'x' because it is a read-only property
- ReadonlyArray<T>를 이용한 Typescript 타입은 Array<T> 와 비슷하며, 변경 가능한 메서드를 지운 상태로, 생성된 array를 변경하지 못하도록 만듭니다.
+  let mySquare = createSquare({ color: 'black'})
+  console.log(mySquare) // { color: 'black', area: 100 }
+  optional properties를 가진 interface들은 ? 를 선언할 프로퍼티 이름 뒤에 붙여 사용합니다.
+```
 
-let a: number[] = [1, 2, 3, 4]
-let ro: ReadonlyArray<number> = a
+## Readonly Properties
 
-ro[0] = 12   // Error! it only permits reading
-ro.push(3)   // Error! push does not exist on type 'readonly number'
-ro.length = 100   // Error! Cannot assign to 'length', it is read-only
-a = ro   // Error! 'readonly number[]' is 'readonly' and cannot be assigned to the mutable type 'number[]'
-a = ro as number[]
-마지막 라인처럼 ReadonlyArray를 일반 array에 할당하는것은 불가능하지만, 할당시에 type assertion을 이용하여 오버라이딩 할 수 있습니다.
+어떤 프로퍼티들은 object가 처음 생성될 때를 제외하고는 <b>편집이 불가능하도록 설정</b>해야할 수도 있습니다. 이럴땐 readonly를 프로퍼티 이름 앞에 붙여서 구체화시킵니다.
 
-Excess Property Checks
-interface SquareConfig {
-  color?: string,
-  width?: number
-}
+``` js
+  interface Point {
+    readonly x: number;
+    readonly y: number;
+  }
 
-function createSquare(config: SquareConfig): { color: string; area: number } {
-  return {
-    color: config.color || 'red',
-    area: config.width ? config.width * config.width : 20,
-  };
-}
+  let p1: Point = { x: 10, y: 20 };
+  p1.x = 5 // Error! Cannot assign to 'x' because it is a read-only property
+```
+하단 예제처럼 `ReadonlyArray<T>`를 이용한 Typescript 타입은 `Array<T>` 와 비슷하며, 변경 가능한 메서드를 삭제한 상태로 - <b>생성된 array를 변경하지 못하도록 만듭니다.</b>
 
-let mySquare = createSquare({ colour: 'red', width: 100 })
-// Error! Argument of type '{ colour: string; ... } is not asssignable to parameter of type SquareConfig
+``` js
+  let a: number[] = [1, 2, 3, 4]
+  let ro: ReadonlyArray<number> = a
+
+  ro[0] = 12   // Error! it only permits reading
+  ro.push(3)   // Error! push does not exist on type 'readonly number'
+  ro.length = 100   // Error! Cannot assign to 'length', it is read-only
+  a = ro   // Error! 'readonly number[]' is 'readonly' and cannot be assigned to the mutable type 'number[]'
+  a = ro as number[]
+```
+
+마지막 라인처럼 `ReadonlyArray`를 일반 array에 할당하는것은 불가능하지만, 할당시에 [type assertion](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md) 을 이용하여 오버라이딩 할 수 있습니다.
+
+## Excess Property Checks
+``` js
+  interface SquareConfig {
+    color?: string,
+    width?: number
+  }
+
+  function createSquare(config: SquareConfig): { color: string; area: number } {
+    return {
+      color: config.color || 'red',
+      area: config.width ? config.width * config.width : 20,
+    };
+  }
+
+  let mySquare = createSquare({ colour: 'red', width: 100 })
+  // Error! Argument of type '{ colour: string; ... } is not asssignable to parameter of type 
+SquareConfig
 // Did you mean to write 'color'?
-예제와 같이 SquareConfig 인터페이스의 key값에 colour 라는 키값이 들어온다면, Typescript는 이 코드를 버그라고 생각합니다. 리터럴 형식 {} 의 Object는 다른 변수가 할당될때 체크를 과하게 하는 특별한 검사를 받습니다. 만약 리터럴 Object가 "target type"을 가지고있지 않은 프로퍼티를 가지고 있다면 에러를 가지게 됩니다.
+```
 
-let square = createSquare({ width: 100, opacity: 0.5 } as SquareConfig)
+예제와 같이 `SquareConfig` 인터페이스의 key값에 `colour` 라는 키값이 들어온다면, Typescript는 이 코드를 버그라고 생각합니다. 리터럴 형식 {} 의 Object는 다른 변수가 할당될때 체크를 과하게 하는 특별한 검사를 받습니다. 만약 리터럴 Object가 "target type"을 가지고있지 않은 프로퍼티를 가지고 있다면 에러를 가지게 됩니다.
+
+``` js
+  let square = createSquare({ width: 100, opacity: 0.5 } as SquareConfig)
+```
 이 검사를 우회하는 방법은, 간단하게 type assertion을 사용하면 됩니다.
 
 그러나, 만약 object가 추가적인 프로퍼티를 확실하게 가지고 있다면, 더 좋은 방법은 string index 싸인을 더하는 것 입니다.
 
-interface SquareConfig {
-  color?: string;
-  width?: number;
-  [propName: string]: any;
-}
-여기서 SquareConfig는 여러개의 프로퍼티를 가질 수 있습니다. 그리고 명시된 프로퍼티가 (예제에선 color나 width) 아닌 한 그들의 타입은 상관없습니다.
+```
+  interface SquareConfig {
+    color?: string
+    width?: number
+    [propName: string]: any
+  }
+```
 
-Function Types
+여기서 `SquareConfig`는 여러개의 프로퍼티를 가질 수 있습니다. 그리고 명시된 프로퍼티가 (예제에선 color나 width) 아닌 한 그들의 타입은 상관없습니다.
+
+
+----------------------
+
+## Function Types
 Interface는 다양한 범위의 Javascript Object가 가질 수 있는 모양을 표현할 수 있습니다. interface는 function type도 정의할 수 있습니다.
 
 interface 로 function type을 정의하기 위해서는, interface에게 호출 신호 (call signiture)를 주어야 합니다. 이것은 파라미터 리스트와 주어진 리턴 타입을 이용하여  function 정의와 비슷합니다.(?)  파라미터 리스트의 각 파라미터는 name과 type을 갖습니다.
