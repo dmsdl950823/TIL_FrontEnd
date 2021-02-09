@@ -100,125 +100,118 @@ IE 8 및 이전 버전에서는 에러가 발생 - NodeList객체가 COM 객체�
 ## 노드 조작
 노드를 조작하는 메서드도 존재합니다.
 
-- appendChild()와 insertBefore()는 모두 노드를 삽입하기만 합니다.
-- 반면 replaceChild()는 메서드는 기존 노드를 교체합니다.
-- 노드를 제거할 때는  removeChild() 메서드를 사용합니다.
-- cloneNode() 메서드는 자신을 호출한 노드의 복제본을 생성합니다.
-- normalize()는 문서 서브트리에 존재하는 텍스트 노드를 다룹니다.
+- `appendChild()`와 `insertBefore()`는 모두 노드를 삽입하기만 합니다.
+- 반면 `replaceChild()`는 메서드는 기존 노드를 교체합니다.
+- 노드를 제거할 때는  `removeChild()` 메서드를 사용합니다.
+- `cloneNode()` 메서드는 자신을 호출한 노드의 복제본을 생성합니다.
+- `normalize()`는 문서 서브트리에 존재하는 텍스트 노드를 다룹니다.
 
-| 파서의 구현 방식이나 DOM 조작 결과로 텍스트 없는 텍스트 노드가 생기거나 택스트 노드끼리 형제 노드가 될 가능성이 있습니다. normalize()를 호출하면 노드의 자손에서 이 두가지 상황이 생기지 않았는지 검색합니다. 빈 텍스트 노드를 찾으면 제거하고 텍스트 노드끼리 형제인 경우를 발견하면 두 노드를 하나로 합칩니다.
+> 파서의 구현 방식이나 DOM 조작 결과로 텍스트 없는 텍스트 노드가 생기거나 택스트 노드끼리 형제 노드가 될 가능성이 있습니다. `normalize()`를 호출하면 노드의 자손에서 이 두가지 상황이 생기지 않았는지 검색합니다. 빈 텍스트 노드를 찾으면 제거하고 텍스트 노드끼리 형제인 경우를 발견하면 두 노드를 하나로 합칩니다.
 
 
 
 ------------------?
-------------------?
-------------------?
-------------------?
-------------------?
-------------------?
-------------------?
-------------------?
 
+# Document 타입
 
-Document 타입
+JS는 문서 노드를 Document 타입으로 표현합니다. 브라우저에서 전체 HTML 페이지를 표현하는 문서 객체를 HTMLDocumenet 의 인스턴스이며 HTML Document는 Document를 상속합니다.
 
-자바스크립트는 문서 노드를 Document 타입으로 표현합니다. 브라우저에서 전체 HTML 페이지를 표현하는 문서 객체를 HTMLDocumenet 의 인스턴스이며 HTML Document는 Document를 상속합니다. document 객체는 window의 프로퍼티이므로 전역에서 접근할 수 있습니다. Document 노드에는 다음 특징이 있습니다.
+document객체는 window의 프로퍼티이므로 전역에서 접근할 수 있습니다. Document 노드에는 다음 특징이 있습니다.
 
-nodeType은 9입니다.
-nodeValue는 '#document' 입니다.
-parentNode는 null 입니다.
-ownerDocument는 null 입니다.
+* nodeType 은 9입니다.
+* nodeValue 는 '#document' 입니다.
+* parentNode는 null 입니다.
+* ownerDoucment 는 null 입니다.
+
 자식노드로 DocumentType(최대 1개) Element(최대 1개), Processing Instruction, Comment를 가질 수 있습니다.
-Document 타입은 HTML 페이지 또는 XML 기반 문서를 표현하며 가장 자주 쓰이는 용도는 document 객체를 통한 HTMLDocument의 인스턴스입니다. document 객체를 통해 페이지에 대한 정보를 얻고 구조 및 외관을 조작합니다. Firefox, safari, chrome, opera에서는 스크립트에서 Document 타입 생성자 및 프로토타입에 접근 할 수 있습니다. IE는 버전 9에서도 Document를 노출하지 않습니다. HTMLDocument 타입 생성자 및 프로토타입은 IE 8 이후 및 기타 브라우저에서 접근할 수 있습니다.
 
-Document의 자식 노드
+HTMLDocument의 인스턴스인 Document 타입은 HTML 페이지 또는 XML 기반 문서를 표현하며 document 객체를 통해 페이지에 대한 정보 습득 및 조작이 가능합니다.
 
-DOM 명세에서는 Document 노드가 자식으로 DocumentType, Element, ProcessingInstruction, Comment를 가질 수 있다고 명시하는데 그중 두 가지 자식 노드에는 단축 표기도 있습니다. 첫 번째는 documentElement 프로퍼티이ㄴ데 이는 항상 HTML 페이지의 <html> 요소를 가리킵니다. ChildNodes 목록에는 항상 document 요소가 있지만 documentElement 프로퍼티는 해당 요소에 더 빨리, 직접적으로 접근합니다.
+## Document의 자식 노드
 
-<html>
-  <body></body>
-<html>
-브라우저가 이 페이지를 파싱하면 문서의 자식 노드는 <html> 요소 하나 뿐입니다. 이 요소는 다음과 같이 documentElement, childNodes 목록에 두 가지 방법으로 접근할 수 있습니다. 
+DOM 명세에서는 Document 노드가 가질 수 있는 자식노드의 단축 표기도 있습니다.
 
-const html = document.documentElement  // html ㅇㅔ ㄷㅐㅎㅏㄴ ㅊㅏㅁㅈㅗ
-console.log(html === document.childNodes[0])  // true
-console.log(html === document.firstChild)     // true
-이 예제는 값 documentElement와 firstChild, childNodes[0] 가 모두 같은 <html> 요소를 가리킴을 나타냅니다.
+documentElement 프로퍼티는 항상 HTML 페이지의 <html> 요소를 가리킵니다. 이 프로퍼티는 해당 요소(<html>)에 더 빨리, 직접적으로 접근합니다.
+  
+``` html
+  <html>
+    <body></body>
+  <html>
+```
 
-document 객채는 HTMLDocument의 인스턴스이므로 <body> 요소를 직접적으로 가리키는 body 프로퍼티를 갖습니다. <body> 요ㅗ는 개발자들이 가장 자주 사용하는 요소이므로 document.body는 매우 자주 사용됩니다.
+브라우저가 이 페이지를 파싱하면 문서의 자식 노드는 <html> 요소 하나 뿐입니다. 이 요소는 다음과 같이 `documentElement` , `childNodes` 목록 두 가지 방법으로 접근할 수 있습니다. 
+  
+``` js
+  const html = document.documentElement         // html 에 대한 참조
+  console.log(html === document.childNodes[0])  // true
+  console.log(html === document.firstChild)     // true
+```
 
-const body = document.body // <body>ㅇㅔ ㄷㅐㅎㅏㄴ ㅊㅏㅁㅈㅗ
-주요 브라우저는 모두 document.documentElement 와 document.body를 둘 다 지원합니다.
+이 예제는 값이 모두 <html> 요소를 가리킵니다.
 
-Document가 가질 수 있는 또다른 자식 노드는 DocumentType 입니다. <!DOCTYPE> 태그는 문서의 다른부분과는 별도의 엔티티로 간주하며 포함된 정보는 다음과 같이 doctype 프로퍼티(브라우저에서는 document.doctype)를 통해 접근할 수 있습니다.
+document 객체는 HTMLDocument의 인스턴스이므로 <body> 요소를 직접적으로 가리키는 body 프로퍼티를 갖습니다. `document.body` 는 매우 자주 사용됩니다.
 
-const doctype = document.doctype // <!DOCTYPE> ㅇㅔ ㄷㅐㅎㅏㄴ ㅈㅓㅇㅂㅗㄹㅡㄹ ㅇㅓㄷㅇㅡㅁ
-document.doctype에 대한 브라우저의 지원은 상당히 다릅니다.
+``` js
+  const body = document.body // <body>에 대한 참조
+```
 
-IE 8 및 이전 - 문서 타입이 존재할 경우 주석으로 오인되어 Comment 노드로 취급됩니다. document.doctype은 항상 null 입니다.
-IE 9 + , firefox - 문서타입이 존재한다면 문서의 첫 번째 자식 노드입니다. document.doctype은 DocumentType 노드이며 같은 노드에 document.firstChild나 document.childNodes[0]로 접근할 수 있습니다.
-Safari, Chrome, Opera - 문서타입이 존재한다면 파싱하긴 하지만 문서의 자식 노드로 취급하진 않습니다. document.doctype은 DocumentType 노드이긴 하지만 이 노드가 document.childNodes에 속하진 않습니다.
-브라우저마다 document.doctype 을 달리 지원하므로 유용하게 쓰기는 어렵습니다. 
+주요 브라우저는 모두 `document.documentElement` 와 `document.body` 둘 다 지원합니다.
 
-<!-- first comment -->
-<html>
-  <body></body>
-</html>
-<!-- second comment -->
+Document가 가질 수 있는 또다른 자식 노드는 DocumentType 입니다. <!DOCTYPE> 태그는 문서의 다른부분과는 별도의 엔티티로 간주하며 포함된 정보는 `document.doctype` 프로퍼티를 통해 접근할 수 있습니다.
+
+``` js
+  const doctype = document.doctype // <!DOCTYPE> 에 대한 정보를 얻음
+```
+
+브라우저마다 `document.doctype` 을 달리 지원하므로 유용하게 쓰기는 어렵습니다. 
+
+``` html
+  <!-- first comment -->
+  <html>
+    <body></body>
+  </html>
+  <!-- second comment -->
+```
 <html> 요소 밖에 있는 주석은 기술적으로는 문서의 자식노드입니다. 이것 또한 브라우저 지원은 각자 달라서 이런 주석을 인식하고 적절히 표현할지는 브라우저에 따라 다릅니다.
 
-IE 8 및 이전, safari 3.1 +, Opera, Chrome 은 첫 번째 주석에 대해서는 주석 노드를 생성하지만 두 번째 주석에 대해서는 주석 노드를 생성하지 않습니다. 첫 번째 주석은 document.childNodes의 첫 번째 노드가 됩니다.
-IE 9 + - 첫 번째 주석에 대해 document.childNodes 안에 주석노드를 생성합니다. 두 번째 주석에 대해서는 document.body.childNodes 안에 주석 노드를 생성합니다.
-Firefox, Safari 3.1 미만 - 두 주석을 모두 무시
-브라우저마다 <html> 요소 밖의 주석을 다르게 처리하므로 스크립트에서 이 주석에 접근하려는 시도는 쓸모 없습니다. 
+문서타입은 읽기 전용이고 요소 자식 노드는 하나만 가질 수 있고,  document에 이미 <html>요소가 존재하므로 `appendChild()` 나 `replaceChild()` ,  `removeChild()` 메서드를 document에서 호출하는 일은 거의 없습니다.
 
-AppendChild() 나 removeChild(), replaceChild() 메서드를 document 에서 호출하는 일은 거의 없는데 문서타입(존재한다면)은 읽기 전용이고 요소 자식 노드는 하나만 가질 수 있는데 <html> 요소가 이미 존재하기 때문입니다.
+## 문서 정보
+ document객체는 HTMLDocument의 인스턴스이므로 표준 Document 객체에는 존재하지 않는 프로퍼티를 여럿 가집니다. 이들 프로퍼티는 현재 불러들인 웹 페이지에 대한 정보입니다. 
 
-문서 정보
+``` js
+  // 문서 <title>
+  const originalTitle = document.title
+  document.title = "New page title"
 
-document 객체는 HTMLDocument의 인스턴스이므로 표준 Document 객체에는 존재하지 않는 프로퍼티를 여럿 가집니다. 이들 프로퍼티는 현재 불러들인 웹 페이지에 대한 정보입니다. 첫 번째 프로퍼티는 title 인데 여기엔 브라우저 창 또는 탭의 제목인 <title> 요소 텍스트가 들어있습니다. 이 프로퍼티로 현재 페이지의 제목을 읽을수도 있고 설정도 가능합니다. Title 프로퍼티의 값을 바꿔도 <title> 요소는 변함이 없습니다.
+  // 이 정보는 모두 요청의 HTTP 헤더에 들어있습니다.
+  // https://www.abc.com/page1
+  const url = document.URL
+  const domain = document.domain // www.abc.com
+  const referrer = document.referrer
+```
 
-// ㅁㅜㄴㅅㅓ ㅈㅔㅁㅗㄱㅇㅡㄹ ㄱㅏㅈㅕㅇㅗㅁ
-const originalTitle = document.title
+* `title` :: 브라우저 창 또는 탭의 제목인 <title> 요소 텍스트. 현재 페이지의 제목 읽기 및 설정 가능. 값을 바꿔도 <title> 요소는 변함이 없음
+* `URL` :: 페이지의 완전한 URL(주소 표시줄에 있는 URL) 포함
+* `domain` :: 페이지의 도메인 이름
+* `referrer` :: 이 페이지를 링크한 페이지의 URL. 해당 페이지가 없을경우 referrer 프로퍼티에는 빈 문자열이 저장
 
-// ㅁㅜㄴㅅㅓ ㅈㅔㅁㅗㄱㅇㅡㄹ ㅅㅓㄹㅈㅓㅇ
-document.title = "New page title"
-다음 세 프로퍼티는 모두 웹 페이지 요청과 관련이 있습니다. URL, domain, referrer가 이에 해당합니다. URL 프로퍼티에는 페이지의 완전한 URL(주소 표시줄에 있는 URL)이 들어있고 domain 프로퍼티에는 페이지의 도메인 이름, referrer 프로퍼티에는 이 페이지를 링크한 페이지의 URL이 들어있습니다. 해당 페이지가 없을경우 referrer 프로퍼티에는 빈 문자열이 저장됩니다. 이 정보는 모두 요청의 HTTP 헤더에 들어있으며 이들 프로퍼티를 통해 자바스크립트에서 사용하는 것 뿐입니다. 
 
-// ㅇㅗㅏㄴㅈㅓㄴㅎㅏㄴ URL
-const url = document.URL
-
-// ㄷㅗㅁㅔㅇㅣㄴ ㅇㅣㄹㅡㅁ
-const domain = document.domain
-
-// ㄹㅔㅍㅓㄹㅓ
-const referrer = document.referrer
-URL 과 domain 프로퍼티는 서로 관련이 있습니다. 예를들어 document.URL 이 http://www.abc.com/WileyCDA/ 라면 document.domain 은 www.abc.com  입니다.
-
-세 가지 프로퍼티 중 스크립트에서 설정할 수 있는 프로퍼티는 domain 뿐입니다. 보안 문제 때문에 domain 값에는 몇 가지 제한이 있습니다. P2p.wrox.com 처럼 URL에 서브도메인이 있다면 domain은 "wrox.com" 으로만 지정할 수 있습니다. 가장 널리 쓰이는 서브도메인 "www" 도 마찬가지입니다. domain 프로퍼티를 현재 URL에 나타나지 않은 도메인으로 바꿀 수는 없습니다.
-
-// p2p.wrox.com ㅇㅔㅅㅓ
-document.domain = 'wrox.com'  // success
-document.domain = 'nczonline.net' // error
-document.domain을 설정할 수 있는 점은 페이지에 다른 서브도메인에서 가져온 frame 이나 iframe 이 있을 때 유용합니다. 서브도메인이 다른 페이지끼리는 크로스도메인 보안 제한 때문에 자바스크립트로 통신할 수 없습니다. 각 페이지의 document.domain 을 같은 값으로 설정하면 다른 페이지의 자바스크립트 객체에 접근 가능합니다. 예를들어 메인 페이지가 www.wrox.com에 에존재하고 p2p.wrox.com 에서 불러온 iframe 페이지가 있다고 가정합시다. 각 페이지의 document.domain 문자열이 서로 다르므로 메인 페이지와 iframe 페이지는 상대방의 자바스크립트 객체에 접근할 수 없습니다. 각 페이지의 document.domain을 "wrox.com" 으로 바꾸면 페이지끼리 통신할 수 있습니다.
-
-domain 프로퍼티를 일단 느슨하게 바꾸면 다시 돌아갈 수 있습니다. 즉 document.domain을 'wrox.com'으로 일단 바꾸면 p2p.wrox.com으로 다시바꾸려 할 때 다음과 같이 에러가 발생합니다.
-
-// p2p.wrox.com
-
-document.domain = 'wrox.com'      // success
-document.domain = 'p2p.wrox.com'  // error
-모든 브라우저가 이렇게 제한하지만 IE 는 버전 8 부터 제한하기 시작했습니다.
-
-Element 타입
+## Element 타입
 
 웹 프로그래밍 에서 Document 타입 다음으로 자주 쓰는 타입은 Element 타입입니다. Element 타입은 XML/HTML 요소를 표현하며 이를 통해 태그 이름이나 자식, 속성같은 정보에 접근가능합니다. Element 노드에는 특징이 있습니다.
 
-nodeType은 1입니다.
-nodeName은 요소의 태그 이름입니다.
-nodeValue는 null 입니다.
-parentNode는 Document 또는 Element 입니다.
-자식 노드는 Element나 Text, Comment, ProcessingIntsruction, CDATA Section, EntityReference를 가질 수 있습니다.
+* `nodeType` 은 1입니다.
+* `nodeName` 은 요소의 태그 이름입니다.
+* `nodeValue` 는 null 입니다.
+* `parentNode`는 Document 또는 Element 입니다.
+* `ownerDoucment` 는 null 입니다.
+* 자식노드로 Element나 Text, Comment, ProcessingIntsruction, CDATA Section, EntityReference를 가질 수 있습니다.
+
+
+💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋
+
+
 요소의 태그 이름은 nodeName 프로퍼티나 tagName 프로퍼티로 얻을 수 있습니다.
 
 // <div id="myDiv"></div>
