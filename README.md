@@ -9,7 +9,7 @@
 * [210209 _ three.js](https://github.com/dmsdl950823/TIL/tree/master/3D/threejs) 진행중
 
 ## FrontEnd Info
-* [210210 _ ServerSide Rendering](https://github.com/dmsdl950823/TIL/blob/master/etc/ServerSide%20Rendering.md) 서버사이드 렌더링 
+* [210210 _ ServerSide Rendering](https://github.com/dmsdl950823/TIL/blob/master/etc/ServerSide%20Rendering.md) 서버사이드 렌더링 개념 (보충  필요)
 
 --------------------
 
