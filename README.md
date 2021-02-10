@@ -18,3 +18,4 @@
 - Agile 방법론 (칸반보드, sprint)
 - Webpack, parcel, rollup등의 번들링 도구에 대한 경험과 차이점에 대한 이해
 - test code 작성법
+- Deno
