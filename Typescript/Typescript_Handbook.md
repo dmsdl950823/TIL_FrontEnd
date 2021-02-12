@@ -123,160 +123,155 @@ SquareConfig
 여기서 `SquareConfig`는 여러개의 프로퍼티를 가질 수 있습니다. 그리고 명시된 프로퍼티가 (예제에선 color나 width) 아닌 한 그들의 타입은 상관없습니다.
 
 
-----------------------
-
 ## Function Types
-Interface는 다양한 범위의 Javascript Object가 가질 수 있는 모양을 표현할 수 있습니다. interface는 function type도 정의할 수 있습니다.
 
-interface 로 function type을 정의하기 위해서는, interface에게 호출 신호 (call signiture)를 주어야 합니다. 이것은 파라미터 리스트와 주어진 리턴 타입을 이용하여  function 정의와 비슷합니다.(?)  파라미터 리스트의 각 파라미터는 name과 type을 갖습니다.
+interface는 function type도 정의할 수 있습니다. 정의를 위하여, interface에게 호출 신호 (call signiture)를 주어야 합니다. 각 파라미터는 name과 type을 `name: type` 형식으로 갖습니다. 또한 function의 return type 은 function이 반환하는 값을 체크합니다.
 
-interface SearchFunc {
-  (source: string, subString: string): boolean;
-}
+``` jsinterface SearchFunc {
+    (source: string, subString: string): boolean;
+  }
 
-let mySearch: SearchFunc;
+  let mySearch1: SearchFunc
+  let mySearch2: SearchFunc
 
-mySearch = function (source: string, subString: string) {
-  let result = source.search(subString)
-  return result > -1
-}
-Function 파라미터들은 한번에 한개씩 체크되는데, 각각의 일치하는 파라미터 위치의 타입과 비교됩니다. 만약 특정 타입을 구체화하고싶지 않다면, Typescript의 맥락적 type 체크가 function 값이 직접적으로 변수 SearchFunc 타입 변수에게 할당되기 때문에 매개변수의 타입을 추론할 수 있습니다. function의 리턴 타입은 리턴하는 값에 의해 함축됩니다.
+  mySearch1 = function (source: string, subString: string) {
+    let result = source.search(subString)
+    return result > -1
+  }
 
-let mySearch: SearchFunc;
+  mySearch2 = function (src, sub) {
+    let result = src.search(sub)
+    return 'string'
+  }
+  // Error! 'string' is not assignable to type 'SearchFunc'
+```
 
-mySearch = function (src, sub) {
-  let result = src.search(sub)
-  return result > -1
-}
-let mySearch: SearchFunc;
+## Indexable Type
 
-mySearch = function (src, sub) {
-  let result = src.search(sub)
-  return 'string'
-}
-// Error! 'string' is not assignable to type 'SearchFunc'
-Indexable Type
-interface를 이용하여 a[10], ageMap["daniel"] 과 같은 방식으로 인덱스 접근이 가능하도록 정의할 수도 있습니다. Indexable type은 return 타입에 일치하는 object안에 index를 사용할 수 있는 타입을 정의하는 index signature를 가지고있습니다. 
+interface를 이용하여 `a[10]`, `ageMap["daniel"]` 과 같은 방식으로 인덱스 접근이 가능하도록 정의할 수도 있습니다. Indexable type은 return 타입에 일치하는 object안에 index를 사용할 수 있는 타입을 정의하는 index signature를 가지고있습니다. 
 
-interface StringArray {
-  [index: number]: string
-}
+``` js
+  interface StringArray {
+    [index: number]: string
+  }
 
-let myArray: StringArray
-myArray = ['Bob', 'Fred']
+  let myArray: StringArray
+  myArray = ['Bob', 'Fred']
 
-let myStr: string = myArray[0]
-예제에서, StringArray interface는 index signature를 가지고있습니다. 이 index signature는 StringArray가 number로 index가 붙여졌고, string을 리턴한다는 의미입니다.
-string, number 두가지 index signature가 지원되는데, 숫자 index로부터 리턴된 타입은 string index로부터 리턴된 타입의 서브 타입이어야만 합니다. 숫자로 index되어있을 때, object로 index 붙이기 전에 javascript는 사실 string으로 변환을 하기 때문입니다. 100 => '100' 으로
+  let myStr: string = myArray[0]
+```
 
-interface Animal {
-  name: string
-}
+예제에서, StringArray interface는 index signature (`[index: number]`) 를 가지고있습니다. 이 index signature는 StringArray가 number로 index가 붙여졌고, string을 리턴한다는 의미입니다.
 
-interface Dog extends Animal {
-  breed: string
-}
+반면에 string index signature는 '사전적' 패턴을 묘사하기에 가장 강력한 방법입니다. 모든 프로퍼티가 그들의 리턴타입과 일치하는지 강제로 확인합니다. 이것은 string index가 obj.property가 obj["property"]가 가능하도록 정의해주기 때문입니다. 
 
-interface NotOkay {
-  [x: number]: Animal // Error! Numeric index type 'Animal' is not assignable to string index type 'Dog'
-  [x: string]: Dog
-}
-ㅑ반면에 string index signature는 '사전적' 패턴을 묘사하기에 가장 강력한 방법입니다. 모든 프로퍼티가 그들의 리턴타입과 일치하는지 강제로 확인합니다. 이것은 string index가 obj.property가 obj["property"]가 가능하도록 정의해주기 때문입니다. 
+``` js
+  interface NumberDictionary {
+    [index: string]: number
+    length: number
+    name: string // Error! type of 'name' is not subtype of the indexer
+  }
+```
 
-interface NumberDictionary {
-  [index: string]: number
-  length: number
-  name: string // Error! type of 'name' is not subtype of the indexer
-}
 그러나 다른 타입의 프로퍼티는 index signature가 프로퍼티 타입의 집합이라면 접근 가능합니다.
 
-interface NumberDictionary {
-  [index: string]: number | string
-  length: number
-  name: string
-}
-index signature를 readonly로 만들 수도 있습니다.
-
-interface ReadonlyStringArray {
-  readonly [index: number]: string
-}
-
-let myArray: ReadonlyStringArray = ['Alice', 'Bob']
-myArray[2] = 'Mallory' // Error! index singature in type only permit reading
- 
-
-Class Types
-interface 실행하기
-
-C#과 Java와 같은 언어에서 인터페이스의 가장 일반적인 사용 중 하나는 클래스가 특정 계약을 충족하도록 명시적으로 적용하는 것으로, TypeScript에서도 가능하다. interface에 메서드도 표현할 수도 있습니다.
-
-interface ClockInterface {
-  currentTime: Date
-  setTime(d: Date): void
-}
-
-class Clock implements ClockInterface {
-  currentTime: Date = new Date()
-  setTime(d: Date) {
-    this.currentTime = d
+``` js
+  interface NumberDictionary {
+    [index: string]: number | string
+    length: number
+    name: string
   }
-  constructor(h: number, m: number) {}
-}
-interface는 class의 public과 private 면 동시에 보여주는 대신, public한 면을 묘사해줍니다. 이것은 class가 class instance의 private한 면의 특정한 타입을 가지고있는지 체크할 때 유용합니다.
+  index signature를 readonly로 만들 수도 있습니다.
 
-class의 instance 면과 static한 면사이의 차이
+  interface ReadonlyStringArray {
+    readonly [index: number]: string
+  }
 
-class와 interface를 사용여 작업할 때, class는 static, instance 두가지 타입을 가지고있다는 것을 알아두어야합니다. interface를 construct 생성자로 생성하고 이 interface를 실행 (implement) 할 경우, 이 error를 반환한다는것을 보실것입니다.
+  let myArray: ReadonlyStringArray = ['Alice', 'Bob']
+  myArray[2] = 'Mallory' // Error! index singature in type only permit reading
+```
 
-interface ClockInterface {
-  new (hour: number, minute: number)
-}
+## Class Types
 
-// Error! : Class 'Clock' incorrectly implements interface 'ClockConstructor'.
-// Type 'Clock' provides no match for the signature 'new (hour: number, minute: number): any'.
-class Clock implements ClockInterface {
-  currentTime: Date = new Date()
-  // 생략
-}
+C#과 Java와 같은 언어에서 인터페이스의 가장 일반적인 사용 중 하나는 클래스가 특정 계약을 충족하도록 명시적으로 적용하는 것으로, TypeScript에서도 가능하며, interface에 메서드도 표현할 수도 있습니다.
+
+``` js
+  interface ClockInterface {
+    currentTime: Date
+    setTime(d: Date): void
+  }
+
+  class Clock implements ClockInterface {
+    currentTime: Date = new Date()
+    setTime(d: Date) {
+      this.currentTime = d
+    }
+    constructor(h: number, m: number) {}
+  }
+```
+
+interface는 class의 public과 private 면 동시에 보여주는 대신, public한 것만 묘사해줍니다. 이것은 class가 class instance의 private한 면의 특정한 타입을 가지고있는지 체크할 때 유용합니다.
+
+#### class의 instance 면과 static한 면사이의 차이
+
+class와 interface를 사용하여 작업할 때, class는 static, instance 두가지 타입을 가지고있다는 것을 알아두어야합니다. interface를 construct 생성자로 생성하고 이 interface를 실행 (implement) 할 경우, 이 error를 반환한다는것을 보실것입니다.
+
+``` js
+  interface ClockInterface {
+    new (hour: number, minute: number)
+  }
+
+  // Error! : Class 'Clock' incorrectly implements interface 'ClockConstructor'.
+  // Type 'Clock' provides no match for the signature 'new (hour: number, minute: number): any'.
+  class Clock implements ClockInterface {
+    currentTime: Date = new Date()
+    // 생략
+  }
+```
+
 이것은 class가 interface를 실행할 때, class의 instance 면만 체크되기 때문입니다. constructor가 static 면에 고정되어있으므로, 이 체킹에 포함되지 않습니다.
 
 대신에, static 면에 직접적으로 작업할 수 있습니다.
 
-interface ClockInterface {
-  tick(): void
-}
-interface ClockConstructor {
-  new (hour: number, minute: number): ClockInterface
-}
-function createClock(
-  ctor: ClockConstructor,
-  hour: number,
-  minute: number
-): ClockInterface {
-  return new ctor(hour, minute)
-}
-
-class DigitalClock implements ClockInterface {
-  constructor(h: number, m: number) {}
-  tick() {
-    console.log("beep beep")
+``` js
+  interface ClockInterface {
+    tick(): void
   }
-}
-
-class AnalogClock implements ClockInterface {
-  constructor(h: number, m: number) {}
-  tick() {
-    console.log('tick tock')
+  interface ClockConstructor {
+    new (hour: number, minute: number): ClockInterface
   }
-}
+  function createClock(
+    ctor: ClockConstructor,
+    hour: number,
+    minute: number
+  ): ClockInterface {
+    return new ctor(hour, minute)
+  }
 
-let digital = createClock(DigitalClock, 12, 17)
-let analog = createClock(AnalogClock, 7, 32)
+  class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) {}
+    tick() {
+      console.log("beep beep")
+    }
+  }
+
+  class AnalogClock implements ClockInterface {
+    constructor(h: number, m: number) {}
+    tick() {
+      console.log('tick tock')
+    }
+  }
+
+  let digital = createClock(DigitalClock, 12, 17)
+  let analog = createClock(AnalogClock, 7, 32)
+
+```
+
 이 예제에서, 두개의 interface를 정의하는데, ClockConstructor는 constructor를 위한것이고, ClockInterface는 instance methods 를 위한 것입니다. 그리고, 편리함을 위하여 우리는 createClock 생성자 함수를 정의하여 type을 전달해주었습니다.
 
- 
+ 💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋
 
-Extending Interfaces
+## Extending Interfaces
 class와 같이, interface는 각각 확장(extend)될 수 있습니다. 이것은 interface의 멤버들을 복사하여 다른곳에서 사용할 수 있는데, 여러분의 interface를 재사용 가능한 컴포넌트로 분리할 수 있음을 의미합니다.
 
 interface Shape {
@@ -359,7 +354,9 @@ Control class안에서 SelectableControl의 인스턴스를 통하여 state priv
 
 ---------------------------------------------
 ---------------------------------------------
---------------------------------------------Typescript에서 Function은 class, namespace, module들이 있긴 하지만, function은 여전히 무언가를 하는데 주요한 역할을 합니다. Typescript는 표준 Javascript function을 더 쉽게 사용, 동작할 수 있도록 하는 새로운 능력을 추가합니다.
+--------------------------------------------
+
+Typescript에서 Function은 class, namespace, module들이 있긴 하지만, function은 여전히 무언가를 하는데 주요한 역할을 합니다. Typescript는 표준 Javascript function을 더 쉽게 사용, 동작할 수 있도록 하는 새로운 능력을 추가합니다.
 
 Functions
 Javascript 처럼, Typescript function은 named function이나 anonymous function 둘 다 생성될 수 있습니다. 이것은 여러분이 API에서 function 리스트를 작성하거나 하나의 function을 다른 하나의 function에 전달하는 등의 여러분의 애플리케이션을 위해 적절한 접근을 선택하도록 도와줍니다.
