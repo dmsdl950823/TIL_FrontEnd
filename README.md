@@ -6,7 +6,9 @@
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
 
 ## 3D
-* [210209 _ three.js](https://github.com/dmsdl950823/TIL/tree/master/3D/threejs) 진행중
+### [Three.js](https://github.com/dmsdl950823/TIL/tree/master/3D/threejs)
+* [210209 _ transform](https://github.com/dmsdl950823/TIL/blob/master/3D/threejs/210209_05%20Transform.md)
+* [210212 _ animation](https://github.com/dmsdl950823/TIL/blob/master/3D/threejs/210212_06%20animation.md)
 
 ## FrontEnd Info
 * [210210 _ ServerSide Rendering](https://github.com/dmsdl950823/TIL/blob/master/Notion/ServerSide%20Rendering.md) 서버사이드 렌더링 개념 (보충  필요)
