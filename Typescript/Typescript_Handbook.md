@@ -793,4 +793,153 @@ tom.move(34)
 
 base class에 존재하는 methods를 subclass에 전문화된 메서드로 override하는 방법도 나와있습니다. Sname와 Horse 둘다 Animal 의 move 메서드를 override 하는 move 메서드를 가지는데, 각각의 클래스를 구체화하도록 해줍니다. 
 
+
+-------------------------------------
+-------------------------------------
+---------------------------------------
+
+
+
+Public, private, and protected modifiers
+Public by default
+그동안은 우리 프로그램 전체에 우리가 선언한 멤버들에 자유롭게 접근할 수 있었습니다. 만약 우리가 다른 언어에서 class 개념과 익숙하다면, 우리는 위 예제들은 public 이라는 단어를 사용하지 않았다는것을 알 수 있습니다. TS에서는, 기본적으로 모든 멤버들은 public이 기본입니다.
+
+우리는 명확하게 public 멤버들을 여전히 마킹할 수는 있습니다.
+
+class Animal {
+  public name: string
+  
+  public constructor (theName: string) {
+    this.name = theName
+  }
+  
+  public move (distanceInMeters: number) {
+    console.log(`${this.name} moved ${distanceInMeters}m.`)
+  }
+}
+ECMAScript Private Fields
+TS는 private field를 위한 새로운 JS 문법을 도입했습니다.
+
+class Animal {
+  #name: string
+  constructor (theName: string) {
+    this.#name = theName
+  }
+}
+
+new Animal('Cat').#name
+// #name is not accesible because it has a private identifier
+Understanding Typescript's private
+TS는 private로 마크된 멤버를 선언할 수 있습니다. private 멤버를 포함한 클래스 밖에서는 해당 변수에 접근할 수 없습니다.
+
  
+
+class Animal {
+  private name: string
+  
+  constructor (theName: string) {
+    this.name = theName
+  }
+}
+
+new Animal('Cat').name
+// Property 'name' is private and only accessible within class 'Animal'.​
+TS는 구조 타입 시스템입니다. 어디서 오든지 상관없이 두개의 다른 타입들을 비교할 때 , 만약 모든 멤버들의 타입이 양립 가능하다면, 타입이 양립할 수 있다고 말합니다.
+
+그러나, private과 protexted 멤버들을 가진 타입들을 피교할 때, 우리는 이 타입들은 다르게 취급합니다. 두개의 타입이 양립 가능하도록 고려하기 위해서, 만약 그중 하나가 private 멤버를 가진다면, 딜다른 하나는 같은곳에서 선언된 private 멤버를 가져야합니다. 비슷하게, protexted 멤버에 적용됩니다.
+
+class Animal {
+  private name: string
+  constructor (theName: string) {
+    this.name = theName
+  }
+}
+
+class Rhino extends Animal {
+  constructor () {
+    super('Rhino')
+  }
+}
+
+class Employee {
+  private name: string
+  constructor (theName: string) {
+    this.name = theName
+  }
+}
+
+let animal = new Animal('Goat')
+let rhino = new Rhino()
+let employee = new Employee('Bob')
+
+animal = rhino
+animal = employee
+// Type 'Employee' is not assignable to type 'Animal'.
+// Types have separate declarations of a private property 'name'.
+Employee는 Animal과 모양이 같은 class 입니다. 우리는 이 class의 인스턴스를 생성하고, 각각에게 어떤 일이 발생할지 확인합니다. Animal과 Rhino는 Animal의 'private name: string'이라는 동일한 선언에서 나온 그들의 모양의 private 면을 공유하기 때문에, 그들은 양립할 수 있다. 그러나, Employee의 경우에는 아닙니다. Employee로부터 Animal에게 할당할 때, 양립할 수 없다는 타입에러가 나옵니다. Employee는 name이라는 private 멤버를 가지고있지만, Animal에서 선언한 것이 아닙니다.
+
+Understanding protected
+protected 수식어는 멤버들이 확장된 class안에서 접근 가능한 [보호된] 상태로 선언되었단 점을 제외하고 private 수식어와 매우 유사합니다.
+
+class Person {
+  protected name: string
+  constructor (name: string) {
+    this.name = name
+  }
+}
+
+class Employee extends Person {
+  private department: string
+
+  constructor (name: string, department: string) {
+    super(name)
+    this.department = department
+  }
+
+  public getElevatorPitch () {
+    return `Hello, my name is ${this.name} and I work in ${this.department}.`
+  }
+}
+
+let howard = new Employee('Howard', 'Sales')
+console.log(howard.getElevatorPitch())
+console.log(howard.name) // Howard
+// Error!! Property 'name' is protected and only accessible within class 'Person' and its subclasses.
+ 
+
+우리가 Person의 밖에서 name을 사용하지 못하는동안, 우리가 Person에서부터 Employee를 확장했기 때문에 Employee 의 인스턴스 메서드 안에서 여전히 사용할 수 있는 것을 보세요.
+
+constructor는 protected로 마킹될 수 있습니다. 즉, 클래스는 포함하는 클래스 외부에서 인스턴스화할 수 없지만 확장할 수 있습니다.
+
+class Person {
+  protected name: string;
+  protected constructor(theName: string) {
+    this.name = theName;
+  }
+}
+
+// Employee can extend Person
+class Employee extends Person {
+  private department: string;
+
+  constructor(name: string, department: string) {
+    super(name);
+    this.department = department;
+  }
+
+  public getElevatorPitch() {
+    return `Hello, my name is ${this.name} and I work in ${this.department}.`;
+  }
+}
+
+let howard = new Employee("Howard", "Sales");
+let john = new Person("John");
+Constructor of class 'Person' is protected and only accessible within the class declaration.
+Parameter properties
+class Octopus {
+  readonly numberOfLegs: number = 8;
+  constructor(readonly name: string) {}
+}
+
+let dad = new Octopus("Man with the 8 strong legs");
+console.log(dad.name);
