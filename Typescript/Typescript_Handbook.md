@@ -2,11 +2,18 @@
   
 # 목차
 
-1. [Typescript Interface](#typescript-interface)
-  * 1.1 [Interface](#Interface)
-  * 1.2 [Optional Properties](#Optional Properties)
-  * 1.3 [Readonly Properties](#Readonly Properties)
-  * 1.4 [Excess Property Checks](#Excess Property Checks)
+* [Typescript Interface](#typescript-interface)
+  * [Interface](#interface)
+  * [Optional Properties](#optional-properties)
+  * [Readonly Properties](#readonly-properties)
+  * [Excess Property Checks](#excess-property-checks)
+* [Function Types](#function-types)
+  * [Indexable Type](#indexable-type)
+  * [Class Types](#indexable-type)
+    * class의 instance 면과 static한 면사이의 차이
+  * [Extending Interfaces](#extending-interfaces)
+  * [Interfaces Extending Classes](#interfaces-extending-classes)
+
 
   -----------------------------------------------------------
   
