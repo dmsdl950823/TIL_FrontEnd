@@ -1,7 +1,11 @@
 # Typescript Handbook 번역
   
 # 목차
-1. [Interface](#Interface)
+1. [Typescript Interface](#Typescript Interface)
+  * 1.1 [Interface](#Interface)
+  * 1.2 [Optional Properties](#Optional Properties)
+  * 1.3 [Readonly Properties](#Readonly Properties)
+  * 1.4 [Excess Property Checks](#Excess Property Checks)
 
   -----------------------------------------------------------
   
