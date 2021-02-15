@@ -1,5 +1,8 @@
 # Typescript Handbook 번역
   
+# 목차
+1. [Interface](#Interface)
+
   -----------------------------------------------------------
   
 # Typescript Interface
@@ -127,7 +130,8 @@ SquareConfig
 
 interface는 function type도 정의할 수 있습니다. 정의를 위하여, interface에게 호출 신호 (call signiture)를 주어야 합니다. 각 파라미터는 name과 type을 `name: type` 형식으로 갖습니다. 또한 function의 return type 은 function이 반환하는 값을 체크합니다.
 
-``` jsinterface SearchFunc {
+``` js
+  interface SearchFunc {
     (source: string, subString: string): boolean;
   }
 
@@ -269,79 +273,83 @@ class와 interface를 사용하여 작업할 때, class는 static, instance 두�
 
 이 예제에서, 두개의 interface를 정의하는데, ClockConstructor는 constructor를 위한것이고, ClockInterface는 instance methods 를 위한 것입니다. 그리고, 편리함을 위하여 우리는 createClock 생성자 함수를 정의하여 type을 전달해주었습니다.
 
- 💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋
-
 ## Extending Interfaces
-class와 같이, interface는 각각 확장(extend)될 수 있습니다. 이것은 interface의 멤버들을 복사하여 다른곳에서 사용할 수 있는데, 여러분의 interface를 재사용 가능한 컴포넌트로 분리할 수 있음을 의미합니다.
+class와 같이, interface는 각각 확장(extend)될 수 있습니다. interface의 멤버들을 복사하여 재사용 가능한 컴포넌트로 분리할 수 있습니다.
 
-interface Shape {
-  color: string
-}
+``` js
+  interface Shape {
+    color: string
+  }
 
-interface PenStroke {
-  penWidth: number
-}
+  interface PenStroke {
+    penWidth: number
+  }
 
-// extended interface
-interface Square extends Shape, PenStroke {
-  sideLength: number
-}
+  // extended interface
+  interface Square extends Shape, PenStroke {
+    sideLength: number
+  }
 
-let square = {} as Square
-square.color = 'blue'
-square.sideLength = 10
-square.penWidth = 5.0
- 
+  let square = {} as Square
+  square.color = 'blue'
+  square.sideLength = 10
+  square.penWidth = 5.0
+```
 
-Hybrid Types
-이전에 언급했듯이, interface는 Javascript에서 풍부한 타입을 구현합니다. Javascript의 동적이고 유동적인 생태계 덕분에, 우리는 때때로 상단에 묘사된 몇몇 타입의 조합으로써 작업되는 object를 우연히 만날 수 있습니다.
+## Hybrid Types
 
-interface Counter {
-  (start: number): string
-  interval: number
-  reset(): void
-}
+이전에 언급했듯이, interface는 Javascript에서 풍부한 타입을 구현합니다. Javascript의 동적이고 유동적인 생태계 덕분에, 우리는 때때로 상단에 묘사된 몇몇 타입의 조합으로써 작업되는 object를 우연히 만날 수 있습니다. 🤔🤔🤔🤔
 
-function getCounter(): Counter {
-  let counter = function (start: number) {} as Counter
-  counter.interval = 123
-  counter.reset = function () {}
-  return counter
-}
+``` js
+  interface Counter {
+    (start: number): string
+    interval: number
+    reset(): void
+  }
 
-let c = getCounter()
-console.log(c(10)) // undefined
-console.log(c.reset()) // undefined
-console.log(c.interval = 5.0) // 5
- 
+  function getCounter(): Counter {
+    let counter = function (start: number) {} as Counter
+    counter.interval = 123
+    counter.reset = function () {}
+    return counter
+  }
 
-Interfaces Extending Classes
-interface type이 class type을 상속할 때, class의 멤버들을 상석하지만, 그들의 implementation들은 상속하지 않습니다. 마치 interface가 모든 class 멤버들을 implementation 없이 선언한 것처럼 보입니다. Interface들은 심지어 private와 보호된(protected) 기본 class의 멤버들을 상속합니다. 이것은 여러분이 private또는 protected 된 멤버들을 가진 class를 상속한 interface를 생성할 때, interface type은 class 또는 subclass에의해 실행될 수 있다는 것을 의미합니다.
+  let c = getCounter()
+  console.log(c(10)) // undefined
+  console.log(c.reset()) // undefined
+  console.log(c.interval = 5.0) // 5
+ ```
+
+## Interfaces Extending Classes
+interface type이 class type을 상속할 때, class의 멤버들을 상속하지만, 그들의 implementation들은 상속하지 않습니다.
+마치 interface가 모든 class 멤버들을 implementation 없이 선언한 것처럼 보입니다. Interface들은 심지어 private와 보호된(protected) 기본 class의 멤버들을 상속합니다. 이것은 여러분이 private또는 protected 된 멤버들을 가진 class를 상속한 interface를 생성할 때, interface type은 class 또는 subclass에의해 실행될 수 있다는 것을 의미합니다.
 
 이것은 여러분이 큰 상속가능한 계층구조를 가질 때, 그러나 오직 확실한 프로퍼티를 가진 subclasses와만 사용이 가능한 여러분의 코드를 구체화 하고싶을 때 유용합니다. subclass는 기본 class로부터 상속되어 연결될 필요는 없습ㄴ디ㅏ.
 
-class Control {
-  private state: any
-}
+``` js
+  class Control {
+    private state: any
+  }
 
-interface SelectableControl extends Control {
-  select(): void
-}
+  interface SelectableControl extends Control {
+    select(): void
+  }
 
-class Button extends Control implements SelectableControl {
-  select() {}
-}
+  class Button extends Control implements SelectableControl {
+    select() {}
+  }
 
-class TextBox extends Control {
-  select() {}
-}
+  class TextBox extends Control {
+    select() {}
+  }
 
+  // Error! Types have separate declarations of a private property 'state'
+  class ImageControl implements SelectableControl {
+    private state: any
+    select() {}
+  }
+```
 
-// Error! Types have separate declarations of a private property 'state'
-class ImageControl implements SelectableControl {
-  private state: any
-  select() {}
-}
 상단 예제에서,
 
 SelectableControl은 private state 프로퍼티를 포함한 모든 Control 클래스의 멤버를 포함합니다. state가 private member 이므로 Control의 후손에게만 사용 가능합니다. 이것은 오직 Control의 후손이 private멤버를 위한 양립할 수 있는 요구사항인 선언에서 기원한 state private 멤버를 가질 것 이기 때문입니다. 
