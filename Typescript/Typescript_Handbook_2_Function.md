@@ -9,7 +9,7 @@
 	* [Rest Parameters](#rest-paramters)
 	* [this and arrow functions](#this-and-arrow-functions)
 	* [this parameters](#this-paramters)
-	* [this parameter in callbacks](#this-paramter-in-callbacks]
+	* [this parameter in callbacks](#this-paramter-in-callbacks)
 	* [Overloads](#overloads)
   
 ---------------------------------------
@@ -65,7 +65,7 @@ return type은 parameter과 return type 사이의 arrow (=>) 를 사용하여 �
 ## Optional and Default Parameters
 
 Typescript에서, 모든 parameter는 값을 갖게 되지만 null이나 undefined가 주어질 수도 있습니다.
-<b>function에 제공된 매개변수의 숫자는 function이 예상하는 parameter의 숫자에 일치해야합니다.<b>
+<b>function에 제공된 매개변수의 숫자는 function이 예상하는 parameter의 숫자에 일치해야합니다.</b>
 
 ``` js
   function buildName(firstName: string, lastName: string) {
