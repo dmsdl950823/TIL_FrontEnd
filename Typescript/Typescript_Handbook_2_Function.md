@@ -3,12 +3,20 @@
 ## Index
 
 * [Functions](#functions)
-
+	* [Functions Types](#functions-types)
+	* [Writing the function type](#writing-the-function-type)
+	* [Optional and Default Parameters](#optional-and-default-parameters)
+	* [Rest Parameters](#rest-paramters)
+	* [this and arrow functions](#this-and-arrow-functions)
+	* [this parameters](#this-paramters)
+	* [this parameter in callbacks](#this-paramter-in-callbacks]
+	* [Overloads](#overloads)
+  
 ---------------------------------------
 
 # Functions
 
-Typescript에서 Function은 class, namespace, module들이 있긴 하지만, 여전히 '무언가를 하는 역할'을 합니다.
+Typescript에서 Function은 class, namespace, module들이 있긴 하지만, 여전히 '무언가를 동작하게 하는' 역할을 수행합니다.
 Typescript는 표준 Javascript function을 더 쉽게 사용, 동작할 수 있도록 새로운 기능을 추가합니다.
 
 Javascript 처럼, Typescript function은 named function이나 anonymous function 둘 다 생성할 수 있습니다.
