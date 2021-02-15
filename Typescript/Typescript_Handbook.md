@@ -2,7 +2,7 @@
   
 # 목차
 
-1. [Typescript Interface](#Typescript Interface)
+1. [Typescript Interface](#typescript-interface)
   * 1.1 [Interface](#Interface)
   * 1.2 [Optional Properties](#Optional Properties)
   * 1.3 [Readonly Properties](#Readonly Properties)
