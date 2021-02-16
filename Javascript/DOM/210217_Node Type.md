@@ -1,4 +1,4 @@
-# Index
+# NodeType _ Index
 * [Document 타입](#document-타입)
   * [Document의-자식-노드](#document의-자식-노드)
   * [문서 정보](#문서-정보)
