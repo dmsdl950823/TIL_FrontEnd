@@ -2,7 +2,8 @@
 
 --------------------
 ## Javscript
-* [210208 _ Javascript/DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/%E2%9D%A4%EF%B8%8F%20DOM.md)  
+* [210208 _ DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
+* [210217 _ DOM / NodeType](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210217_Node%20Type.md)
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
 
 ## 3D
