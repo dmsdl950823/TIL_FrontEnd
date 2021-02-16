@@ -10,6 +10,9 @@
 * [Text 타입](#text-타입)
   * [Text 노드 생성](#text-노드-생성)
 * [Comment 타입](#comment-타입)
+* [DocumentType 타입](#documenttype-타입)
+  * [DocumentFragment](#documentfragment)
+* [Attr 타입](#attr-타입)
 
 # Document 타입
 
@@ -197,7 +200,7 @@ Element 타입은 DOM 노드 타입중 `attribute` 프로퍼티를 갖는 유일
 `attribute` 프로퍼티 안의 각 노드는 `nodeName`이 속성이름이며 `nodeValue`는 속성 값입니다. 
 
 ``` js
-  // divㄴㅡㄴ nodeType === 1 (Element ㅌㅏㅇㅣㅂ)
+  // di는 nodeType === 1 (Element 타입)
   const attrs = div.attributes
   console.log(attrs)  // [object NamedNodeMap]
 
@@ -206,7 +209,7 @@ Element 타입은 DOM 노드 타입중 `attribute` 프로퍼티를 갖는 유일
 
   attrs['id'].nodeValue = 'new_id'
 
-  attrs.removeNamedItem('id') // ㅈㅜㅇㅓㅈㅣㄴ ㅇㅣㄹㅡㅁㅇㅡㅣ ㅅㅗㄱㅅㅓㅇ ㅈㅔㄱㅓ
+  attrs.removeNamedItem('id') // 주어진 이름의 속성 제거
 ```
 
 attribute가 유용한 경우는 요소의 **속성을 루프할 때** 입니다. DOM구조를 XML이나 HTML 문자열로 *직렬화 할 때*가 그런 경우입니다.
@@ -245,11 +248,11 @@ attribute가 유용한 경우는 요소의 **속성을 루프할 때** 입니다
 Text 노드는 Text 타입으로 표현됩니다. 이 노드에는 텍스트가 포함되고, 이스케이프된 HTML 문자는 포함할 수 있지만 HTML 코드는 포함 할 수 없습니다. Text 노드에는 다음과 같은 특징이 있습니다.
 
 ```
-  - nodeType 은 3입니다.
-  - nodeName 은 '#text' 입니다.
-  - nodeValue 는 노드에 포함퇸 텍스트입니다.
-  - parentNode 는 Element 입니다.
-  - 자식 노드를 가질 수없습니다.
+  * nodeType 은 3입니다.
+  * nodeName 은 '#text' 입니다.
+  * nodeValue 는 노드에 포함퇸 텍스트입니다.
+  * parentNode 는 Element 입니다.
+  * 자식 노드를 가질 수 없습니다.
 ```
 
 Text 노드에 포함된 텍스트는 `nodeValue` 프로퍼티나 `data` 프로퍼티로 가져올 수 있습니다.  둘 중 하나를 바꾸면 노드에 반영됩니다. 다음은 노드의 텍스트를 조작하는 메서드입니다.
@@ -299,78 +302,98 @@ Text 노드를 생성할 때는 `document.createTextNode('삽입할 텍스트')`
 # Comment 타입
 주석은 DOM 에서 Comment 타입으로 표현됩니다. Comment 노드에는 다음 특징이 있습니다.
 
-- nodeType은 8 입니다
-- nodeName은 '#comment'
-- nodeValue는 주석 콘텐츠 입니다.
-- parentNode는 Document 또는 Element 입니다.
-- 자식 노드는 가질 수 없습니다.
+```
+  * nodeType은 8 입니다
+  * nodeName은 '#comment'
+  * nodeValue는 주석 콘텐츠 입니다.
+  * parentNode는 Document 또는 Element 입니다.
+  * 자식 노드는 가질 수 없습니다.
+```
 
-Comment 타입은 Text 타입과 같은 원형을 상속하므로 Text 타입에 있는 문자열 메서드를 (splitText() 제외) 대부분 갖고있습니다.  Text 타입과 마찬가지로 nodeValue나 data 프로퍼티로 주석의 콘텐츠를 가져 올 수 있습니다.
+Comment 타입은 Text 타입과 같은 원형을 상속하므로 Text 타입에 있는 문자열 메서드를 (`splitText()` 제외) 대부분 갖고있습니다.  Text 타입과 마찬가지로 `nodeValue`나 `data` 프로퍼티로 주석의 콘텐츠를 가져 올 수 있습니다.
 
-// <div id="myDiv"><!-- 주석 --></div>
+``` js
+  // <div id="myDiv"><!-- 주석 --></div>
 
-const comment = div.firstChild.data
-console.log(comment)  // 주석
-CDATASection 타입
-CDATA 섹션은 XML 기반 문서 전용이며 CDATASection 타입으로 표현됩니다. Comment와 마찬가지로 CDATASection 타입 역시 Text 타입과 같은 원형을 상속하므로 splitText()를 제외한 문자열 메서드를 모두 가집니다. CDATASection 노드에는 다음 특징이 있습니다.
+  const comment = div.firstChild.data
+  console.log(comment)  // 주석
+```
 
-- nodeType은 4 입니다
-- nodeName은 '#cdata-section' 입니다
-- nodeValue는 CDATA 섹션의 콘텐츠입니다.
-- parentNode는 Document 또는 Element 입니다
-- 자식 노드는 가질 수 없습니다.
+# CDATASection 타입
+CDATA 섹션은 XML 기반 문서 전용이며 CDATASection 타입으로 표현됩니다. Comment와 마찬가지로 CDATASection 타입 역시 Text 타입과 같은 원형을 상속하므로 문자열 메서드를 모두 가집니다(`splitText()`를 제외). CDATASection 노드에는 다음 특징이 있습니다.
+
+```
+  * nodeType은 4 입니다
+  * nodeName은 '#cdata-section' 입니다
+  * nodeValue는 CDATA 섹션의 콘텐츠입니다.
+  * parentNode는 Document 또는 Element 입니다
+  * 자식 노드는 가질 수 없습니다.
+```
 
 CDATA 섹션은 XML 문서에만 유효하므로 대부분 브라우저에서 CDATA 섹션을 부정확한 Comment나 Element 로 잘못 파싱합니다.
 
-<div id="div"> <![CDATA[ This is some content ]]> </div>
-CDATASection 노드는 <div>의 첫 번째 자식이어야 하지만 주요 브라우저 중에서 이렇게 파싱하는 브라우저는 하나도 없습니다. 유효한 XHTML 페이지에서조차 포함된 CDATA 섹션을 제대로 지원하지 않습니다. 
+``` html
+  <div id="div"> <![CDATA[ This is some content ]]> </div>
+```
+CDATASection 노드는 `<div>`의 첫 번째 자식이어야 하지만 주요 브라우저 중에서 이렇게 파싱하는 브라우저는 하나도 없습니다. 유효한 XHTML 페이지에서조차 포함된 CDATA 섹션을 제대로 지원하지 않습니다. 
 
 # DocumentType 타입
+
 DocumentType 타입은 자주 사용하지 않습니다. (FireFox, Safari, Opera)
 
-- nodeType은 10입니다.
-- nodeValue는 독타입 이름입니다.
-- nodeValue는 null 입니다
-- parentNode는 Document 입니다.
-- 자식 노드는 가질 수 없습니다.
+```
+  * nodeType은 10입니다.
+  * nodeValue는 독타입 이름입니다.
+  * nodeValue는 null 입니다
+  * parentNode는 Document 입니다.
+  * 자식 노드는 가질 수 없습니다.
+```
 
-DOM 레벨 1 에선 DocumentType 객체를 동적으로 생성할 수 없으며 문서 코드를 파싱하는 동안에만 생성됩니다. 지원하는 브라우저는 DocumentType 객체를 document.doctype에 저장합니다. 프로퍼티는 name (독타입 이름), entities )(독타입이 정의하는 엔티티의 NamedNodeMap), notations (독타입이 정의하는 표기법의 NamedNodeMap)을 지원합니다. 브라우에서 불러오는 문서는 일반적으로 HTML이나 XHTML 이므로 entities와 notations는 보통 빈 목록입니다. name 프로퍼티에 저장되는 독타입 이름은 <!DOCTYPE  바로 뒤에 있는 텍스트입니다.
+DOM 레벨 1 에선 `DocumentType` 객체를 동적으로 생성할 수 없으며 문서 코드를 파싱하는 동안에만 생성됩니다. 지원하는 브라우저는 `DocumentType` 객체를 `document.doctype`에 저장합니다.
 
+* `name` :: 독타입 이름
+* `entities` :: 독타입이 정의하는 엔티티의 NamedNodeMap
+* `notations` :: 독타입이 정의하는 표기법의 NamedNodeMap
+
+브라우저에서 불러오는 문서는 일반적으로 HTML이나 XHTML 이므로 `entities`와 `notations`는 보통 빈 목록입니다. `name` 프로퍼티에 저장되는 독타입 이름은 `<!DOCTYPE`  바로 뒤에 있는 텍스트입니다.
+
+``` html
+<!-- 이 독타입의 name 프로퍼티 결과는 "HTML" -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-이 독타입의 name 프로퍼티 결과는 "HTML" 입니다.
+```
 
-DocumentFragment
+## DocumentFragment
 
+``` js
+  <ul id="myList"></ul>
+```
+이 `ul` 요소에 `li` 요소를 세 개 추가하려합니다. 각 요소를 직접적으로 추가하면 **브라우저가 그 때마다 페이지에 새 정보를 반영하고 다시 렌더링** 해야합니다. 다음 코드처럼 문서 버퍼를 생성하고 `li` 요소를 동시에 추가하는 편이 좋습니다.
 
+``` js
+  const fragment = document.createDocumentFragment()
+  const ul = document.getElementById('myList')
+  const li = null
 
+  for (let i = 0; i < 3; i++) {
+    li = document.createElement('li')
+    li.appendChild(document.createTextNode(`Item ${i + 1}`)
+    fragment.appendChild(li)
+  }
 
+  ul.appendChild(fragment)
+```
 
-
-
-
-<ul id="myList"></ul>
-이 ul 요소에 li 요소를 세 개 추가하려합니다. 각 요소를 직접적으로 추가하면 브라우저가 그 때마다 페이지에 새 정보를 반영하고 다시 렌더링 해야합니다. 다음 코드처럼 문서 버퍼를 생성하고 <li> 요소를 동시에 추가하는 편이 좋습니다.
-
-const fragment = document.createDocumentFragment()
-const ul = document.getElementById('myList')
-const li = null
-
-for (let i = 0; i < 3; i++) {
-  li = document.createElement('li')
-  li.appendChild(document.createTextNode(`Item ${i + 1}`)
-  fragment.appendChild(li)
-}
-
-ul.appendChild(fragment)
-Attr 타입
+# Attr 타입
 요소의 속성은 DOM 에서 Attr 타입으로 표현됩니다. 기술적으로 속성은 요소의 attribute 프로퍼티 안에 존재하는 노드입니다. Attribute 노드에는 다음 특징이 있습니다.
 
-- nodeType은 11 입니다.
-- nodeName은 속성 이름 입니다.
-- nodeValue는 속성 값입니다.
-- parentNode는 null 입니다.
-- HTML 에서는 자식 노드를 가질 수 없습니다.
-- XML 에서는 자식 노드로 Text, EntityReference를 가질 수 있습니다.
+```
+  * nodeType은 11 입니다.
+  * nodeName은 속성 이름 입니다.
+  * nodeValue는 속성 값입니다.
+  * parentNode는 null 입니다.
+  * HTML 에서는 자식 노드를 가질 수 없습니다.
+  * XML 에서는 자식 노드로 Text, EntityReference를 가질 수 있습니다.
+```
 
-속성 역시 노드지만 DOM 문서 트리의 일부분으로 간주되지는 않습니다. Attribute 노드를 직접 참조하는 경우는 드물며 개발자들은 보통 getAttribute(), setAttribute(), removeAttribute()를 더 선호합니다. 
+속성 역시 노드지만 DOM 문서 트리의 일부분으로 간주되지는 않습니다. Attribute 노드를 직접 참조하는 경우는 드물며 개발자들은 보통 `getAttribute()`, `setAttribute()`, `removeAttribute()`를 더 선호합니다. 
