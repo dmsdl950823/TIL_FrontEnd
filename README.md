@@ -4,6 +4,7 @@
 * [210208 _ DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
 * [210217 _ DOM / NodeType](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210217_Node%20Type.md)
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
+* [210217 _ Typescript / Class Object](https://github.com/dmsdl950823/TIL/blob/master/Typescript/210217_Class%20Object.md)
 
 ## 3D
 ### [Three.js](https://github.com/dmsdl950823/TIL/tree/master/3D/threejs)
