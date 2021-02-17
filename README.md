@@ -1,4 +1,5 @@
 # TIL
+FrontEnd based TIL - FrontEnd 위주 TIL 작성
 
 ## Javscript
 * [210208 _ DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
