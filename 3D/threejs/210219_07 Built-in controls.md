@@ -12,7 +12,7 @@
     - [Code 분석](#code-분석-2)
 
 
-이전 포스트 [210218_07 Camera.md]() 와 연결
+이전 포스트 [210218_07 Camera.md](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210218_07%20Camera.md) 와 연결
 
 # Built-in controls
 [Three.js Document](https://threejs.org/docs/index.html#api/en/math/Euler) 에서 control을 검색하면, 미리 만들어진 controls들이 많은 것을 확인할 수 있습니다.
