@@ -1,3 +1,15 @@
+- [ServerSide Rendering](#serverside-rendering)
+  - [서버사이드 랜더링의 역사](#서버사이드-랜더링의-역사)
+    - [1. Static Sites](#1-static-sites)
+    - [2. iframe](#2-iframe)
+    - [3. XMLHttpRequest](#3-xmlhttprequest)
+    - [4. AJAX](#4-ajax)
+    - [5. CSR - Client Side Rendering](#5-csr---client-side-rendering)
+      - [CSR 의 문제점](#csr-의-문제점)
+    - [6. SSR - Server Side Rendering](#6-ssr---server-side-rendering)
+      - [SSR 의 장단점](#ssr-의-장단점)
+    - [7. SSG - Static Stite Generation](#7-ssg---static-stite-generation)
+
 # ServerSide Rendering
 
 ## 서버사이드 랜더링의 역사
@@ -29,7 +41,7 @@ HTML전체가 아닌, `json` 형태로  서버에서 가볍게 데이터만 받�
 서버에서 간단한 HTML 파일을 보내주면 해당 관련된 js 파일을 보내주어 앱에 필요한 소스 코드를 함께 내려받게 되는데,
 이때 데이터를 가지고있는 `json` 파일을 함께 내려받아 해당 HTML에 모두 그려주게 됨
 
-CSR의 가장 큰 문제점은
+#### CSR 의 문제점
 
 1. 사용자가 첫 화면을 볼 때 시간이 오래걸릴 수 있다는 점
 2. 좋지 않은 SEO - Search Engine Optimization 를 가지게 됨
@@ -39,6 +51,7 @@ CSR의 가장 큰 문제점은
 기존 Static Site에서 영감을 받아, 웹사이트에 접속하면 서버에서 필요한 데이터를 모두 가져와서, HTML 파일을 만들고,
 HTML 파일을 동적으로 제어할 수 있는 소스코드를 클라이언트에게 보내줌. 그러면 클라이언트 측에서 잘 만들어진 HTML 문서를 받아와 바로 사용자에게 보내줌
 
+#### SSR 의 장단점
 * 장점 : 첫 번째 로딩이 빨라짐. 모든 컨텐츠가 HTML에 담겨져있기 때문에 조금 더 나은 SEO가 가능
 * 문제점 : Static Site에 존재했던 깜빡임 문제 (Blinking Issue) 가 존재
 
