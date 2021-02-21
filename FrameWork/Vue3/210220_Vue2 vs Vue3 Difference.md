@@ -79,7 +79,6 @@ Vue 2에서는, template 에서 single root 노드만 실행시킬수 있었지�
 ```
 
 ## 3. Composition API
-🍞🍞🍞🍞🍞🍞🍞🍞🍞
 ### 사용 이유
 
 * 큰 component는 유지 및 읽기가 어렵습니다.
