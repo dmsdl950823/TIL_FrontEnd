@@ -7,7 +7,7 @@
     - [ALTER](#alter)
     - [ORDER BY](#order-by)
     - [GROUP BY](#group-by)
-    - [UNION & JOIN's difference](#union--joins-difference)
+  - [UNION & JOIN's difference](#union--joins-difference)
     - [UNION](#union)
     - [JOINS type](#joins-type)
     - [INNER JOIN](#inner-join)
@@ -55,7 +55,7 @@
 ``` sql
   SELECT <column> FROM <table name> WHERE <condition> GROUP BY <column>;
 ```
-### UNION & JOIN's difference
+## UNION & JOIN's difference
 
 <div style="overflow:hidden">
     <img src="./images/VisualDepictionOfUnion.png" width="300" style="float:left"/>
