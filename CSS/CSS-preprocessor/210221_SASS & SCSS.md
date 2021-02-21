@@ -1,13 +1,39 @@
-# SASS
-Css, Sass, Scss 와 완벽호환되며, Ruby와 node에서 사용 할 수 있다. <br />
-scss는 {}를 사용하지만, <br />
-sass는 {} 대신 tab을 사용하며, 세미콜론(;)을 사용하지 않는다 - indented syntax사용
+- [SASS](#sass)
+    - [특징](#특징)
+  - [variable : `$`](#variable--)
+  - [`@use`](#use)
+  - [`@forward`](#forward)
+  - [`@import`](#import)
+  - [`@extend`](#extend)
+  - [`@mixin` & `@include`](#mixin--include)
+  - [`@function`](#function)
+  - [`@error`](#error)
+  - [`@warn`](#warn)
+  - [`@debug`](#debug)
+  - [`@at-root`](#at-root)
+- [Data Type](#data-type)
+  - [Maps](#maps)
+  - [Strings](#strings)
+- [Flow control](#flow-control)
+  - [`@while`](#while)
+  - [`@if` , `@else`](#if--else)
+  - [`@each`](#each)
+  - [`@for`](#for)
 
--------
-## variable : $
+# SASS
+Css, Sass, Scss 와 완벽호환되며, Ruby와 node에서 사용 할 수 있다.
+
+### 특징
+** `scss`는 `{ }`를 사용하지만, `sass`는 `{ }` 대신 tab을 사용하며, 세미콜론(;)을 사용하지 않는다(indented syntax 사용)
+
+
+## variable : `$`
+
 sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 수 없음
-<strong>!default</strong>를 변수와 함께 할당될 경우 해당값이 변수에 기본으로 할당됨
-```
+
+<strong>`!default`</strong>를 변수와 함께 할당할 경우 해당값이 변수에 기본으로 할당됨
+
+``` scss
   $myval1: null;
   $myval1: "Sass was developed" !default;
   
@@ -17,9 +43,9 @@ sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 �
 ```
 
 
--------
-## @use
-```
+## `@use`
+
+``` scss
   /* scss */
   @use 'foundation/code';
   @use 'foundation/lists';
@@ -29,11 +55,11 @@ sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 �
   @use 'foundation/lists'
 ```
 
-## @forward
-@use로 스타일시트가 불러와졌을 때 Sass 스타일 시트를 불러와 mixins, functions, variable로 만들어준다.
+## `@forward`
+`@use`로 스타일시트가 불러와졌을 때 sass 스타일 시트를 불러와 `mixins`, `functions`, `variable`로 만들어준다.
 
-## @import
-```
+## `@import`
+``` scss
   /* normal CSS */
   @import "themes/blackforest";
   @import "style.sass";
@@ -42,9 +68,10 @@ sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 �
   @import themes/blackforest
   @import style.sass
 ```
-## @extend
+## `@extend`
 특정 클래스 상속
-```
+
+``` scss
   .first_para {
     color: green
   }
@@ -54,8 +81,9 @@ sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 �
   }
 ```
 
-## @mixin & @include
-```
+## `@mixin` & `@include`
+
+``` scss
   @mixin reset-list 
     margin: 0;
     padding: 0;
@@ -65,8 +93,9 @@ sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 �
     @include reset-list;
 ```
 
-## @function
-```
+## `@function`
+
+``` scss
   @function pow($base, $exponent) {
     $result: 1;
     @for $_ from 1 through $exponent {
@@ -81,19 +110,21 @@ sass의 변수는 이미 변수에 값이 할당되었을 경우 재할당될 �
   }
 ```
 
-## @error
-arguments를 받는 mixin/function를 작성할 때, arguments들이 type과 formats를 확인하여 받는지 확실해야 한다.
-아니라면 error를 반환하게 멈추고 알림이 울리도록 해야한다.
-```
+## `@error`
+arguments를 받는 `mixin` / `function`를 작성할 때, arguments들이 type과 formats를 확인하여 받는지 확실해야 한다.
+그렇지 않다면 error를 반환하게 멈추고 알림이 울린다.
+
+``` scss
   @mixin reflexive-position($property, $value) {
     @if $property != left and $property != right {
       @error "Property #{$property} must be either left or right.";
     }
   }
 ```
-## @warn
-@error와 비슷하지만 알림이 울리도록 함
-```
+## `@warn`
+`@error`와 비슷하지만 알림이 울리도록 함
+
+``` scss
   @mixin prefix($property, $value, $prefixes) {
     @each $prefix in $prefixes {
       @if not index($known-prefixes, $prefix) {
@@ -104,18 +135,20 @@ arguments를 받는 mixin/function를 작성할 때, arguments들이 type과 for
 
 ```
 
-## @debug
-file이름과 line위치의 값을 표시한다.
-```
+## `@debug`
+file 이름과 line 위치의 값을 표시한다.
+
+``` scss
   @mixin inset-divider-offset($offset, $padding) {
     $divider-offset: (2 * $padding) + $offset;
     @debug "divider offset: #{$divider-offset}";
   }
 ```
 
-## @at-root
+## `@at-root`
 상속된 규칙의 모음 - 스타일 블럭을 문서의 가장 루트노드에 만들 수 있다.
-```
+
+``` scss
   @media print {
     .style {
       height: 8px;
@@ -139,29 +172,30 @@ file이름과 line위치의 값을 표시한다.
 
 --------
 # Data Type
-Data type에는 <strong> Numbers, Booleans, Maps, Strings, Null, colors, Space and Comma </strong> 가 있다
-
+Data type에는 <strong> `Numbers`, `Booleans`, `Maps`, `Strings`, `Null`, `colors`, Space and Comma </strong> 가 있다
 
 
 ## Maps
-key/value로 이루어진 쌍 - 연결된 key로 value를 확인하기 쉽다.
-pairs of keys and values, and make it easy to look up a value by its corresponding key
+key/value로 이루어진 쌍 - 일치하는 key로 value를 확인하기 쉽다.
 
 ## Strings
-문자의 집합 '', ""에 문자를 입력할 수 있다. <br />
-사용시 #{} 안에 문자열 입력후 사용할 수 있다.
-```
+문자의 집합 `''`, `""`에 문자를 입력할 수 있다. <br />
+사용시 `#{ }` 안에 문자열 입력후 사용할 수 있다.
+
+``` scss
   $name: "tutorialspoint";
   p.#{name} {
     color: blue;
   }
 ```
 
----------
+------------------
+
 # Flow control
 
-## @while
-```
+## `@while`
+
+``` scss
   @function scale-below($value, $base, $ratio: 1.618) {
     @while $value > $base {
       $value: $value / $ratio;
@@ -169,8 +203,9 @@ pairs of keys and values, and make it easy to look up a value by its correspondi
     @return $value;
   }
 ```
-## @if , @else
-```
+## `@if` , `@else`
+
+``` scss
   @mixin theme-colors($light-theme: true) {
     @if $light-theme {
       background-color: $light-background;
@@ -181,9 +216,9 @@ pairs of keys and values, and make it easy to look up a value by its correspondi
     }
   }
 ```
-## @each
+## `@each`
 
-```
+``` scss
   $sizes: 40px, 50px, 80px;
   @each $size in $sizes {
     .icon-#{$size} {
@@ -196,8 +231,8 @@ pairs of keys and values, and make it easy to look up a value by its correspondi
   // result => .icon-40px {...} .icon-50px {...} .icon-80px {...}
 ```
 
-## @for
-```
+## `@for`
+``` scss
   $base-color: #036;
 
   @for $i from 1 through 3 {
