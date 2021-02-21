@@ -1,18 +1,18 @@
 - [MySQL](#mysql)
   - [Access](#access)
-  - [🚪 Database](#-database)
+- [🚪 Database](#-database)
     - [See all databases](#see-all-databases)
     - [Create database](#create-database)
     - [Use database](#use-database)
     - [Remove database](#remove-database)
-  - [🧱 Manage Tables](#-manage-tables)
+- [🧱 Manage Tables](#-manage-tables)
     - [Create Table](#create-table)
     - [See all the Tables](#see-all-the-tables)
     - [Look inside the Table](#look-inside-the-table)
     - [Empty table](#empty-table)
     - [Remove table](#remove-table)
-  - [🔑 Give Grant before using databases / table](#-give-grant-before-using-databases--table)
-      - [✔️ Types of Authorities](#️-types-of-authorities)
+- [🔑 Give Grant before using databases / table](#-give-grant-before-using-databases--table)
+    - [✔️ Types of Authorities](#️-types-of-authorities)
 
 # MySQL
 
@@ -22,7 +22,7 @@
         
 ---------------------------
 
-## 🚪 Database
+# 🚪 Database
 ### See all databases
 ``` sql
   > SHOW DATABASES;    
@@ -56,7 +56,7 @@ The DROP TABLE command deletes a table in the database.
 
 
 ---------------------------------------------------------------
-## 🧱 Manage Tables
+# 🧱 Manage Tables
 ### Create Table
 ``` sql
   > CREATE TABLE <table_name> (
@@ -104,7 +104,7 @@ The TRUNCATE TABLE command deletes the data inside a table, but not the table it
 ```
 ---------------------------------------------------------------
 
-## 🔑 Give Grant before using databases / table
+# 🔑 Give Grant before using databases / table
 You can give authority to other people before use the dbs.
 Otherwise MySQL blocks server which is not granted so that you can not use the db.
   
@@ -115,9 +115,10 @@ Otherwise MySQL blocks server which is not granted so that you can not use the d
   > GRANT DELETE, INSERT, SELECT, UPDATE ON class.* TO `root`@`%` IDENTIFIED BY '1111';
 ```
 
-#### ✔️ Types of Authorities
+### ✔️ Types of Authorities
 |controler|authorities|
 |------|---|
 |developer|DELETE, INSERT, SELECT, UPDATE|
 |constructer|ALTER, CREATE, DELETE, DROP, INDEX, INSERT, SELECT, UPDATE, DELETE, INSERT, SELECT, UPDATE|
 |DBA|ALL|
+
