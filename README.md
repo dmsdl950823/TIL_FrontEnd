@@ -6,7 +6,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 ## 🥨 FrontEnd
 ### Javascript
 * [20200321 _ ES6](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/%20200321_ES6.md)
-* [200420 _ Promise & async](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200420_Promise%20&%20async.md)
+* [200420 _ Promise & async](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200420_Promise%20&%20async.md) 보충 필요
 * [200428 _ Proxy](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200428_Proxy.md) 중단됨. 재개 필요
 * [200516 _ Webpack](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200516_Webpack.md) 중단됨. 재개필요
 * [200705 _ Class](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200705_Class.md)
