@@ -71,3 +71,4 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * unit test (JEST, cypress)
 * 서버 보안
 * WebGL
+* [Websoket usage in Vue](https://masteringjs.io/tutorials/vue/vue-websocket)
