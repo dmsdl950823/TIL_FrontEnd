@@ -67,7 +67,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 ## 추후 정리 필요한것 메모
 * Agile 방법론 (칸반보드, sprint, scrum)
 * Webpack, parcel, rollup등의 번들링 도구에 대한 경험과 차이점에 대한 이해
-* test code 작성법
+* test code 작성법 ([JEST](https://medium.com/@jinseok.choi/jest%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-unit-test-%EC%A0%81%EC%9A%A9%EA%B8%B0-420049c16cc8))
 * Deno
 * [Vno](https://deno.land/x/vno@v1.0.5)
 * svelte
