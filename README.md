@@ -17,6 +17,8 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210208 _ DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
 * [210217 _ DOM / NodeType](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210217_Node%20Type.md)
 * [210224 _ DOM2 & DOM3](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210224_DOM2%20%26%20DOM3.md) 진행중
+* [210302 _ Javascript performance beyond bundle size]()
+
 
 ### Typescript
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
@@ -43,7 +45,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210228 _ 01 Virtual DOM](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210228_01%20Virtual%20DOM.md)
 * [210228 _ 02 Computed - Getter & Setter](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210228_02%20Computed%20-%20Getter%20%26%20Setter.md)
 * [210220 _ Vue2 vs Vue3 Difference](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue3/210220_Vue2%20vs%20Vue3%20Difference.md)
-* [210301 _ Vue Render Function](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210301_Vue%20Render%20Function.md) 진행중
+* [210301 _ Vue Render Function](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210301_Vue%20Render%20Function.md)
 
 
 ### CSS
