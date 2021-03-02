@@ -8,9 +8,10 @@
 - [Beyond the bundle](#beyond-the-bundle)
   - [Runtime CPU cost](#runtime-cpu-cost)
     - [안전한 속도 측정 방법](#안전한-속도-측정-방법)
+  - [Power usage](#power-usage)
   
 
-[출처 nolanlawson](https://nolanlawson.com/2021/02/23/javascript-performance-beyond-bundle-size/)
+[출처 nolanlawson 번역](https://nolanlawson.com/2021/02/23/javascript-performance-beyond-bundle-size/)
 
 # Javascript Performance Beyond bundle size
 
@@ -115,7 +116,7 @@ Javascript bundle size가 전부는 아닙니다 - 측정하기 쉽기 때문에
 이제 JS의 parse/compile/execution 시간을 기록할 수 있는 performance trace (timeline 또는 profile 이라고도 불립니다.)를 확인할 수 있습니다. 
 
 여기서는 웹 애플리케이션을 확인하기 위한 [User Timing API](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API)(performace mark & measures 라고도 불립니다)를 사용합니다.
-해당 API의 일부 - ex. `performance.mark` / `performance.meausre` 등을 떼어서 사용할 수 도 있습니다. 
+production 모드에서 이 APU의 비용에 대해서 걱정한다면 해당 API의 일부 - ex. `performance.mark` / `performance.meausre` 등을 떼어서 사용할 수 도 있습니다. *작자는* build된 production을 분석하고 싶을 때, user timing이 production 모드에서 쉽게 켜질 수 있게 하기 위해서 query string parameter를 기준으로 해당 API를 사용하는것을 좋아합니다.
 
 각각의 dependency의 runtime cost를 볼 수 있도록, 작성된 module을 자동으로  mark/measure 호출 안에 감싸주는 Webpack plugin인 `mark-loader` 라는 tool도 매우 유용합니다. 
 
@@ -127,5 +128,19 @@ Javascript bundle size가 전부는 아닙니다 - 측정하기 쉽기 때문에
 한 가지 알아야할 점은, runtime performance는 **압축된/압축되지 않은 코드사이에서 소비되는 시간 차이는 큽니다.**
 사용되지 않은 functions는 제거되고, code는 더 작아지고 최적화되며, library는 production mode에서 실행하지 않는 `process.env.NODE_ENV === 'development'` 코드 블럭을 자동으로 정의합니다.
 
-~~언급했다시피, `performance.mark` 와 `performance.measure`는 query string parameters로 toggle할 수 있습니다~~
+이 상황에서 *작자의* 개인적인 방법은 압축된, production build된 파일들을 직접 다루는 방법이며, 이해할 수 있도록 확인 및 측정 하는 것 입니다.  언급했다시피, `performance.mark` 와 `performance.measure` 는 적은 비용을 가지고 있으므므로 query string parameters로 toggle(껐다 켰다)할 수도 있습니다.
+
+## Power usage
+사용률 압축(minimizing power use)이 중요하다는 생가을 가질 필요는 없습니다. 우리는 점차적으로 원격으로 웹에 접근할 수 있는 기기들을 사용하는 시대에 살고있으므로, 잘못된 행동을 하고있는 website 만을 찾아내면 됩니다.
+
+*작자는* CPU 사용의 부분집합으로 power use 를 생각하고는 합니다. website가 지나친 power를 소비하고있다면, [예외](https://hpbn.co/mobile-networks/#radio-resource-controller-rrc)가 있을 수 있지만, 대부분은 메인 스레드에서 지나친 CPU를 소비하고있기 때문입니다.
+
+위에 설명했던 JS parse/compile/execute 시간을 향상시킬 수 있는 방법은 power 소비량도 줄일 수 있습니다. 그러나 특히 지속적 web application  power는 첫번째 페이지를 로드한 직후에 power가 소모됩니다. 이것은 사용자가 웹 페이지를 보기만 했을 뿐인데 갑자기 노트북 fan이 돌아간다거나, 전자기기에 발열을 느끼게 되는 시점입니다.
+
+이런 상황에서, 특히 상단과 비슷한 상황에서 사용해야할 툴은 Chrome DevTools Performance 탭입니다. 반복되는 CPU 사용량을을 확인해야 하는데, 보통 **timers나 animations** 때문에 그렇습니다.
+
+![poorly-behaved JS widget](https://nolanwlawson.files.wordpress.com/2021/02/screenshot-from-2021-02-20-15-19-13.png?w=768&h=302)
+> 짧고 작은 JS 사용량은 느린 페이지와 지속적인 CPU 사용량을 보여줍니다.
+
+이러한 불필요한 power 소비는 CSS animation을 비최적화 시키기도 합니다.(JS가 필요 없는데도 말이죠) 장기적으로 작동하는 CSS animation 을 위해서는, [GPU가속화::GPU-accelarated](https://www.html5rocks.com/en/tutorials/speed/high-performance-animations/)된 CSS property들을 사용하는게 더 좋습니다.
 
