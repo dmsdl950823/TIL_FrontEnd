@@ -1,39 +1,37 @@
 - [Javascript Performance Beyond bundle size](#javascript-performance-beyond-bundle-size)
 - [Bundle Size](#bundle-size)
-  - [Bundlephobia](#bundlephobia)
-  - [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
-  - [Rollup Plugin Analyzer](#rollup-plugin-analyzer)
-  - [그 외의 bundle size tool 들](#그-외의-bundle-size-tool-들)
+  - [Bundler 관련 Plugins](#bundler-관련-plugins)
+    - [Bundlephobia](#bundlephobia)
+    - [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
+    - [Rollup Plugin Analyzer](#rollup-plugin-analyzer)
+    - [그 외의 bundle size tool 들](#그-외의-bundle-size-tool-들)
 - [Beyond the bundle](#beyond-the-bundle)
   - [Runtime CPU cost](#runtime-cpu-cost)
     - [안전한 속도 측정 방법](#안전한-속도-측정-방법)
   
-  
+
 [출처 nolanlawson](https://nolanlawson.com/2021/02/23/javascript-performance-beyond-bundle-size/)
 
 # Javascript Performance Beyond bundle size
 
-"dependency가 얼마나 크고 무거운가?", "더 작은것을 사용할 수 있는가?", "lazy-loading이 가능한가?"  에 대한
-첫번째로 그리고 
+bundle size를 가장 먼저 체크하는 이유는, 가장 빠르게 확인할 수 있기 때문입니다. 그러나 이와 비슷한 중요 다른 metrics들도 있습니다.
 
-There’s a huge focus recently on JavaScript bundle size: how big are your dependencies? Could you use a smaller one? Could you lazy-load it? But I believe we focus on bundle size first and foremost because it’s easy to measure.
-
-bundle size를 첫번째로 체크하는 이유는, 가장 빠르게 확인할 수 있기 때문입니다. 그러나 이와 비슷하게 중요한 다른 metrics들도 있습니다.
-
-* 파싱/컴파일링 시간 - Parse/compile time
-* 실행 시간 - Execution time
-* Power 사용량 - Power usage
-* Memory 사용량 - Memory usage
-* Disk 사용량 - Disk usage
-
-JS dependency는 이 모든 matrics들에게 영향을 줄 수 있습니다. 이 포스팅에서는, bundle size에 접근하는 방법과, 다른 metrics에 접근하는 방법을 알아볼 것 입니다.
+```
+  * 파싱/컴파일링 시간 - Parse/compile time
+  * 실행 시간 - Execution time
+  * Power 사용량 - Power usage
+  * Memory 사용량 - Memory usage
+  * Disk 사용량 - Disk usage
+```
+JS dependency는 이 모든 matrics들에게 영향을 줄 수 있습니다. 이 포스팅에서는, bundle size에 접근하는 방법과, 다른 metrics에 접근하는 방법을 알아보겠습니다.
 
 # Bundle Size
-JS code의 size 에 대하여 이야기를 하자면, **압축된 size 와 압축되지 않은 size에는 큰 차이가 있습니다.** 
+JS code의 size 는 **압축된 size 와 압축되지 않은 size에는 큰 차이가 있습니다.** 
 
 압축된 size는 전달하는 속도에만 영향을 끼치지만, 압축되지 않은 size는 파싱하는데, compile 하는데, JS를 실행하는데 영향을 끼칩니다. 
 
-## Bundlephobia
+## Bundler 관련 Plugins
+### Bundlephobia
 
 [Bundlephobia](https://bundlephobia.com/)는 bundle size 분석에서 만능이라고 할 수 있습니다. npm으로 설치된 dependency를 살펴보고, 압축된 size의 크기(browser가 파싱하고 실행한 결과)를 확인할 수 도 있습니다.
 
@@ -44,7 +42,7 @@ Bundlephobia를 사용하는데 몇가지 주의사항이 있습니다.
 3. polyfill이 있는경우(Node의 `Buffer` API, 또는  `Object.assign()` API를 위한 polyfill이 삽입되어있는 bundler 등), 이 결과를 볼 필요는 없습니다.
 
 
-## Webpack Bundle Analyzer
+### Webpack Bundle Analyzer
 
 [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) 는 Webpack의 모든 chunk뿐 아니라 해당 **chunk의 module들을 시각화**한 결과를 보여줍니다.
 
@@ -52,7 +50,7 @@ Bundlephobia를 사용하는데 몇가지 주의사항이 있습니다.
 
 보여지는 size에 관하여 가장 유용한 것 들은 (기본적으로)**"파싱된 parsed" 그리고 "Gzipped"된 것 들입니다.** 파싱된 것은 "축소되었다"는 의미인데, bundler를 실행하면서 더 정확한 사이즈를 측정할 수 있습니다.
 
-## Rollup Plugin Analyzer
+### Rollup Plugin Analyzer
 
 [Rollup - module Bundler](https://rollupjs.org/guide/en/)
 Rollup 번들러를 분석하는 방법은, [Rollup Plugin Analyzer](https://github.com/doesdev/rollup-plugin-analyzer) 를 이용하는 방법입니다. 해당 플러그인은 build 하면서 모듈 사이즈를 console에 보여줍니다.
@@ -60,7 +58,7 @@ Rollup 번들러를 분석하는 방법은, [Rollup Plugin Analyzer](https://git
 그러나 그저 사이즈만 알려줄 뿐이고, 축소되거나 Gzip 된 사이즈를 돌려주지는 않습니다. 완벽하진 않지만 사용할 만 합니다.
 
 
-## 그 외의 bundle size tool 들
+### 그 외의 bundle size tool 들
 * [bundlesize](https://github.com/siddharthkp/bundlesize)
 * [Bundle Buddy](https://www.bundle-buddy.com/webpack)
 * [Sourcemap Explorer](https://github.com/danvk/source-map-explorer)
@@ -85,7 +83,7 @@ Javascript bundle size가 전부는 아닙니다 - 측정하기 쉽기 때문에
   while (Date.now() - start < 5000) {}
 ```
 
-이 예제는 실제로 주요 스레드를 망치는 library에서 찾을 수 있습니다. DOM의 모든 element를 지나서, Localstorage의 큰 배열을 반복하고, pi 숫자를 계산하는 등의 행동을 합니다. **모든 dependency를 직접 검사하지 않는 한, 뒤에서 무엇이 동작하는지 알 수 없습니다.**
+이 예제는 주요 스레드를 망치는 library에서 찾을 수 있습니다. DOM의 모든 element를 지나서, Localstorage의 큰 배열을 반복하고, pi 숫자를 계산하는 등의 행동을 합니다. **모든 dependency를 직접 검사하지 않는 한, 뒤에서 무엇이 동작하는지 알 수 없습니다.**
 
 파싱parse 이나 컴파일링compile 은 둘다 측정하기 어렵습니다. 브라우저는 [bytecode caching](https://v8.dev/blog/code-caching-for-devs)을 통해 최적화를 하기때문에 코드 실행이 빠르다고 속기(fool) 쉽습니다. 브라우저가 미리 캐싱을 해놓기 때문에 module 이 파싱/컴파일링이 쉽게 된다고 생각할 수도 있습니다.
 
