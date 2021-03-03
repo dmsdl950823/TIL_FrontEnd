@@ -17,7 +17,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210208 _ DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
 * [210217 _ DOM / NodeType](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210217_Node%20Type.md)
 * [210224 _ DOM2 & DOM3](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210224_DOM2%20%26%20DOM3.md) 진행중
-* [210302 _ Javascript performance beyond bundle size](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210302_Javascript%20performance%20beyond%20bundle%20size.md) JS performance & bundler size 압축 - 진행중
+* [210302 _ Javascript performance beyond bundle size](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210302_Javascript%20performance%20beyond%20bundle%20size.md) JS performance & bundler size 압축 
 
 ### Typescript
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
