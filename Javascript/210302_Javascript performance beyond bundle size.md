@@ -9,6 +9,9 @@
   - [Runtime CPU cost](#runtime-cpu-cost)
     - [안전한 속도 측정 방법](#안전한-속도-측정-방법)
   - [Power usage](#power-usage)
+  - [Memory usage](#memory-usage)
+  - [Disk usage](#disk-usage)
+- [결론](#결론)
   
 
 [출처 nolanlawson 번역](https://nolanlawson.com/2021/02/23/javascript-performance-beyond-bundle-size/)
@@ -144,3 +147,86 @@ production 모드에서 이 APU의 비용에 대해서 걱정한다면 해당 AP
 
 이러한 불필요한 power 소비는 CSS animation을 비최적화 시키기도 합니다.(JS가 필요 없는데도 말이죠) 장기적으로 작동하는 CSS animation 을 위해서는, [GPU가속화::GPU-accelarated](https://www.html5rocks.com/en/tutorials/speed/high-performance-animations/)된 CSS property들을 사용하는게 더 좋습니다.
 
+사용할 수 있는 또 다른 툴은 Chrome의 "[**Performance Monitor**](https://developers.google.com/web/updates/2017/11/devtools-release-notes#perf-monitor)" tab인데, Perforance tab과는 조금 다릅니다. 
+
+website가 퍼포먼스적으로 좋은지에 대해서 알려주는, 트래킹을 하기 위해서 시작/중지가 필요없는, 좋은 도구입니다.
+
+![performance monitor](https://nolanwlawson.files.wordpress.com/2021/02/screenshot-from-2021-02-20-15-25-10.png)
+
+> 위와 같은 예제의 코드를 Performance Monitor 에서 확인한 결과입니다. 계속 낮은 상태의 CPU 사용량과 톱 형태의 memory 사용량의 패턴을 확인할 수 있습니다.
+
+## Memory usage
+
+Memory 사용량은 훨씬 분석하기 어려운데, 최근에 관련 tool은 많이 좋아졌습니다. 
+
+메모리 누수에 관한 [관련 포스팅](https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/)이 있지만, 메모리 *사용량*과 메모리 *누수*는 다른 문제로 보아야 합니다. 웹사이트는 명확하게 메모리가 새는 요인 없이 높은 메모리 사용량을 가지고 있을 수 있습니다. 시작은 작게 시작하지만, 결과적으로 커다란 사이즈로 누수되는 경우도 있습니다.
+
+메모리 누수에 관한 포스팅을 통해 메모리 누수를 분석하는 방법을 확인할 수 있습니다. 메모리 사용량에 관해서는 `performance.measureUserSpecificMemory` 라는 브라우저 API를 이용하여 탐지할 수도 있습니다. 
+
+이 API 의 장점은,
+
+1. 자동으로 가비지 컬렉션 후에 resolve하는 promise 객체를 반환합니다. - GC를 강제로 사용할 이상한 hack을 쓰지 않아도 됩니다!
+2. JS VM 사이즈 그 이상을 측정합니다. - DOM memory 뿐 아니라 `web worker`와 `iframe`도 포함됩니다.
+3. Site Isolation 때문에 독립된 과정인 cross-origin iframe의 경우, 속성을 파괴합니다. (???)
+
+    > 사이트에서 광고와 삽입된 요소가 정확히 얼마나 많은 메모리를 잡아먹는지 알 수 있습니다.
+
+
+API 사용 예시는,
+
+``` json
+  {
+    "breakdown": [
+      {
+        "attribution": ["https://pinafore.social"],
+        "bytes": 755360,
+        "types": ["Window", "JS"]
+      },
+      {
+        "attribution": [],
+        "bytes": 755360,
+        "types": ["Window", "JS", "Shared"]
+      }
+    ],
+    "bytes": 1559682
+  }
+```
+
+이 경우, `bytes`는 얼마나 많은 메모리를 내가 사용중인지 에 대해서 알려주는 banner matrics 입니다. `breakdown`은 옵션이긴 하지만, spec 은 명확하게 브라우저가 포함하지 않도록 합니다.
+
+이 API는 사용하기 조금 까다롭고, Chrome 89 이상만 사용 가능합니다. 그 이하 브라우저 는 "실험적 웹 플랫폼 feature를 사용가능하게" flag를 세팅하여, `performance.measureMemoryAPI`를 사용합니다. 더 문제는 잠재적으로 남용할 수 있기때문인데, 이 API는 cross-origin isolated context에서는 사용이 제한됩니다. 특별한 headers 를 사용해야한다는 것을 의미하고, cross-origin 소스 (외부 CSS, JS, image, etc.)등에 의존한다면 특별한 header를 세팅해야합니다.
+
+너무 어렵게 느껴진다면, 또는 자동화시키기 위해서  이 API를 사용할 계획 이라면, memory를 측정하는 것은 headless mode에서는 불가능하다는것을 염두해두시고 Chrome에서 `--disable-web-security`flag를 실행시키세요. (위험할 수도 있습니다..) 
+
+물론 이 API는 잘 정돈된 수준의 정보를 주지는 않습니다. 예를들어, `React`는 X byte를 사용하고, `Lodash` 는 Y byte를 사용하는 등의 행동은 찾지 못합니다.
+
+## Disk usage
+
+disk 사용량 (disk usage)을 제한하는것은 web application 시나리오에서 매우 중요합니다. 지나친 저장공간 사용량 (storage usage) 는 많은 형태로 나타납니다.( 너무 큰 이미지를 ServiceWorker 캐시에 저장하였지만 JS가 추가할 수 있는 등의 형태로 나타납니다.)
+
+JS module의 disk 사용량은 bundle size(또는 bundle을 캐시하는 비용 등)에 직접 영향을 끼친다고 생각할지도 모르지만, 아닐 경우도 있습니다. 예를들어, 많은 데이터를 저장하기 위해 무거운 `IndexedDB`를 사용할때, 불필요한 데이터나 초과되는 index들을 사용하는 등의 작업등이 있는지, 데이터 베이스 관련된 disk 사용률을 인지하고 있어야 합니다. 
+
+![Application Tab](https://nolanwlawson.files.wordpress.com/2021/02/screenshot-from-2021-02-20-16-07-19.png)
+
+Chrome DevTools에는 `Application` 탭이 있는데, website의 전체 storage 사용량을 보여줍니다. 이 화면은 일관성이 없을수도 있고, 데이터도 수동적으로 수집해야합니다. Chrome 뿐만 아니라, IndexedDB는 브라우저 사이에서 다양한 차이를 보입니다.
+
+|  Browser | IndexedDB directory Size  |
+|---|---|
+| Chromium  |  2.13 MB  |
+|FireFox|1.37 MB|
+|WebKit|2.17 MB|
+
+물론, 이 script는 storage 사이즈를 측정하길 원한다면 이 스크립트를 
+
+Of course, you would have to adapt this script if you wanted to measure the storage size of the ServiceWorker cache, LocalStorage, etc.
+
+production 환경에서 더 잘 동작할 수 있는  또다른 옵션은, `StorageManager.estimate()` API 를 사용하는 것 입니다. 그러나 MDN 문서에서는, "반환하는 값에 대해서는 정확하지 않습니다: 비교, 중복 제거,  데이터 불명료화 들의 이유로 정확하지 않을 수 있습니다." 라고 적혀있습니다.
+
+
+# 결론
+
+Performance는 bundle size등을 single matrics로 줄일 수 있을 경우에는 정말 유용하지만, 다양하게 고려해야할 사항들이 많습니다.
+
+굉장히 많은 것을 고려해야하기 때문에, Core Web Vitals 이나 bundle size에 대한 일반적인 사이즈 압축 등 접근하기 쉬운 것부터 줄이는것이 중요합니다. 만약 사람들이 다른 metrics 들을 최적화 해야할 경우가 생긴다면, 접근하기 어렵기 때문에 줄이는 시도 자체를 안하는, 선택을할 수 도 있습니다. 
+
+브라우저에 따른 크기, DOM 크기, 어떻게 API가 사용되는지 등이 정확하지 않아도 됩니다. 그러나 초기 CPU 실행 시간, memory 사용량, disk 사용량 등, 자동화된 방법으로는 측정할 수 없는 메모리들을 고려해 볼 수는 있습니다.
