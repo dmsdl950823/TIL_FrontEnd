@@ -33,6 +33,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 > ReactNative Components library
 > * [CreditCardInput](https://github.com/sbycrosz/react-native-credit-card-input)
 > * [CameraLibrary](https://github.com/cuvent/react-native-vision-camera)
+> * [React Native Simple Biometrics](https://github.com/smallcasetech/react-native-simple-biometrics) 지문/
 
 #### Vue
 
