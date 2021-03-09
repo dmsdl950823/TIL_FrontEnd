@@ -63,7 +63,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210223 _ 08 Fullscreen & Resizing](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210223_08%20Fullscreen%20&%20Resizing.md)
 * [210228 _ 09 Geometry](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210228_09%20Geometry.md)
 * [210305 _ 10 Debug UI](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210305_10%20Debug%20UI.md)
-* [210309 _ 11 Texture](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210309_11%20Texture.md)
+* [210309 _ 11 Texture](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210309_11%20Texture.md) 진행중
 
 
 
