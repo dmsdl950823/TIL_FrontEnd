@@ -77,5 +77,6 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 
 ### Design
 * [210218 _ Design / UI 용어 - 팝업](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/Design/210218_UI%20%EC%9A%A9%EC%96%B4%20-%20%ED%8C%9D%EC%97%85.md)
+* [210311 _ Design / 디자인의 효용을 측정하는 방법](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/Design/210311_%EB%94%94%EC%9E%90%EC%9D%B8%EC%9D%98%20%ED%9A%A8%EC%9A%A9%EC%9D%84%20%EC%B8%A1%EC%A0%95%ED%95%98%EB%8A%94%20%EB%B0%A9%EB%B2%95.md)
 
 ---------------------------
