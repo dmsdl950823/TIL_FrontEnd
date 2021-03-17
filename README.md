@@ -19,7 +19,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210224 _ DOM2 & DOM3](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210224_DOM2%20%26%20DOM3.md)
 * [210302 _ Javascript performance beyond bundle size](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210302_Javascript%20performance%20beyond%20bundle%20size.md) JS performance & bundler size 압축 
 * [210315 _ Event](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210315_Event.md)
-* [210317 _ Javascript에서의 Event Loop, Callback, Promises, Async, Await](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210317_Javascript%EC%97%90%EC%84%9C%EC%9D%98%20Event%20Loop%2C%20Callback%2C%20Promises%2C%20Async%2C%20Await.md)
+* [210317 _ Javascript에서의 Event Loop, Callback, Promises, Async, Await](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210317_Javascript%EC%97%90%EC%84%9C%EC%9D%98%20Event%20Loop%2C%20Callback%2C%20Promises%2C%20Async%2C%20Await.md) /
 
 ### Typescript
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
@@ -47,8 +47,8 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210228 _ 01 Virtual DOM](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210228_01%20Virtual%20DOM.md)
 * [210228 _ 02 Computed - Getter & Setter](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210228_02%20Computed%20-%20Getter%20%26%20Setter.md)
 * [210220 _ Vue2 vs Vue3 Difference](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue3/210220_Vue2%20vs%20Vue3%20Difference.md)
-* [210301 _ Vue Render Function](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210301_Vue%20Render%20Function.md)
-
+* [210301 _ Vue Render Function](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210301_Vue%20Render%20Function.md) 진행중
+ 
 
 ### CSS
 * [210221 _ SASS & SCSS](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/CSS/CSS-preprocessor/210221_SASS%20%26%20SCSS.md)
