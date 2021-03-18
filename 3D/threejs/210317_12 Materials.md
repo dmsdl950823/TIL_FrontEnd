@@ -4,6 +4,13 @@
 - [Material Class](#material-class)
   - [MeshBasicMaterial](#meshbasicmaterial)
   - [MeshNormalMaterial](#meshnormalmaterial)
+  - [MeshMatcapMaterial](#meshmatcapmaterial)
+  - [MeshDepthMaterial](#meshdepthmaterial)
+  - [Adding a few light](#adding-a-few-light)
+  - [MeshLambertMaterial](#meshlambertmaterial)
+  - [MeshPhongMaterial](#meshphongmaterial)
+  - [MeshToonMaterial](#meshtoonmaterial)
+- [MeshStandardMaterial](#meshstandardmaterial)
 
 Materials 는 geometry의 보여지는 pixel에 색상을 입힐때 사용됩니다.
 
@@ -179,7 +186,152 @@ Three.js documentation에 "material"을 검색하면, 많은 class들이 있는�
   const material = new THREE.MeshNormalMaterial()
 ```
 
-Normal 은 각각의 면의 바깥쪽이 향하고있는 방향을 포함하고있는 꼭짓점(vertex) 정보입니다. 화살표로 normal을 보여준다면, 하단의 이미지처럼 geometry를 구성하고있는 각각의 꼭짓점이 바깥을 향하고 있다는것을 볼 수 있습니다.
+Normal 은 각각의 면의 바깥쪽이 향하고있는 방향을 포함하고있는 꼭짓점(vertex) 정보입니다. 화살표로 normal을 보여준다면, 하단의 이미지처럼 geometry를 구성하고있는 각각의 꼭짓점은 바깥을 향하고 있다는것을 볼 수 있습니다.
 
 <img src="https://threejs-journey.xyz/assets/lessons/12/normals.png" width="400">
 
+Normal은 '어떻게 환경이 geometry의 표면에서 반사/왜곡 되어야 하는지' 등을 계산하는데 사용합니다.
+
+[MeshNormalMaterial](https://threejs.org/docs/#api/en/materials/MeshNormalMaterial)을 사용할 때, 색상은 카메라에서 상대적인, 일반적인 방향만 보여줍니다. 만약 sphere가 rotate 한다면, 어느 방향에서 확인을 하더라도, 색상은 항상 같다는 것을 확인할 수 있을 것 입니다.
+
+MeshBasicMaterial 에서 사용한 몇몇 property(`wireframe`, `transparent`, `opacity`, `side`) 들 도 있지만, `flatShading` 이라는 프로퍼티도 사용할 수 있습니다.
+
+`flatShading` 은 면을 flat 하게 만들어주며, 꼭짓점 사이를 연걸하지 않아 단순하게 만들어줍니다.
+
+``` js
+  material.flatShading = true
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-11.png" width=400>
+
+MeshNormalMaterial 은 normal 을 debug 할 때 유용하지만, 그 자체로도 시간적으로 좋기 때문에 그냥 사용해도 됩니다.
+
+## MeshMatcapMaterial
+
+[MeshMatcapMaterial](https://threejs.org/docs/#api/en/materials/MeshMatcapMaterial) 은 퍼포먼스도 좋으며, 완벽한 material 입니다. 
+
+MeshMatcapMaterial 은 sphere 같이 생긴 reference texture가 필요합니다.
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/1.jpg">
+
+material 은 카메라와 연관된 normal 방향에 따라 색상을 추출할 것 입니다.
+
+reference matcap texture를 세팅하기 위해서는 `matcap` 프로퍼티가 필요합니다.
+
+``` js
+  const material = new THREE.MeshMatcapMaterial()
+  material.matcap = matcapTexture
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-12.png" width=400>
+
+mesh에 빛이 비춰지는 것 같아 보이지만, 이건 텍스쳐가 그렇게 생겼기 때문에 그렇게 보이는 것 입니다.
+
+여기서 문제는, 어떤 방향이든 같은 상을 보는 것 입니다. 또한, light가 없기 때문에, light를 업데이트할 수 없습니다.
+
+[matcap 자료 github](https://github.com/nidorx/matcaps)
+
+2D / 3D software 를 사용하여 직접 matcap을 만들 수도 있습니다.
+
+## MeshDepthMaterial
+
+[MeshDepthMaterial](https://threejs.org/docs/index.html#api/en/materials/MeshDepthMaterial) 은, 카메라의 `near` 값과 가깝다면 (카메라와 가까이 있으면) 하얗게, 카메라의 `far` 값과 가깝다면 (카메라와 멀리 있으면) 검정으로  geometry를 간단하게 컬러링 합니다.
+
+``` js
+  const material = new THREE.MeshDepthMaterial()
+```
+
+## Adding a few light
+
+material 이 보여지기 위해서는 light 가 필요합니다. 간단한 light를 scene에 추가해봅시다. light 에 대한 자세한 설명은 다음 강의에서 다룹니다.
+
+* [AmbientLight](https://threejs.org/docs/index.html#api/en/lights/AmbientLight)
+``` js
+  /**
+  * ✨ Lights
+  */
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+  scene.add(ambientLight)
+```
+* [PointLight](https://threejs.org/docs/#api/en/lights/PointLight)
+
+``` js
+  // ...
+  const pointLight = new THREE.PointLight(0xffffff, 0.5)
+  pointLight.position.x = 2
+  pointLight.position.y = 3
+  pointLight.position.z = 4
+  scene.add(pointLight)
+```
+
+## MeshLambertMaterial
+
+[MeshLambertMaterial](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) 는 빛을 반사하는 material 입니다.
+
+``` js
+  const material = new THREE.MeshLambertMaterial()
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-15.png" width=400>
+
+점점 실사에 가까워지고 있습니다. 빛 반사는 아주 진짜같지는 않지만, 좋습니다.
+
+[MeshLambertMaterial](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) 는 [MeshBasicMaterial](https://threejs.org/docs/index.html#api/en/materials/MeshBasicMaterial)과 같은 property들을 지원할 뿐 아니라 빛과 관련된 property들도 지원합니다. 
+
+MeshLambertMaterial 는 빛을 사용하는 가장 퍼포먼스에 강한 material 입니다. 안타깝게도 parameter들은 간단하진 않으며, sphere 같은 둥근 geometry를 자세히 보면 이상한 패턴을 표면에서 확인할 수 있습니다.
+
+
+## MeshPhongMaterial
+
+[MeshPhongMaterial](https://threejs.org/docs/#api/en/materials/MeshPhongMaterial) 은 [MeshLamberMaterial](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) 와 아주 유사하지만, 이상한 패턴은 덜 보이고, 빛 반사를 geometry 표면에서 볼 수 있습니다.
+
+``` js
+  const material = new THREE.MeshPhongMaterial()
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-16.png" width=400>
+
+MeshPhongMaterial 은 [MeshLamberMaterial](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) 보다  퍼포먼스가 약간 떨어지지만, 이런 수준(간단한 geometry) 에서는 큰 상관이 없습니다.
+
+`shiness`, `specular`  property로 빛 반사를 제어, 색상 설정을 할 수도 있습니다.
+
+``` js
+  material.shininess = 100
+  material.specular = new THREE.Color(0x1188ff)
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-17.png" width=400>
+
+
+## MeshToonMaterial
+
+[MeshToonMaterial](https://threejs.org/docs/#api/en/materials/MeshToonMaterial) 는 [MeshLamberMaterial](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) 과 property가 비슷하지만 조금 더 만화적인 느낌이 납니다.
+
+``` js
+  const material = new THREE.MeshToonMaterial()
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-18.png" width=400>
+
+기본으로는 2가지 색상으로 이루어져있습니다(하나는 그림자, 하나는 빛). 색상 단계를 더 추가하고싶을 경우에는 `gradientMap` property를 사용합니다.
+
+``` js
+  material.gradientMap = gradientTexture
+```
+
+테스트해보면, 만화적인 효과가 나타나지 않습니다. 이것은 우리가 load한 gradient texture(`gradientTexture`) 파일이 너무 작고, texture의 pixel들이 혼합되어 그렇습니다. **[Texture 강의](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210309_11%20Texture.md#filtering%EA%B3%BC-mipmapping)에서 본 `mipmapping` 과 같은 `minFilter`, `magFilter` 의 문제입니다.**
+
+이 문제를 해결하기 위해서는, `minFilter`, `magFilter` 를 `THREE.NearestFilter`로 변경해주어야 합니다.
+> `THREE.NearestFitler` 는 mipmapping을 사용하지 않겠다는 의미이므로, `gradientTexture.generateMipmaps = false` 로 설정할 수 있습니다.
+
+``` js
+  // ...
+  const gradientTexture = textureLoader.load('/textures/gradients/3.jpg')
+  gradientTexture.minFilter = THREE.NearestFilter
+  gradientTexture.magFilter = THREE.NearestFilter
+  gradientTexture.generateMipmaps = false
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-20.png" width=400>
+
+# MeshStandardMaterial
