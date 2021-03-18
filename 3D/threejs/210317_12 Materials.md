@@ -1,5 +1,6 @@
 # Materials
 
+- [Materials](#materials)
 - [Prepare scene](#prepare-scene)
 - [Material Class](#material-class)
   - [MeshBasicMaterial](#meshbasicmaterial)
@@ -10,7 +11,11 @@
   - [MeshLambertMaterial](#meshlambertmaterial)
   - [MeshPhongMaterial](#meshphongmaterial)
   - [MeshToonMaterial](#meshtoonmaterial)
-- [MeshStandardMaterial](#meshstandardmaterial)
+  - [MeshStandardMaterial](#meshstandardmaterial)
+  - [MeshPhysicalMaterial](#meshphysicalmaterial)
+  - [PointsMaterial](#pointsmaterial)
+  - [ShaderMaterial 과 RawShaderMaterial](#shadermaterial-과-rawshadermaterial)
+  - [Environment map](#environment-map)
 
 Materials 는 geometry의 보여지는 pixel에 색상을 입힐때 사용됩니다.
 
@@ -334,4 +339,138 @@ MeshPhongMaterial 은 [MeshLamberMaterial](https://threejs.org/docs/#api/en/mate
 
 <img src="https://threejs-journey.xyz/assets/lessons/12/step-20.png" width=400>
 
-# MeshStandardMaterial
+## MeshStandardMaterial
+
+[MeshStandardMaterial](https://threejs.org/docs/#api/en/materials/MeshStandardMaterial) 은 물리적으로 rendering 원칙을 기반으로 사용합니다. Texture 강의에서 [PBR](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210309_11%20Texture.md#pbr)에 대해서 배웠죠. 
+[MeshLambertMaterial](https://threejs.org/docs/#api/en/materials/MeshLambertMaterial) 과 [MeshPhongMaterial](https://threejs.org/docs/#api/en/materials/MeshPhongMaterial) 과 윳하게, 빛(light)을 더 진짜같은 알고리즘을 이용하여 지원하고, roughness와 metalness같은 더 나은 파라미터들 지원합니다.
+
+PBR은 많은 software, engine, library 에서 표준이 되고 있으므로 "standard" 라고 부릅니다. 이 아이디어는 실제같은 parameter와 함께 진짜같은 결과를 가지기 위한 것 이며, 사용하는 기술에 상관없이 정말 비슷한 결과를 얻을 수 있을 것 입니다.
+
+``` js
+  const material = new THREE.MeshStandardMaterial()
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-22.png" width=400>
+
+``` js
+  material.metalness = 0.45
+  material.roughness = 0.65
+  material.map = doorColorTexture
+```
+
+* `roughness`, `metalness` property를 직접적으로 수정할 수 있습니다.
+  
+  > <img src="https://threejs-journey.xyz/assets/lessons/12/step-23.png" width=400>
+
+* `map` property는 간단한 texture를 입력할 수 있습니다.
+  > <img src="https://threejs-journey.xyz/assets/lessons/12/step-25.png" width=400>
+
+* `apMap` property는 (말 그대로 'ambient occlusion map') texture가 어두운 부분에 그림자를 추가합니다. 이 기능이 작동하기 위해서는 "두 번째 UV 세트(geometry 에서 texture를 배치하는데 도움이 되는 좌표)"를 추가해야합니다.
+  
+  [Geometry 강의](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210228_09%20Geometry.md#buffer-geometry-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0)에서처럼 기본 `uv` attribute를 사용하여 새로운 attribute를 추가해야합니다. 더 간단한 용어로, `uv` attribute를 복사합니다.
+
+  ``` js  
+    const sphere = new THREE.Mesh( /* ... */ )
+    sphere.position.x = -1.5
+    const sphereUV = sphere.geometry.attributes.uv.array
+    sphere.geometry.setAttribute('uv2', new THREE.BufferAttribute(sphereUV, 2))
+
+    const plane = new THREE.Mesh( /* ... */ )
+    const planeUV = plane.geometry.attributes.uv.array
+    plane.geometry.setAttribute('uv2', new THREE.BufferAttribute(planeUV, 2))
+
+    const torus = new THREE.Mesh( /* ... */ )
+    torus.position.x = 1.5
+    const torusUV = torus.geometry.attributes.uv.array
+    torus.geometry.setAttribute('uv2', new THREE.BufferAttribute(torusUV, 2))
+  ```
+
+  이제 `doorAmbientOcclusionTexture` texture 를 사용하여 `aoMap` 을 추가하고 `aoMapIntensity` property를 사용하여 강도를 조절합니다.
+
+``` js
+  material.aoMap = doorAmbientOcclusionTexture
+  material.aoMapIntensity = 1
+```
+  > <img src="https://threejs-journey.xyz/assets/lessons/12/step-26.png" width=400>
+
+  갈라진 틈은 이제 더 어두워지고, 대비와 단계가 생성되었습니다.
+
+* `displacementMap` property는 꼭짓점을 움직여 실제 경감도(높낮이)를 조절합니다.
+  
+``` js
+  material.displacementMap = doorHeightTexture
+```
+
+  > <img src="https://threejs-journey.xyz/assets/lessons/12/step-27.png" width=400>
+
+  엄청 구려보이네요. 이것은 geometry의 꼭짓점이 부족하기 때문 이며, deplacement가 너무 크게 설정되어있기 때문입니다. 세분화가 필요하므로 꼭짓점을 크게 설정합니다.
+
+  ``` js
+  material.displacementScale = 0.05
+
+  // ...
+  new THREE.SphereGeometry(0.5, 64, 64),
+  // ...
+  new THREE.PlaneGeometry(1, 1, 100, 100),
+  // ...
+  new THREE.TorusGeometry(0.3, 0.2, 64, 128),
+  ```
+
+
+``` js
+  material.metalnessMap = doorMetalnessTexture
+  material.roughnessMap = doorRoughnessTexture
+```
+* `metalnessMap`과 `roughnessMap` 을 이용하여 물체의 상세한 쇠/요철 등을 표현할 수 있습니다.
+
+* `normalMap` 은 normal 방향을 속일 수 있고 세분화에 상관없이 표면의 자세한 요철을 재현해 낼 수 있습니다.
+* `normalScale`로 normal 강도를 조절할 수 있습니다. - [Vector2](https://threejs.org/docs/index.html#api/en/math/Vector2) 이므로 조심해야합니다.  
+
+``` js
+  material.normalMap = doorNormalTexture
+  material.normalScale.set(0.5, 0.5)
+```
+> <img src="https://threejs-journey.xyz/assets/lessons/12/step-31.png" width=400>
+
+``` js
+  material.transparent = true
+  material.alphaMap = doorAlphaTexture
+```
+
+* `alphaMap` property를 이용하여 alpha를 조절 할 수 있습니다. `transparent` proeprty를 true로 설정하는것, 잊지 마세요!
+  
+> <img src="https://threejs-journey.xyz/assets/lessons/12/step-32.png" width=400>
+
+
+## MeshPhysicalMaterial
+
+[MeshPhysicalMaterial](https://threejs.org/docs/index.html#api/en/materials/MeshPhysicalMaterial) 는 [MeshStandardMaterial](https://threejs.org/docs/#api/en/materials/MeshStandardMaterial) 와 비슷하지만 clear coat 효과를 지원합니다. clear coat property를 제어할 수 있고, [Three.js](https://threejs.org/examples/#webgl_materials_physical_clearcoat) 예제 같은 texture를 사용할 수도있습니다.
+
+## PointsMaterial
+
+[PointsMaterial](https://threejs.org/docs/index.html#api/en/materials/PointsMaterial) 는 particle과 함께 사용할 수 있습니다. 다음 레슨에서 확인할 수 있습니다.
+
+## ShaderMaterial 과 RawShaderMaterial
+
+[ShaderMaterial](https://threejs.org/docs/index.html#api/en/materials/ShaderMaterial) 와 [RawShaderMaterial](https://threejs.org/docs/index.html#api/en/materials/RawShaderMaterial) 는 material을 직접 생성하기 위해 사용됩니다. 다음 레슨에서 확인할 수 있습니다.
+
+## Environment map
+
+환경 맵(environment map)은 scene을 둘러싸고있는 이미지 입니다. 환경 맵에 추가된 이미지를 반사, 왜곡 등을 생성된 오브젝트에 추가할 수 있습니다. 조절하기 위해서는 lighting 정보가 사용됩니다.
+
+다시 간단한 MeshStandardMaterial 을 기본으로 세팅해놓습니다.
+
+``` js
+  const material = new THREE.MeshStandardMaterial()
+  material.metalness = 0.7
+  material.roughness = 0.2
+  
+  // gui debugger
+  gui.add(material, 'metalness').min(0).max(1).step(0.0001)
+  gui.add(material, 'roughness').min(0).max(1).step(0.0001)
+```
+환경 맵을 material에 추가 하기 위해서는 `envMap` property 를 사용해야합니다. Three.js는 cube 형태의 환경 맵을 지원합니다. Cube 환경 맵은 각 면에 해당하는 6개의 이미지 로 구성되어있습니다.
+
+[TextureLoader](https://threejs.org/docs/index.html#api/en/loaders/TextureLoader) 대신 [CubeTextureLoader](https://threejs.org/docs/index.html#api/en/loaders/CubeTextureLoader) 를 사용하여 texture를 불러옵니다.
+
+...
