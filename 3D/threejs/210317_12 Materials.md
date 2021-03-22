@@ -478,23 +478,24 @@ PBR은 많은 software, engine, library 에서 표준이 되고 있으므로 "st
 CubeTextureLoader 를 `material`를 정의하기 전에 초기화 하고, `load(...)` 메서드를 여러개의 image path를 Array 형식으로 호츨합니다.
 
 ``` js
-    const cubeTextureLoader = new TRHEE.CubeTextureLoader()
+  const cubeTextureLoader = new THREE.CubeTextureLoader()
 
-    const environmentMapTexture = cubeTextureLoader.load([
-        '...',
-        '...',
-        '...',
-        '...',
-    ])
+  // ...
+  const environmentMapTexture = cubeTextureLoader.load([
+      '/textures/environmentMaps/1/px.jpg', // positive x
+      '/textures/environmentMaps/1/nx.jpg', // negative x
+      '/textures/environmentMaps/1/py.jpg', // positive y
+      '/textures/environmentMaps/1/nx.jpg', // negative y
+      '/textures/environmentMaps/1/pz.jpg', // positive z
+      '/textures/environmentMaps/1/nz.jpg', // negative z
+  ])
 
-    // ...
-    material.envMap = environmentMapTexture
+  // ...
+  material.envMap = environmentMapTexture
 ```
 
 
-
-❤
-<img src="" width=400> asdfasdf
+<img src="https://threejs-journey.xyz/assets/lessons/12/step-34.png" width=400>
 
 이제 주변 이미지가 geometry의 표면에 반사되는 것을 볼 수 있습니다. `metalness` 와 `roughness` 를 변경하여 다른 결과를 만들어 낼 수 있습니다.
 
@@ -503,8 +504,8 @@ CubeTextureLoader 를 `material`를 정의하기 전에 초기화 하고, `load(
 
 # Environtment maps를 찾는 곳
 
-[HDRIHaven]() - HDRI 이미지들이 많이 있는 곳 입니다. HDRI 는 (**High Dynamic Range Imaging**) 이미지로 이루어져있고, 하나의 이미지 대신에 light 정보를 향상시킬 수 있는 더 많은 복잡한 데이터를 가지고 있기 때문에 더 진짜같은 결과를 확인할 수 있습니다.
+[HDRIHaven](https://hdrihaven.com/) - HDRI 이미지들이 많이 있는 곳 입니다. HDRI 는 (**High Dynamic Range Imaging**) 이미지로 이루어져있고, 하나의 이미지 대신에 light 정보를 향상시킬 수 있는 더 많은 복잡한 데이터를 가지고 있기 때문에 더 진짜같은 결과를 확인할 수 있습니다.
  
-그러나 Three.js 는 cube map 만을 지원하기 때문에, HDRI 이미지를 cube map으로 변환하기 위해서는, [여기]() 를 이용할 수 있습니다.
+그러나 Three.js 는 cube map 만을 지원하기 때문에, HDRI 이미지를 cube map으로 변환하기 위해서는, [여기](https://matheowis.github.io/HDRI-to-CubeMap/) 를 이용할 수 있습니다.
 
 HDRI 이미지를 업로드하고, 원하는 화면을 찾을때까지 회전시킨 후, 6개의 이미지로 이루어진 cubemap을 다운로드 하면 됩니다. 기본 파일 형식은 `.png` 이고, `.jpg` 로 변경도 할 수 있습니다.
