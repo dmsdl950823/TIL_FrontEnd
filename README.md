@@ -67,6 +67,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210305 _ 10 Debug UI](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210305_10%20Debug%20UI.md)
 * [210309 _ 11 Texture](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210309_11%20Texture.md)
 * [210317 _ 12 Materials](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210317_12%20Materials.md)
+* [210324 _ 13 3D Text](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/3D/threejs/210324_13%203D%20Text.md)
 
 
 
