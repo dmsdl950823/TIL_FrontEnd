@@ -45,30 +45,45 @@
 
 기본 테스트 파일명: `*.test.js`
 
+| method       | desc                                                                                                                                                                   |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `describe()` | `test()` 코드를 하나의 테스트 작업 단위로 묶어주는 API.<br>하나의 테스트 케이스를 `test()` 라고 한다면 `describe()` 는 여러개의 테스트 케이스를 하나의 그룹으로 묶어줌 |
+| `it()`       | 테스트 코드를 돌리기 위한 API. 하나의 테스트 케이스를 의미                                                                                                             |
+| `test()`     | JEST API? - 테스트 코드를 돌리기 위한 API. 하나의 테스트 케이스를 의미 (`it()` 과 동일)                                                                                                           |
+| `expect()`   | JEST API? - 테스트를 할 대상을 넣는 API. 주로 테스트 입력값 또는 기대 값 입력                                                                                                      |
+| `toBe()`     | JEST API? - 테스트의 결과를 확인하는 API                                                                                                                                           |
+
+
+
+
 ```js 
-
-describe('A_module 테스트', () => {
-    beforeEach(() => {
-        // 각 테스트 전에 실행
-    })
-
-    afterEach(() => {
-        // 각 테스트 이후에 실행
-    })
-
-    describe(('A_module.a_method 테스트', () => {
-        it('a_method 테스트 1', () => {
-            // ...
+    describe('A_module 테스트', () => {
+        beforeEach(() => {
+            // 각 테스트 전에 실행
         })
 
-        it('a_method 테스트 2', () => {
-            // ...
+        afterEach(() => {
+            // 각 테스트 이후에 실행
         })
-    }))
-})
+
+        describe(('A_module.a_method 테스트', () => {
+            it('a_method 테스트 1', () => {
+                // ...
+            })
+
+            test('a_method 테스트 2', () => {
+                // ...
+                expect(/* ... */).toBe(/* ... */)
+            })
+        }))
+    })
 ```
 
 -------------
 출처
 [GOGO Tistory](https://gogomalibu.tistory.com/138) , 
-[kijungsong.github](https://kijungsong.github.io/2020/04/15/javascript-test-jasmine/)
+[kijungsong.github](https://kijungsong.github.io/2020/04/15/javascript-test-jasmine/), 
+[cypress 환경 구축하기](https://class101.dev/ko/blog/2020/06/24/han/),
+[jest puppetter](https://www.loginradius.com/blog/async/e2e-testing-with-jest-puppeteer/),
+[Cracking Vue.js](https://joshua1988.github.io/vue-camp/testing/jest-testing.html#jest-api),
+[Toast UI](https://ui.toast.com/fe-guide/ko_TEST#%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8F%84%EA%B5%AC)
