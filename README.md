@@ -14,9 +14,9 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [200802 _ LazyLoading](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200802_LazyLoading.md)
 * [201212 _ LocalStorage vs SessionStorage](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/201212%20LocalStorage%20vs%20SessionStorage.md)
 * [210113 _ Client Detection](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210113_Client%20Detection.md)
-* [210208 _ DOM](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
-* [210217 _ DOM / NodeType](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210217_Node%20Type.md)
-* [210224 _ DOM2 & DOM3](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210224_DOM2%20%26%20DOM3.md)
+* [210208 _ DOM - 01 DOM ](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210208_DOM.md)
+* [210217 _ DOM - 02 NodeType](https://github.com/dmsdl950823/TIL/blob/master/Javascript/DOM/210217_Node%20Type.md)
+* [210224 _ DOM - 03 3DOM2 & DOM3](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210224_DOM2%20%26%20DOM3.md)
 * [210302 _ Javascript performance beyond bundle size](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210302_Javascript%20performance%20beyond%20bundle%20size.md) JS performance & bundler size 압축 
 * [210315 _ Event](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210315_Event.md) 진행중
 * [210317 _ Javascript에서의 Event Loop, Callback, Promises, Async, Await](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210317_Javascript%EC%97%90%EC%84%9C%EC%9D%98%20Event%20Loop%2C%20Callback%2C%20Promises%2C%20Async%2C%20Await.md) 진행중
