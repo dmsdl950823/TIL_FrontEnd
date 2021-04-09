@@ -4,7 +4,7 @@
     - [Boolean to String](#boolean-to-string)
     - [Array to String](#array-to-string)
     - [Object to String](#object-to-string)
-  - [Boolean type conversion (불린 변환)](#boolean-type-conversion-불린-변환)
+- [Boolean type conversion (불린 변환)](#boolean-type-conversion-불린-변환)
     - [String to Boolean](#string-to-boolean)
     - [Number to Boolean](#number-to-boolean)
     - [Undefined to Boolean](#undefined-to-boolean)
@@ -83,7 +83,7 @@ Mathematical operations convert Empty String to zero:
     value = 30 - '5'      // 25 -> If we write a number in a string, we will get a number type
 ```
 
-## Boolean type conversion (불린 변환)
+# Boolean type conversion (불린 변환)
 
 수학적인 계산에서, `true` 는 `1` 이며, `false` 는 `0` 으로 변환됩니다.
 
