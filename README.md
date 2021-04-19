@@ -19,10 +19,10 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210224 _ DOM - 03 3DOM2 & DOM3](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210224_DOM2%20%26%20DOM3.md)
 * [210302 _ Javascript performance beyond bundle size](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210302_Javascript%20performance%20beyond%20bundle%20size.md) JS performance & bundler size 압축 
 * [210315 _ Event](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210315_Event.md) 진행중
-* [210317 _ Javascript에서의 Event Loop, Callback, Promises, Async, Await](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210317_Javascript%EC%97%90%EC%84%9C%EC%9D%98%20Event%20Loop%2C%20Callback%2C%20Promises%2C%20Async%2C%20Await.md) 진행중
+* [210317 _ Javascript에서의 Event Loop, Callback, Promises, Async, Await](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210317_Javascript%EC%97%90%EC%84%9C%EC%9D%98%20Event%20Loop%2C%20Callback%2C%20Promises%2C%20Async%2C%20Await.md) 재정리 필요
 * [210409 _ JS Basic Type Conversions](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210409_JS%20Basic%20Type%20Conversions.md)
 
-### Typescript
+#### Typescript
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
 * [210217 _ Typescript / Class Object](https://github.com/dmsdl950823/TIL/blob/master/Typescript/210217_Class%20Object.md) ...진행중
 
@@ -36,7 +36,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 > ReactNative Components library
 > * [CreditCardInput](https://github.com/sbycrosz/react-native-credit-card-input)
 > * [CameraLibrary](https://github.com/cuvent/react-native-vision-camera)
-> * [React Native Simple Biometrics](https://github.com/smallcasetech/react-native-simple-biometrics) 지문/
+> * [React Native Simple Biometrics](https://github.com/smallcasetech/react-native-simple-biometrics) 지문 인식
 
 #### Vue
 
@@ -50,7 +50,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210220 _ Vue2 vs Vue3 Difference](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue3/210220_Vue2%20vs%20Vue3%20Difference.md)
 * [210301 _ Vue Render Function](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210301_Vue%20Render%20Function.md) 진행중
  
-### GraphQL
+#### GraphQL
 * [GraphQL](./FrameWork/GraphQL/GraphQL.md)
 
 ### CSS
@@ -61,6 +61,9 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 
 ## 🥨 Algorithm
 * [210412 _ 자료구조가 중요한 이유](./Algorithm/210412_자료구조가%20중요한%20이유.md)
+* [210417 _ 알고리즘이 중요한 까닭](./Algorithm/210417_알고리즘이%20중요한%20까닭.md)
+* [210418 _ 빅 오 표기법](./Algorithm/210418_빅%20오%20표기법.md)
+* [210419 _ 빅 오로 코드 속도 올리기](Algorithm/210419_빅%20오로%20코드%20속도%20올리기.md)
 
 <br>
 
