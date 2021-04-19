@@ -3,7 +3,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 
 ------------------
 
-## 🥨 FrontEnd
+## 🍦 FrontEnd
 ### Javascript
 * [200321 _ ES6](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/%20200321_ES6.md)
 * [200420 _ Promise & async](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/Javascript/200420_Promise%20&%20async.md) 보충 필요
@@ -50,6 +50,8 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210220 _ Vue2 vs Vue3 Difference](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue3/210220_Vue2%20vs%20Vue3%20Difference.md)
 * [210301 _ Vue Render Function](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/FrameWork/Vue/210301_Vue%20Render%20Function.md) 진행중
  
+### GraphQL
+* [GraphQL](./FrameWork/GraphQL/GraphQL.md)
 
 ### CSS
 * [210221 _ SASS & SCSS](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/CSS/CSS-preprocessor/210221_SASS%20%26%20SCSS.md)
@@ -57,7 +59,14 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 
 <br>
 
-## 🥨 3D
+## 🥨 Algorithm
+* [210412 _ 자료구조가 중요한 이유](./Algorithm/210412_자료구조가%20중요한%20이유.md)
+
+<br>
+
+
+
+## 🧊 3D
 ### Three.js
 * [210209 _ 05 Transform](https://github.com/dmsdl950823/TIL/blob/master/3D/threejs/210209_05%20Transform.md)
 * [210212 _ 06 Animation](https://github.com/dmsdl950823/TIL/blob/master/3D/threejs/210212_06%20animation.md)
@@ -76,7 +85,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 
 <br>
 
-## 🥨 Info & Design & Notion
+## 💎 Info & Design & Notion
 ### Info
 * [210210 _ ServerSide Rendering](https://github.com/dmsdl950823/TIL/blob/master/Notion/ServerSide%20Rendering.md) 서버사이드 렌더링 개념 (보충  필요)
 * [210212 _ 자료구조와 알고리즘의 필요성](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210212_%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%ED%95%84%EC%9A%94%EC%84%B1.md)
