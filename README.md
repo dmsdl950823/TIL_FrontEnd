@@ -81,7 +81,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210210 _ ServerSide Rendering](https://github.com/dmsdl950823/TIL/blob/master/Notion/ServerSide%20Rendering.md) 서버사이드 렌더링 개념 (보충  필요)
 * [210212 _ 자료구조와 알고리즘의 필요성](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210212_%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%ED%95%84%EC%9A%94%EC%84%B1.md)
 * [210304 _ Javascript에서 Stack & Queue](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210304_Javascript%EC%97%90%EC%84%9C%20Stack%20%26%20Queue.md) Stack 개념 추가 
-* [210331 _ TEST CODE 의 필](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210331_TEST%20CODE%EC%9D%98%20%ED%95%84%EC%9A%94%EC%84%B1.md)
+* [210331 _ TEST CODE 의 필요성](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210331_TEST%20CODE%EC%9D%98%20%ED%95%84%EC%9A%94%EC%84%B1.md)
 
 ### Design
 * [210218 _ Design / UI 용어 - 팝업](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/Design/210218_UI%20%EC%9A%A9%EC%96%B4%20-%20%ED%8C%9D%EC%97%85.md)
