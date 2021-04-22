@@ -6,6 +6,10 @@
   - [Fog](#fog)
   - [Textures](#textures)
   - [The Door](#the-door)
+  - [Walls (벽 텍스쳐)](#walls-벽-텍스쳐)
+  - [바닥 (Grass)](#바닥-grass)
+  - [Ghost](#ghost)
+    - [Shadow](#shadow)
 
 
 ## Walls (벽)
@@ -224,7 +228,7 @@ fog를  활성화 시키기위해서는. `fog` 프로퍼티를 `scene` 에 추�
 ``` js
     // Door
     const door = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2, 2, 100, 100),
+        new THREE.PlaneBufferGeometry(2.2, 2.2, 100, 100),
         new THREE.MeshStandardMaterial({
             map: doorColorTexture,
             transparent: true,
@@ -245,3 +249,243 @@ fog를  활성화 시키기위해서는. `fog` 프로퍼티를 `scene` 에 추�
 ```
 
 <img src="https://threejs-journey.xyz/assets/lessons/16/step-12.png" width=500>
+
+## Walls (벽 텍스쳐)
+
+벽에 `/static/textures/bricks/` 폴더 내부에 있는  texture 를 이용하여 표면에 질감을 줍니다. 문 처럼 많은 texture 가 있지는 않지만, 그렇게 큰 문제는 아닙니다. alpha texture와 metal은 필요없으므로, metalness texture 도 필요하지 않습니다.
+
+``` js
+    /**
+    * Textures
+    */
+    // ...
+    const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
+    const bricksAmbientOcclusionTexture = textureLoader.load('/textures/bricks/ambientOcclusion.jpg')
+    const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
+    const bricksRoughnessTexture = textureLoader.load('/textures/bricks/roughness.jpg')
+```
+
+그 다음, 벽의 [MeshStandardMaterial](https://threejs.org/docs/index.html#api/en/materials/MeshStandardMaterial) 를 업데이트 해줄 수 있습니다. `color` 프로퍼티를 삭제하고 ambient occlusion 을 위한 `uv2`  속성을 추가하는것을 잊지마세요!
+
+``` js
+    // Walls
+    const walls = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(4, 2.5, 4),
+        new THREE.MeshStandardMaterial({
+            map: brickColorTexture,
+            aoMap: brickAmbientOcclusionTexture,
+            normalMap: brickNormalTexture,
+            roughnessMap: brickRoughnessTexture
+        })
+    )
+    walls.geometry.setAttribute(
+        'uv2',
+        new THREE.Float32BufferAttribute(walls.geometry.attributes.uv.array, 2)
+    )
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/16/step-14.png" width=500>
+
+## 바닥 (Grass)
+
+벽과 마찬가지로, `/static/textures/grass/` 에 위치한 풀 texture 를 로드합니다.
+
+``` js
+    /**
+    * Textures
+    */
+    // ...
+    const grassColorTexture = textureLoader.load('/textures/grass/color.jpg')
+    const grassAmbientOcclusionTexture = textureLoader.load('/textures/grass/ambientOcclusion.jpg')
+    const grassNormalTexture = textureLoader.load('/textures/grass/normal.jpg')
+    const grassRoughnessTexture = textureLoader.load('/textures/grass/roughness.jpg')
+```
+
+바닥의 [MeshStandardMaterial](https://threejs.org/docs/index.html#api/en/materials/MeshStandardMaterial) 을 업데이트하고, `color` 프로퍼티를 제거하고 `aoMap` 을 위하여 `uv2` attribute 를 추가합니다.
+
+``` js
+    // Floor
+    const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 20),
+        new THREE.MeshStandardMaterial({
+            map: grassColorTexture,
+            aoMap: grassAmbientOcclusionTexture,
+            normalMap: grassNormalTexture,
+            roughnessMap: grassRoughnessTexture
+        })
+    )
+    floor.geometry.setAttribute(
+        'uv2',
+        new THREE.Float32BufferAttribute(floor.geometry.attributes.uv.array, 2)
+    )
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/16/step-15.png" width=500>
+
+현재 texture 가 너무 큽니다. 수정하려면 간단하게 grass texture 를 `repeat` 프로퍼티를 이용하여 반복시켜주면 됩니다.
+
+``` js
+    /**
+    * Textures
+    */
+    // ...
+    grassColorTexture.repeat.set(8, 8)
+    grassAmbientOcclusionTexture.repeat.set(8, 8)
+    grassNormalTexture.repeat.set(8, 8)
+    grassRoughnessTexture.repeat.set(8, 8)
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/16/step-16.png" width=500>
+
+반복을 활성화 시켜주려면 `wrapS` 와 `wrapT` 프로퍼티를 변경해야합니다.
+
+``` js
+    grassColorTexture.wrapS = THREE.RepeatWrapping
+    grassAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping
+    grassNormalTexture.wrapS = THREE.RepeatWrapping
+    grassRoughnessTexture.wrapS = THREE.RepeatWrapping
+
+    grassColorTexture.wrapT = THREE.RepeatWrapping
+    grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
+    grassNormalTexture.wrapT = THREE.RepeatWrapping
+    grassRoughnessTexture.wrapT = THREE.RepeatWrapping
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/16/step-17.png" width="500">
+
+
+## Ghost
+
+유령을 만들기 위해서는, 우리가 아는 내용들을 간단하게 사용해야합니다.
+
+간단한 light 를 집 주변으로 둥둥 띄워서 묘비 주변을 지나다니도록 설정할 것 입니다.
+
+``` js
+    // Ghosts
+    const ghost1 = new THREE.PointLight('#ff00ff', 2, 3)
+    const ghost2 = new THREE.PointLight('#00ffff', 2, 3)
+    const ghost3 = new THREE.PointLight('#ffff00', 2, 3)
+    scene.add(ghost1, ghost2, ghost3)
+```
+
+이제 삼각법 수학적 공식을 이용하여 애니메이션을 입힙니다.
+
+``` js
+    /**
+    * Animate
+    */
+    const clock = new THREE.Clock()
+
+    const tick = () =>
+    {
+        const elapsedTime = clock.getElapsedTime()
+
+        // Update Ghosts
+        const ghost1Angle = elapsedTime * 0.5
+        ghost1.position.x = Math.cos(ghost1Angle) * 4
+        ghost1.position.z = Math.sin(ghost1Angle) * 4
+        ghost1.position.y = Math.sin(ghost1Angle * 3)
+
+        const ghost2Angle = - elapsedTime * 0.5
+        ghost2.position.x = Math.cos(ghost2Angle) * 5
+        ghost2.position.z = Math.sin(ghost2Angle) * 5
+        ghost2.position.y = Math.sin(ghost2Angle * 4) * Math.sin(elapsedTime * 2.5)
+
+        const ghost3Angle = - elapsedTime * 0.18
+        ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.32))
+        ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
+        ghost3.position.y = Math.sin(ghost3Angle * 5) + Math.sin(elapsedTime * 2)
+
+        // ...
+    }
+```
+
+### Shadow
+
+마지막으로, 진짜같이 보이도록 하기 위해서 shadow 를 추가합니다.
+
+``` js
+    /**
+    * Shadows
+    */
+    renderer.shadowMap.enabled = true
+```
+
+그림자를 만들어야 할 곳에 빛의 shadow 를 활성화 시켜줍니다.
+
+``` js
+    moonLight.castShadow = true
+    doorLight.castShadow = true
+    ghost1.castShadow = true
+    ghost2.castShadow = true
+    ghost3.castShadow = true
+
+    walls.castShadow = true
+    bush1.castShadow = true
+    bush2.castShadow = true
+    bush3.castShadow = true
+    bush4.castShadow = true
+```
+
+scene 의 각 object 에 적용하세요.
+
+``` js
+    // Graves
+    // ...
+    for (let i = 0; i < 50; i++) {
+        // ...
+        grave.castShadow = true // shadow
+        // ...
+    }
+
+    /**
+    * Shadows
+    */
+    // ...
+    floor.receiveShadow = true
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/16/step-19.png" width=500>
+
+그림자가 있어서 훨씬 더 자연스러워졌지만, 퍼포먼스때문에 최적화를 시켜주어야 합니다.
+
+``` js
+    /**
+    * Renderer
+    */
+    // ...
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+```
+
+``` js
+    /**
+    * Shadows
+    */
+    // ...
+    moonLight.shadow.mapSize.width = 256
+    moonLight.shadow.mapSize.height = 256
+    moonLight.shadow.camera.far = 15
+    // ...
+
+    doorLight.shadow.mapSize.width = 256
+    doorLight.shadow.mapSize.height = 256
+    doorLight.shadow.camera.far = 7
+    // ...
+
+    ghost1.shadow.mapSize.width = 256
+    ghost1.shadow.mapSize.height = 256
+    ghost1.shadow.camera.far = 7
+    // ...
+
+    ghost2.shadow.mapSize.width = 256
+    ghost2.shadow.mapSize.height = 256
+    ghost2.shadow.camera.far = 7
+    // ...
+
+    ghost3.shadow.mapSize.width = 256
+    ghost3.shadow.mapSize.height = 256
+    ghost3.shadow.camera.far = 7
+    // ...
+```
+
+과정은 길지만 퍼포먼스를 위해서는 필수적입니다. 이미 퍼포먼스 한계에 대해서 언급하였으므로, 이 예제는 모바일에서는 60fps 를 지원하는 모바일 환경에서는 지원되지 않을 수 있습니다. 추후 강의에서 퍼포먼스에 대한 이야기를 나눠볼 것 입니다.
