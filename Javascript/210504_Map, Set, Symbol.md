@@ -5,6 +5,9 @@
     - [set() 과 get() 으로 값 할당하기](#set-과-get-으로-값-할당하기)
     - [Map 내부 순회](#map-내부-순회)
     - [Array 와의 관계](#array-와의-관계)
+  - [Set](#set)
+    - [add() 와 delete() 로 Set 객체 사용](#add-와-delete-로-set-객체-사용)
+    - [Set 내부 순회](#set-내부-순회)
 
 ## Map
 
@@ -128,3 +131,45 @@
     const isArray = [...map] // [['key1', 'value1'], ['key2', 'value2']]
     Array.from(map.keys()) // [ 'key1', 'key2' ]
 ```
+
+
+## Set
+
+`Set` 객체는 자료형에 관계 없이 원시 값과 객체 참조 모두 유일한 값을 저장할 수 있습니다.
+
+
+<img src="./images/스크린샷%202021-05-04%20오후%206.55.33.png" width=200>
+
+### add() 와 delete() 로 Set 객체 사용
+
+``` js
+    const set = new Set([1, 2, 3, 4, 5])
+
+    set.has(1) // true
+    set.has(2) // true
+    set.has(5) // true
+    set.has(8) // false
+```
+
+``` js
+    const set = new Set()
+
+    set.add(1) // Set { 1 }
+    set.has(1) // true
+
+    set.add(5) // Set { 1, 5 }
+    set.add('텍스트') // Set { 1, 5, '텍스트' }
+
+    const o = { a: 1, b: '레몬' }
+    set.add(o) // Set { 1, 5, '텍스트', { a: 1, b: '레몬' } }
+    set.add({ a: 1, b: '레몬' }) // Set { 1, 5, '텍스트', { a: 1, b: '레몬' }, { a: 1, b: '레몬' } }
+
+    set.has(o) // true
+
+    set.size // 5
+
+    set.delete(5) // Set { 1, '텍스트', { a: 1, b: '레몬' }, { a: 1, b: '레몬' } }
+    set.size // 4
+```
+
+### Set 내부 순회
