@@ -21,6 +21,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210315 _ Event](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210315_Event.md) 진행중
 * [210317 _ Javascript에서의 Event Loop, Callback, Promises, Async, Await](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210317_Javascript%EC%97%90%EC%84%9C%EC%9D%98%20Event%20Loop%2C%20Callback%2C%20Promises%2C%20Async%2C%20Await.md) 재정리 필요
 * [210409 _ JS Basic Type Conversions](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Javascript/210409_JS%20Basic%20Type%20Conversions.md)
+* [210504 _ Map, Set, Symbol](Javascript/210504_Map,%20Set,%20Symbol.md)
 
 #### Typescript
 * [210208 _ Typescript](https://github.com/dmsdl950823/TIL/blob/master/Typescript/Typescript_Handbook_sum.md)  
