@@ -2,41 +2,55 @@
 
 출처 : [Dev.to](https://dev.to/dev_emmy/what-is-really-the-difference-between-cookie-session-and-tokens-when-it-comes-to-authentication-4164)
 
-To understand the difference between cookies, sessions and tokens we need to get back on the basics. Let's say you want to login to your bank account and you are provided with login screen where you can input your username and password and when you hit the submit button your username and password goes to the bank server.
+cookie, session, token의 차이를 이해하려면 기초부터 이해해야합니다.
+은행 계좌에 로그인 한다고 가정해봅시다.
 
-Then the server need to verify that you are really who you claim to be, so the bank will check against the database to see if your credentials match and if everything looks good the server will return your account overview page but will also create a session in the database with your login event and gives back to you the session_id inform of a cookie, in other words you have exchanged your username and password for this cookie containing the seesion_id, You send your username and password and then you recieve a cookie with a session_id. So the server will store the session information in the database while you will only have the session_id in the cookie which is stored in the file system of your computer, the session_id is randomly generated so it would be hard to guess, and when you logout, the session will be deleted on the server side but also the server will instruct your browser to delete the cookie containing the session_id as well.
+1. id 와 pw 를 스크린에 입력하고, 확인 버튼을 입력하면 id 와 pw 는 은행 서버에 전송됩니다.
+2. 서버는 어떤 아이디를 찾는지 확인 할 필요가 있으므로, 입력한  정보를 database 를 확인해서 찾아냅니다.
+3. 서버가 정보를 찾아내면 서버는 계좌 정보를 리턴합니다. 
+4. 이때, 로그인 이벤트와 함께 해당 계좌 정보의 database에 session 을 생성하고, session_id cookie정보 를 돌려줍니다. 다른말로, id 와 pw 를 이 session_id 정보를 담고있는 cookie와 교환합니다.   
+5. 서버는 session 정보를 database 에 저장하고, 그동안에 (session_id 를 저장하고있는) cookie 는 컴퓨터에 저장됩니다.
+   session_id는 임의로 지정되기 때문에 추측하기 어렵고, 로그아웃시에 서버사이드에 저장된 session은 삭제됩니다. 이 때 서버는 사용자의 브라우저에게 session_id 를 포함하고있는 cookie를 삭제하도록 알려줍니다.
+6. 이후 로그인을 하고 페이지를 요청 할 때, 브라우저는 서버가 여전히 가능한 정보인지 확인할 수 있도록 자동으로 session_id 를 포함한 cookie 를 자동으로 보내줍니다. 사용자를 확인하기 위해 id 와 pw 가 더 이상 필요하지 않은지 확인하기 위해 반드시 필요합니다.
+    > `membershipID` 와 기타 다른 정보를 가진 `Gym_membership_card` cookie 를 생각해보면, 접근시에 확인하고, 멤버십이 여전히 가능한지 확인하고 사용자 접근을 허용합니다.
+    > 
+    > session_id cookie도 특정 웹사이트에 동작합니다. 동일한 cookie 를 다른 사이트에서 사용할 수는 없습니다.
+7. 은행 서버는 사용자가 서버와 상호작용을 하는한 계속 session 을 활성화 할것 입니다. 만약 새로운 페이지를 방문해서 비활성화 된 경우, 서버는 이 비활성화 기간을 감지하고 보안 방책에 따라 처리합니다. 
 
-Next time when you login and you tend to request a page, your browser will automatically send a cookie containing a session_id which the server will check to see if it is still valid.It is essential to know that the next time your username and password are nolonger required in order to identify you.
+이러한 접근은 **쿠키 기반 검증** cookie-based authentication 이라고 합니다.
 
-Think of a cookie like your Gym_membership_card, it stores your membershipID, additional with other details and when you scan it at the entry, it checks if your membership is still valid and let's you in. So as like with your gym card, a cookie with your session_id only works with a specific website, like you can not use your gym card to enter office building forexample hte same goes to your cookie, you can not use it log into another different website.
+서버에서 session 울 사용하는 접근에 따라서, 검증을 핸들링합니다.
+cookie 는 sessionID 를 전달하는 방법이고, 간단하기때문에 사용됩니다. **브라우저는 모든 request 에 항상 cookie 를 끼워 보닐 것 입니다.** 이 경우에는 은행은 session 정보를 서버사이드에 저장하고, 내용을 볼 수 없지만, 동시에 브라우저에서 클라이언트 사이드에 정보를 저장합니다. 이런 정보는 마지막으로 방문한 페이지나 사용자가 선호하는 덜 민감한 정보들을 저장할 수 있습니다.
 
-So bank server will keep the session active as long as you keep interacting with the server, if for sometimes you are inactive and after that you visit a new page, the server will notice this period of inactivity and prompt you to provide your username and password again as a security measure.
-So the approach mentioned above is called a cookie-based authentication.
 
-Accordingly this approach used a session on the server to handle the authentication.The cookie is only a medium used to transport the sessionID and it is used because it is convinient, the browser will always send a cookie with every request. The same goes with membership_card, It is just convinient to have a card instead of showing you ID everytime but you can probably load the card on your phone and use your phone to get in, so the storage has changed but the concept remains the same, I mean in this case the bank stores the session information on the server side and you cannot see the contents of it but at the same time it can store othe information on the client side on your browser using another cookie forexample: which was the lastpage you visited or what is your preffered font-size or color or anyother less sensitive information.
+## 왜 서버는 cookie 에 있는 많은 정보를 저장하지 않을까?
 
-## WHY SERVERS DOES NOT STORE ALOT OF INFORMATION IN THE COOKIES ?
-But let's talk about why server doesn't store alot of information in the cookies, this is because the cookies cannot be trusted as they are coming from the client, this is why servers prefer to work with their databases where ideally only valid infromation exists.
+쿠키는 클라이언트로부터 오는지 확실할 수 없기 때문입니다. 이것이 서버가 이상적으로 타당한 정보가 존재하는 database 를 사용해서 작업하는 이유입니다.
 
-An alternative to this is to store information on the client and to sign it, in this scenario anyone holding the signature can quickly check if the data was manipulated or not and one way to do this is to use JSON WEB TOKENS, so basically cookie-based authentication has worked really well for many years but it is slowly becoming outdated atleast in some cases.
+만약 데이터가 조작된 경우 이것을 하는 한가지 방법은 JSON WEB TOKENTS를 사용하는 것입니다. 그러므로 기본적으로 쿠키 기반 검증은 몇년동안 잘 동작해왔지만 점점 뒤쳐지고있는 분위기입니다.
 
-Let's say now that you want to install an app on your phone which can help you with your financies and help keep track of your spendings using your bank account information, and what you don't want to do is to give your username and password to this app which is not associated with your bank, in this case your bank will redirect you to your bank account you will give in your username and password and your bank will ask you "hey John would you like to give this app access to your transactions?" and if you click yes the app will receive a token granting access to your transactions but the app will only view transactions, it will not be able to wire transfers or to see other details which you would normally be able to see when you login in your bank account. This token is like a randomly generated password if you would wish to say, it like when you we're at the hotel and you get a 1 day wifi password. Am sure you might have seen a similar procedure to this approach anytime you have used Facebook, Google or MicroSoft to grant information for your user profile to a third-party website.
-So in this exchange you never exchange you username and password, if you later want you can easily revoke access to your bank account by invalidating the token that was generated. So one of the most commonly used protocols for such scenario's are both openID Connect but also JON WEB TOKENS.
+자금을 관리해주고 은행 계좌 소비 내역 정보를 저장하는 앱을 핸드폰에 설치한다고 가정합니다. 사용자가 은행에 관련되지 않은 정보 (id, pw) 를 이 앱에다 저장하지 않길 바랍니다. 이런 경우, 은행은 사용자에게 은행 계좌가 id 와 pw 정보를 사용할 수 있도록 물어볼 것입니다. 만약 사용자가 정보를 사용하도록 허가해준다면, 앱은 token 에 접근 할 수 있도록 허가하지만, 상호작용하는 것 만 볼수 있으므로 (일반적으로 계좌로 로그인 할 때 볼 수 있는 ) 다른 상세한 정보를 전달할 수는 없습니다.
+이 token은 말하자면 임의로 생성된 비밀번호 같이 동작합니다. 예를 들자면 호텔에서 wifi 패스워드를 하루치 사용할 수 있도록 하는것과 비슷합니다. 이것에 접근하기 위해서 비슷한 절차를 본 적이 있을 것 입니다. (Facebook, Google, Microsoft 가 사용자의 프로필을 써드파티 웹사이트에 제공하도록 허가하는 등)
 
-## SO YOU ARE PROBABLY WONDERING WHAT IS THE DIFFERENCE BETWEEN A TOKEN AND A SESSION STORED IN A COOKIE:
-The difference is that tokens are typically following a standard while sessions are implemented as needed by the server.
-Additionally, tokens tend not to need a session on the server but they may have one.
+이러한 교환은 이름이나 비밀번호를 절대 교환하지 않습니다. 원한다면 은행 계좌에 접근해서 발행된 token을 비활성화 시켜 쉽게 취소할 수 있습니다. 이러한 시나리오를 위해서 일반적으로 사용되는 프로토콜중 하나는 JWT 뿐 아니라 openID Connect 를 사용할 수 있습니다.
 
-In the case of JWT tokens, the token contain the session information as well, it contains actual data about you as a user.
-When using tokens it is essential to notice that now the interaction typically involves multiple parties that may or may not trust one another. So you trust your bank with your bank login{username and password} but you may not trust this third-party app that you found in the AppStore
+## token 과 cookie 에 저장된 session 의 차이
 
-Another difference is that a token has a limited lifetime and a new token needs to be generated once it expires, the technical term is "refreshed"
+차이점은 session 이 서버에 의해 필요하므로 수행되는 반면에, token 은 전형적으로 표준을 따릅니다.  추가적으로 token 은 서버에서 session 을 필요로 하지않지만 세션을 가질 수는 있습니다.
 
-A token can also grant access to a subset of data a particular user or entity has, eg: you have only granted access to your transactions but not to other information.
+이러한 경우 session 정보를 포함하고있는 token 인 JWT 토큰은, 유저로서의 사용자에 대한 실제 데이터 를 포함합니다. token 을 사용할 경우, 전형적으로 믿거나, 믿을 수 없는 multiple party 에 대한 정보를 포함한다는 것을 이해해하는것이 필수적입니다. 사용자가 은행에 로그인 (id, pw) 을 할 때 이 앱스토어에서 찾을 수 있는 서드파티 앱을 믿을순 없겠지만 사용자는 은행을 믿어야합니다. 
 
-Most of the time tokens are being sent using HTTP headers and not cookies, the reason for that is nowadays many interactions happen out of browsers for-example from apps on your phone and it simply does not make sense to use cookies for that.
+또 다른 차이점은 token은 제한된 수명을 가지고, 새로운 token은 한번 만료되면 새로 생성될 필요가 있다는 것 입니다. 기술적 이름은 refreshed 된다 입니다.
 
-"Cookies are sent as HTTP headers but the browsers handles them differently than the other headers"
+토큰은 또한 사용자나 엔티티가 가지고있는 특별한 데이터의 서브넷에 대한 접근을 허용합니다. (다른 정보에 대해서는 접근허용이 불가능하지만 사용자의 상호작용에 대해서만 접근을 허용합니다)
+
+대부분의 시간동안 token 은 cookie 가 아닌 HTTP headers 를 사용해서 보내졌습니다. 그 이유는 오늘날에는 휴대폰의 앱에서와 같이 브라우저로부터 많은 상호 작용이 발생하므로 쿠키를 사용하는 것이 이치에 맞지 않기 때문입니다.
+
+"브라우저가 다른 headers 와는 다르게 핸들링 하므로 cookie 는 HTTP headers 로 보내져야합니다."
+
+
+
+
 
 ## CONCLUSION
 So both session-based/cookie-based and token-based approaches are widespread and typically they are used in parallel for-example a session/cookie based approach is deployed when using the website but token-based approach is preferred when using the app from the same service. So it is essential to understand how both work.
