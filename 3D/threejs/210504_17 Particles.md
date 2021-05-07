@@ -11,6 +11,10 @@
     - [depthTest 사용하기](#depthtest-사용하기)
     - [depthWrite 사용하기](#depthwrite-사용하기)
   - [Blending](#blending)
+  - [Different Colors](#different-colors)
+  - [Animate](#animate)
+    - [points 를 object 로써 사용하는 방법](#points-를-object-로써-사용하는-방법)
+    - [attributes 를 변경하는 방법](#attributes-를-변경하는-방법)
 
 Particle 은 다양한 효과 (은하수들, 연기, 비, 먼지, 불 등등)를 줄 수 있는 아주 잘 알려진 효과입니다.
 
@@ -212,3 +216,115 @@ custom geometry 를 생성하기 위해서는, [BufferGeometry](https://threejs.
 지금까지 다양한 테크닉을 보았으며, 완벽한 해결방법은 없습니다. 프로젝트에 따라 가장 적절한 방법을 찾는것이 제일 좋습니다.
 
 ## Blending
+
+최근에, WebGL 은 pixel 을 다른 물체 위에 그렸습니다.
+
+`blending` 프로퍼티를 바꾸면, WebGL 에게 pixel 을 바꿀 뿐 아니라 pixel 의 color 를 추가할 수 있게 해줍니다. 채도 효과를 만들어내는데, 보기가 좋습니다.
+
+``` js
+    // particleMaterial.alphaTest = 0.001
+    // particleMaterial.depthTest = false // 이 프로퍼티에는 버그가 있습니다.
+    particleMaterial.depthWrite = false
+    particleMaterial.blending = THREE.AdditiveBlending // 빛을 쐬는 것 같은 블랜딩 모드 (퍼포먼스에 영향을 줄 수 있습니다.)
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/17/step-13.png" width=500>
+
+particle 의 갯수를 `20000` 개로 늘려주면 더 좋은 효과를 확인할 수 있습니다.
+
+<img src="https://threejs-journey.xyz/assets/lessons/17/step-14.png" width=500>
+
+그러나 이 효과는 퍼포먼스에 영향을 주며, 너무 많은 particles 들을 만들수는 없습니다.(60fps 직전까지)
+
+이제 `cube` 를 제거하면 이런 결과를 볼 수 있습니다.
+<img src="https://threejs-journey.xyz/assets/lessons/17/step-15.png">
+
+## Different Colors
+
+각각의 particle 을 위한 다른 색상을 지정해 줄 수도 있습니다. position 을 위해서 했던것 처럼 새로운 `color` 라는 attribute 를 지정해주어야 합니다. color 는 red, green, blue (3 가지 값) 로 이루어져있으므로, 코드는 `position` attribute 와 유사할 것 입니다. 여기서는 두개의 attribute 를 같은 루프를 이용하여 정의할 것 입니다.
+
+``` js
+    /**
+    * Particles
+    */
+    // Geometry ...
+    const positions = new Float32Array(count * 3) // xyz, xyz, xyz ...
+    const colors = new Float32Array(count * 3) // rgba(n, n, n, n)
+
+    for (let i = 0; i < count * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 10
+        colors[i] = Math.random()
+    }
+    particlesGeometry.setAttribute(
+        'position', new THREE.BufferAttribute(positions, 3)
+    )
+    particlesGeometry.setAttribute(
+        'color', new THREE.BufferAttribute(colors, 3)
+    )
+```
+
+이렇게 설정된 vertex color를 `vertexColors` 프로퍼티를 `true` 로 설정하여 활성화시켜줍니다.
+
+``` js
+    // Material ...
+    particleMaterial.vertexColors = true
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/17/step-16.png" width=500>
+
+
+material main color 가 여전히 이 vertext colors 에 영향을 주고있으므로 주석처리합니다.
+
+``` js
+    // Material ...
+    // particleMaterial.color = new THREE.Color('#ff88cc')
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/17/step-17.png" width=500>
+
+## Animate
+
+particles 들을 애니메이팅 시키는 방법은 여러가지가 있습니다.
+
+### points 를 object 로써 사용하는 방법
+
+[Points](https://threejs.org/docs/#api/en/objects/Points) 클래스가 [Object3D](https://threejs.org/docs/#api/en/core/Object3D) 를 상속하기 때문에, point 를 움직이거나, 회전, 스케일링 등이 가능합니다.
+
+`tick` function 에서 particles 를 회전합니다.
+
+``` js
+    /**
+     * Animate
+     */
+    const tick = () => {
+        const elapsedTime = clock.getElapsedTime()
+        // Update particles
+        particles.rotateion.y = elapsedTime * 0.3
+    }
+```
+
+<video src="https://threejs-journey.xyz/assets/lessons/17/step-18.mp4"></video>
+
+이미 이상태로 멋지긴 하지만, 각각의 particle 을 움직이고싶습니다.
+
+### attributes 를 변경하는 방법
+
+또다른 방법은 각각의 vertext position 을 개별적으로 업데이트시키는 방법입니다. 이 방법으로는, 꼭짓점은 다른 귀도를 가지고 있을 수 있습니다. 이 particles 를 마치 파도에 떠다니는것 같은 효과 애니메이션을 구현할 것입니다. 먼저 어떻게 꼭짓점들을 업데이트 시킬 수 있는지 확인해 봅시다.
+
+이전 rotation 활동을 주석처리합니다.
+
+``` js
+    /**
+     * Animate
+     */
+    const tick = () => {
+        // ...
+        // Update particles
+        // particles.rotateion.y = elapsedTime * 0.3
+        // ...
+    }
+```
+
+각 꼭지점을 업데이트하려면 모든 꼭지점이 첫 번째 3개의 값이 첫 번째 꼭지점의 x, y 및 z 좌표에 대응하고 다음 3개의 값이 두 번째 꼭지점의 x, y 및 z에 대응되는 이 1차원 배열에 저장되기 때문에 `position` attribute 의 올바른 부분을 업데이트해야 합니다. 
+
+> To update each vertex, we have to update the right part in the position attribute because all the vertices are stored in this one dimension array where the first 3 values correspond to the x, y and z coordinates of the first vertex, then the next 3 values correspond to the x, y and z of the second vertex, etc.

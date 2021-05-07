@@ -51,7 +51,7 @@ particlesGeometry.setAttribute(
 const particleMaterial = new THREE.PointsMaterial()
 particleMaterial.size = 0.2
 particleMaterial.sizeAttenuation = true // false
-particleMaterial.color = new THREE.Color('#ff88cc')
+// particleMaterial.color = new THREE.Color('#ff88cc')
 particleMaterial.alphaMap = particleTexture
 particleMaterial.transparent = true
 // particleMaterial.alphaTest = 0.001
