@@ -139,7 +139,6 @@
 ```
 
 
-###
 
 ## WeakMap
 [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakmap_object) 객체는 Object 와 동일하게 키-값 쌍을 저장하며 삽입 순서도 기억하는 콜렉션 입니다. 어떤 값이라도 key, value 로 설정할 수 있습니다.
