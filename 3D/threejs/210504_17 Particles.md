@@ -1,4 +1,4 @@
-# Particles 
+# Particles
 
 - [Particles](#particles)
   - [First Particles](#first-particles)
@@ -15,13 +15,13 @@
   - [Animate](#animate)
     - [points 를 object 로써 사용하는 방법](#points-를-object-로써-사용하는-방법)
     - [attributes 를 변경하는 방법](#attributes-를-변경하는-방법)
+  - [Custom Shade 사용하기](#custom-shade-사용하기)
 
 Particle 은 다양한 효과 (은하수들, 연기, 비, 먼지, 불 등등)를 줄 수 있는 아주 잘 알려진 효과입니다.
 
 particle 의 좋은점은 합리적인 frame rate 로 화면에 수백수천개를 생성할 수 있다는 것 입니다. 단점은 각각의 particle 은 카메라를 향하고 있는 평평한 plane 으로 구성되어있다는 것 입니다.
 
 particle 을 생성하는것은 [Mesh](https://threejs.org/docs/#api/en/objects/Mesh) 를 만드는 것 만큼 간단합니다. particle([PointsMaterial](https://threejs.org/docs/#api/en/materials/PointsMaterial)) 을 제어할 수 있는 material 인 [BufferGeometry](https://threejs.org/docs/#api/en/core/BufferGeometry) 가 필요하고, Mesh 를 생성하는 것 대신에 [Points](https://threejs.org/docs/#api/en/objects/Points) 를 생성해야합니다.
-
 
 ## First Particles
 
@@ -43,8 +43,8 @@ Three.js geometry 아무거나 사용할 수 있습니다. Mesh 와 같은 이�
 
 [PointsMaterial](https://threejs.org/docs/#api/en/materials/PointsMaterial) 는 여러개의 particle 에 특화된 프로퍼티를 가집니다.
 
-* `size`  :: particle 의 크기 설정
-* `sizeAttenuation` :: 멀리있는 particle 들이 앞에있는 particle 보다 작아져야한다는것을 구체화
+- `size`  :: particle 의 크기 설정
+- `sizeAttenuation` :: 멀리있는 particle 들이 앞에있는 particle 보다 작아져야한다는것을 구체화
 
 ``` js
     // Material
@@ -72,7 +72,6 @@ Three.js geometry 아무거나 사용할 수 있습니다. Mesh 와 같은 이�
 ```
 
 <img src="https://threejs-journey.xyz/assets/lessons/17/step-02.png" width=500>
-
 
 ## Custom Geometry
 
@@ -117,7 +116,6 @@ custom geometry 를 생성하기 위해서는, [BufferGeometry](https://threejs.
 
 <img src="https://threejs-journey.xyz/assets/lessons/17/step-04.png" width=500>
 
-
 ## Color, map, alpha map
 
 [PointsMaterial]() 의 `color` 프로퍼티를 이용해 particle 의 색상을 변경할 수 있습니다. [Color](https://threejs.org/docs/#api/en/materials/PointsMaterial) 클래스가 필요하다는 것을 잊지마세요!
@@ -144,13 +142,13 @@ custom geometry 를 생성하기 위해서는, [BufferGeometry](https://threejs.
 
 <img src="https://threejs-journey.xyz/assets/lessons/17/step-05.png" width=500>
 
-다른 texture 로도 사용 가능합니다. 
+다른 texture 로도 사용 가능합니다.
 
 보시다시피, `color` 프로퍼티는 다른 material 처럼 `map` 을 변경시킵니다. 그러나 이 이미지를 가까이 볼 경우, 앞 particles 는 뒤 particles 를 가리고있습니다.
 
 ![ㅁㄴㅇㄹㄴㅁㅇㄹ](https://threejs-journey.xyz/assets/lessons/17/step-06.mp4)
 
-투명도를 `transparent` 프로퍼티를 이용하여 활성화 시키고, `alphaMap` 을 사용하여 `map` 대신에 texture 에 도포합니다. 
+투명도를 `transparent` 프로퍼티를 이용하여 활성화 시키고, `alphaMap` 을 사용하여 `map` 대신에 texture 에 도포합니다.
 
 ``` js
     // Material ...
@@ -272,7 +270,6 @@ particle 의 갯수를 `20000` 개로 늘려주면 더 좋은 효과를 확인�
 
 <img src="https://threejs-journey.xyz/assets/lessons/17/step-16.png" width=500>
 
-
 material main color 가 여전히 이 vertext colors 에 영향을 주고있으므로 주석처리합니다.
 
 ``` js
@@ -325,6 +322,86 @@ particles 들을 애니메이팅 시키는 방법은 여러가지가 있습니�
     }
 ```
 
-각 꼭지점을 업데이트하려면 모든 꼭지점이 첫 번째 3개의 값이 첫 번째 꼭지점의 x, y 및 z 좌표에 대응하고 다음 3개의 값이 두 번째 꼭지점의 x, y 및 z에 대응되는 이 1차원 배열에 저장되기 때문에 `position` attribute 의 올바른 부분을 업데이트해야 합니다. 
+각 꼭지점을 업데이트하려면 모든 꼭지점이 첫 번째 3개의 값이 첫 번째 꼭지점의 x, y 및 z 좌표에 대응하고 다음 3개의 값이 두 번째 꼭지점의 x, y 및 z에 대응되는 이 1차원 배열에 저장되기 때문에 `position` attribute 의 올바른 부분을 업데이트해야 합니다.
 
 > To update each vertex, we have to update the right part in the position attribute because all the vertices are stored in this one dimension array where the first 3 values correspond to the x, y and z coordinates of the first vertex, then the next 3 values correspond to the x, y and z of the second vertex, etc.
+
+우리는 꼭짓점만 위 아래로 움직이길 원합니다. 다시 말해 `y` 축만 움직일 거란 의미입니다. `position` attribute 가 1 차원 배열이기 때문에, 3 * 3 (`y` 축) 씩 업데이트 씩 업데이트해야합니다. 
+
+각 꼭짓점에 적용해봅시다.
+
+``` js
+    const tick = () => {
+        // ...
+        // Update particles ...
+        for (let i = 0; i < count; i++) {
+            count i3 = i * 3 // 3 * 3
+        }
+        // ...
+    }
+```
+
+`0` 부터 `count` 까지 순회하는 간단한 `for` 루프를 사용했고, `i` 를 `3` 으로 곱해서 3 * 3 인 `i3` 변수를 만들었습니다.
+
+파도 움직임을 구현하는 가장 쉬운 방법은 `sin` 을 사용하는 방법입니다. 먼저, 모든 꼭짓점을  같은 빈도로 위 ,아래로 업데이트 시켜줄 것 입니다.
+
+`y` 축은 배열의 `i3 + 1` 인덱스에서 접근할 수 있습니다.
+
+``` js
+    const tick = () => {
+        // ...
+        // Update particles ...
+        for (let i = 0; i < count; i++) {
+            const i3 = i * 3 // 3 * 3
+            particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(elapsedTime)
+        }
+        // ...
+    }
+```
+
+안타깝게도 아무것도 움직이지 않을것입니다. 문제는, Three.js 는 이 geometry 가 변경되었다는 것을 감지해야한다는 것 입니다. 꼭짓점 업데이트가 완료되면, `position` attribute 에서 `needsUpdate` 를 `true` 로 변경해주어야합니다.
+
+``` js
+    const tick = () => {
+        // ...
+        // Update particles...
+        for (let i = 0; i < count; i++) {
+            const i3 = i * 3 // 3 * 3
+            particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(elapsedTime)
+        }
+        particlesGeometry.attributes.position.needsUpdate = true
+        // ...
+    }
+```
+
+![dfssd](https://threejs-journey.xyz/assets/lessons/17/step-19.mp4)
+
+모든 particles 는 이제 평면 (plane) 처럼 위 아래로 움직입니다.
+
+이제 거의 다 왔습니다! 이제 해야할 일은 particles 사이의 `sin`  에 offset 을 적용하는 일입니다.  이렇게 하면 파도치는 모양을 만들 수 있습니다.
+
+`x` 축이 필요합니다. 이 값을 `y` 축을 구할때와 같은 테크닉으로 구할 수 있습니다. `x` 를 구하려면 `i3 + 1` 대신에, `i3` 만 이용하면 됩니다.
+
+``` js
+    const tick = () => {
+        // ...
+        // Update particles...
+        for (let i = 0; i < count; i++) {
+            const i3 = i * 3 // 3 * 3
+            const x = particlesGeometry.attributes.position.array[i3]
+            particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(elapsedTime + x)
+        }
+        particlesGeometry.attributes.position.needsUpdate = true
+        // ...
+    }
+```
+
+![](https://threejs-journey.xyz/assets/lessons/17/step-20.mp4)
+
+이런 결과가 나왔습니다!!
+
+그러나 이 테크닉은 피해야합니다. 만약 `20000` 개의 particles 가 있다면, 이 모든 particles 를 다루어야 하기 때문에 새로운 position 을 계산해야하고, 전체 attribute 를 매 frame 마다 업데이트해주어야 하기 때문입니다. 적은 갯수의 particles 는 괜찮지만, 많은 숫자의 particles 를 사용하는일이 많기 때문입니다.
+
+## Custom Shade 사용하기
+
+좋은 프레임률 (framerate) 로 각각의 frame 에  이 백만개 이상의 particles 를 업데이트 하기 위해선, 우리는 우리만의 shader 를 이용해 material 을 만들어낼 필요가 있습니다. 다음 레슨에서 배울 것 입니다.

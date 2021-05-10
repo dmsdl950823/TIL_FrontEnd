@@ -1,58 +1,112 @@
-# What is really the difference between Cookie, Session and Tokens that nobody is talking about ?
+# Cookie, Session, Token 의 차이점
 
-출처 : [Dev.to](https://dev.to/dev_emmy/what-is-really-the-difference-between-cookie-session-and-tokens-when-it-comes-to-authentication-4164)
-
-cookie, session, token의 차이를 이해하려면 기초부터 이해해야합니다.
-은행 계좌에 로그인 한다고 가정해봅시다.
-
-1. id 와 pw 를 스크린에 입력하고, 확인 버튼을 입력하면 id 와 pw 는 은행 서버에 전송됩니다.
-2. 서버는 어떤 아이디를 찾는지 확인 할 필요가 있으므로, 입력한  정보를 database 를 확인해서 찾아냅니다.
-3. 서버가 정보를 찾아내면 서버는 계좌 정보를 리턴합니다. 
-4. 이때, 로그인 이벤트와 함께 해당 계좌 정보의 database에 session 을 생성하고, session_id cookie정보 를 돌려줍니다. 다른말로, id 와 pw 를 이 session_id 정보를 담고있는 cookie와 교환합니다.   
-5. 서버는 session 정보를 database 에 저장하고, 그동안에 (session_id 를 저장하고있는) cookie 는 컴퓨터에 저장됩니다.
-   session_id는 임의로 지정되기 때문에 추측하기 어렵고, 로그아웃시에 서버사이드에 저장된 session은 삭제됩니다. 이 때 서버는 사용자의 브라우저에게 session_id 를 포함하고있는 cookie를 삭제하도록 알려줍니다.
-6. 이후 로그인을 하고 페이지를 요청 할 때, 브라우저는 서버가 여전히 가능한 정보인지 확인할 수 있도록 자동으로 session_id 를 포함한 cookie 를 자동으로 보내줍니다. 사용자를 확인하기 위해 id 와 pw 가 더 이상 필요하지 않은지 확인하기 위해 반드시 필요합니다.
-    > `membershipID` 와 기타 다른 정보를 가진 `Gym_membership_card` cookie 를 생각해보면, 접근시에 확인하고, 멤버십이 여전히 가능한지 확인하고 사용자 접근을 허용합니다.
-    > 
-    > session_id cookie도 특정 웹사이트에 동작합니다. 동일한 cookie 를 다른 사이트에서 사용할 수는 없습니다.
-7. 은행 서버는 사용자가 서버와 상호작용을 하는한 계속 session 을 활성화 할것 입니다. 만약 새로운 페이지를 방문해서 비활성화 된 경우, 서버는 이 비활성화 기간을 감지하고 보안 방책에 따라 처리합니다. 
-
-이러한 접근은 **쿠키 기반 검증** cookie-based authentication 이라고 합니다.
-
-서버에서 session 울 사용하는 접근에 따라서, 검증을 핸들링합니다.
-cookie 는 sessionID 를 전달하는 방법이고, 간단하기때문에 사용됩니다. **브라우저는 모든 request 에 항상 cookie 를 끼워 보닐 것 입니다.** 이 경우에는 은행은 session 정보를 서버사이드에 저장하고, 내용을 볼 수 없지만, 동시에 브라우저에서 클라이언트 사이드에 정보를 저장합니다. 이런 정보는 마지막으로 방문한 페이지나 사용자가 선호하는 덜 민감한 정보들을 저장할 수 있습니다.
+- [Cookie, Session, Token 의 차이점](#cookie-session-token-의-차이점)
+  - [계정 정보를 요청 Header 에 넣는 방식](#계정-정보를-요청-header-에-넣는-방식)
+  - [Session / Cookie 방식](#session--cookie-방식)
+    - [인증 절차](#인증-절차)
+    - [Session 과 Cookie 의 차이점](#session-과-cookie-의-차이점)
+    - [장단점](#장단점)
+  - [Token 기반 인증 방식](#token-기반-인증-방식)
+    - [JWT Token](#jwt-token)
+    - [인증절차](#인증절차)
+    - [장단점](#장단점-1)
 
 
-## 왜 서버는 cookie 에 있는 많은 정보를 저장하지 않을까?
+출처 :  [tanfil.tistory](https://tansfil.tistory.com/58), [Dev.to](https://dev.to/dev_emmy/what-is-really-the-difference-between-cookie-session-and-tokens-when-it-comes-to-authentication-4164)
 
-쿠키는 클라이언트로부터 오는지 확실할 수 없기 때문입니다. 이것이 서버가 이상적으로 타당한 정보가 존재하는 database 를 사용해서 작업하는 이유입니다.
+## 계정 정보를 요청 Header 에 넣는 방식
+절대 이렇게 하면 안됩니다. 보통 앱에서는 서버로 HTTP 요청을 할 때 따로 암호화 되지 않으므로, 해커가 HTTP 요청을 가로채서(intercept) 사용자의 계정정보를 알 수 있습니다.
 
-만약 데이터가 조작된 경우 이것을 하는 한가지 방법은 JSON WEB TOKENTS를 사용하는 것입니다. 그러므로 기본적으로 쿠키 기반 검증은 몇년동안 잘 동작해왔지만 점점 뒤쳐지고있는 분위기입니다.
+## Session / Cookie 방식
 
-자금을 관리해주고 은행 계좌 소비 내역 정보를 저장하는 앱을 핸드폰에 설치한다고 가정합니다. 사용자가 은행에 관련되지 않은 정보 (id, pw) 를 이 앱에다 저장하지 않길 바랍니다. 이런 경우, 은행은 사용자에게 은행 계좌가 id 와 pw 정보를 사용할 수 있도록 물어볼 것입니다. 만약 사용자가 정보를 사용하도록 허가해준다면, 앱은 token 에 접근 할 수 있도록 허가하지만, 상호작용하는 것 만 볼수 있으므로 (일반적으로 계좌로 로그인 할 때 볼 수 있는 ) 다른 상세한 정보를 전달할 수는 없습니다.
-이 token은 말하자면 임의로 생성된 비밀번호 같이 동작합니다. 예를 들자면 호텔에서 wifi 패스워드를 하루치 사용할 수 있도록 하는것과 비슷합니다. 이것에 접근하기 위해서 비슷한 절차를 본 적이 있을 것 입니다. (Facebook, Google, Microsoft 가 사용자의 프로필을 써드파티 웹사이트에 제공하도록 허가하는 등)
+Session/Cookie 방식 인증은 기본적으로 세션 저장소를 필요로 합니다. 세션 저장소는 로그인시 사용자 정보를 저장하고, 열쇠로 사용할 수 있는 *세션 ID* 를 만듭니다. 그리고 HTTP 헤더에 실어 클라이언트에게 보냅니다. 브라우저는 세션 ID 를 포함하는 쿠키를 저장하고있습니다. 인증이 필요한 요청에 해당 쿠키를 끼워 서버에 request 를 보냅니다.
 
-이러한 교환은 이름이나 비밀번호를 절대 교환하지 않습니다. 원한다면 은행 계좌에 접근해서 발행된 token을 비활성화 시켜 쉽게 취소할 수 있습니다. 이러한 시나리오를 위해서 일반적으로 사용되는 프로토콜중 하나는 JWT 뿐 아니라 openID Connect 를 사용할 수 있습니다.
+### 인증 절차
 
-## token 과 cookie 에 저장된 session 의 차이
+1. 사용자가 로그인을 합니다.
+2. 서버에서는 계정 정보를 읽어 사용자를 확인 후, 사용자의 고유 ID 값을 부여한 후 세션 저장소에 저장하고, 이와 연결되는 *세션 ID* 를 발행합니다.
+3. 클라이언트는 서버에서 해당 세션 ID 를 받아 쿠키에 저장 한 후, 인증이 필요한 요청마다 쿠키를 헤더에 끼워 보냅니다.
+4. 서버에서는 쿠키를 받아 세션 저장소에서 확인 한 후, 일치하는 정보를 가져옵니다.
+5. 인증이 완료되고 서버는 사용자에 맞는 데이터를 보내줍니다.
 
-차이점은 session 이 서버에 의해 필요하므로 수행되는 반면에, token 은 전형적으로 표준을 따릅니다.  추가적으로 token 은 서버에서 session 을 필요로 하지않지만 세션을 가질 수는 있습니다.
+### Session 과 Cookie 의 차이점
 
-이러한 경우 session 정보를 포함하고있는 token 인 JWT 토큰은, 유저로서의 사용자에 대한 실제 데이터 를 포함합니다. token 을 사용할 경우, 전형적으로 믿거나, 믿을 수 없는 multiple party 에 대한 정보를 포함한다는 것을 이해해하는것이 필수적입니다. 사용자가 은행에 로그인 (id, pw) 을 할 때 이 앱스토어에서 찾을 수 있는 서드파티 앱을 믿을순 없겠지만 사용자는 은행을 믿어야합니다. 
-
-또 다른 차이점은 token은 제한된 수명을 가지고, 새로운 token은 한번 만료되면 새로 생성될 필요가 있다는 것 입니다. 기술적 이름은 refreshed 된다 입니다.
-
-토큰은 또한 사용자나 엔티티가 가지고있는 특별한 데이터의 서브넷에 대한 접근을 허용합니다. (다른 정보에 대해서는 접근허용이 불가능하지만 사용자의 상호작용에 대해서만 접근을 허용합니다)
-
-대부분의 시간동안 token 은 cookie 가 아닌 HTTP headers 를 사용해서 보내졌습니다. 그 이유는 오늘날에는 휴대폰의 앱에서와 같이 브라우저로부터 많은 상호 작용이 발생하므로 쿠키를 사용하는 것이 이치에 맞지 않기 때문입니다.
-
-"브라우저가 다른 headers 와는 다르게 핸들링 하므로 cookie 는 HTTP headers 로 보내져야합니다."
-
+* Session
+  * 서버에서 가지고있는 **정보**
+* Cookie
+  * 서버에서 발급된 세션을 열기 위한 **키** 값(세션 ID 라고 칭함)
 
 
+쿠키만으로 인증을 한다는 것은서버의 자원은 사용하지 않는다는 것 - 클라이언트가 인증 정보를 책임지는 것을 의미합니다.
 
+쿠키만으로 인증을 할 경우, 해커가 HTTP 요청을 중간에서 뺏어갈 때, **모든 정보가 탈취됩니다**.
+또한 쿠키는 조작된 데이터일 수 있으므로 실제 정보가 존재하는 database 를 사용해서 작업합니다.
+따라서 보안과는 관련 없는 장바구니, 자동로그인 설정 같은 경우에 유용하게 사용됩니다.
+   
+인증의 책임을 서버가 지게 하기 위해서 세션을 함께 사용합니다. **사용자는 쿠키를 이용하고, 서버에서는 쿠키를 받아 세션의 정보를 접근하는 방식으로 인증**을 합니다.
 
-## CONCLUSION
-So both session-based/cookie-based and token-based approaches are widespread and typically they are used in parallel for-example a session/cookie based approach is deployed when using the website but token-based approach is preferred when using the app from the same service. So it is essential to understand how both work.
+### 장단점
 
-I hope that was useful and now are able to differentiate between cookies, sessions and tokens.
+**장점**
+
+1. 쿠키가 담긴 HTTP 요청이 도중에 노출되더라도 쿠키 자체(세션 ID) 는 유의미한 값을 갖고 있지 않습니다. 중요한 정보는 서버 세션에 존재합니다.
+2. 고유의 ID 값을 발급받습니다.
+   > 쿠키 값을 받았을 때 일일이 회원정보를 확인할 필요 없이 바로 어떤 회원인지를 확인할 수 있어 서버의 자원에 접근하기 용이합니다.
+
+**단점**
+
+1. 세션 하이재킹 공격이 가능할 수 있다.
+   > 해결책은 HTTPS 를 사용해 요청 자체를 탈취해도 안의 정보를 읽기 힘들게 하거나, 세션에 유효시간을 부여할 수 있습니다.
+2. 서버에서 추가적인 저장공간이 필요합니다. 
+   > 서버에서 세션 저장소를 사용하므로 부하가 높아집니다.
+
+## Token 기반 인증 방식
+
+JWT (JSON Web Token) 는 인증에 필요한 정보들을 암호화시킨 토큰을 의미합니다. 위의 세션/쿠키 방식과 유사하게 사용자는 Access Token (JWT Token) 을 HTTP 헤더에 실어 서버에 전송합니다. 토큰은 **임의로 생성된 비밀번호** 같이 동작합니다. 제한된 수명을 가지고, 새로운 토큰은 한번 만료되면 새로 생성되어야합니다.(Refresh Token)
+
+일반적으로 **JWT** 뿐 아니라 **openID Connect** 프로토콜도 사용할 수도 있습니다.
+
+### JWT Token
+
+1. Header :: Header, Payload, Verify Signature 를 암호화할 방식(alg), 타입(Type) 등을 포함합니다.
+2. Payload :: 서버에서 보낼 데이터 - 일반적으로 user의 id, 유효기간 포함
+3. Verify Signature :: Base64 방식으로 인코딩한 Header, Payload, Secret key 를 더한 후 서명됩니다.
+
+> 결과 :: Encoded Header + "." + Encoded Payload + "." + Verify Signature
+
+Header, Payload 는 암호화 되지 않으므로, **디코딩하여 확인**할 수 있습니다. 그러므로 Payload 에 유저의 중요한 정보(비밀번호 등) 가 들어가면 쉽게 노출될 수 있습니다.
+
+### 인증절차
+
+1. 사용자가 로그인을 합니다.
+2. 서버에서는 계정 정보를 읽어 사용자를 확인 후, 사용자의 고유 ID 값을 부여한 후 기타 정보와 함께 Payload 에 집어넣습니다.
+3. JWT 토큰의 유효기간을 설정합니다.
+4. 암호화할 Secret key 를 이용해 Access Token 을 발급합니다.
+5. 사용자는 Access Token 을 받아 저장 후, 인증이 필요한 요청마다 토큰을 헤더에 실어 보냅니다.
+6. 서버에서는 해당 토큰의 Verify Signature 를 Secret key 로 복호화한 후, 조작 여부, 유효기간을 확인합니다.
+7. 검증이 완료되었을 경우, Payload 를 디코딩 하여 사용자의 ID 에 맞는 데이터를 가져옵니다.
+
+세션 / 쿠키 방식과 가장 큰 차이점은 세션 / 쿠키는 세션 저장소에 유저 정보를 넣는 반면, JWT 는 토큰 안에 유저의 정보들이 넣어진다는 점 입니다. 클라이언트 입장에서는 HTTP 헤더에 세션 ID 나 토큰을 실어서 보내준다는 점에선 동일하지만, 서버 측에서는 인증을 위해 암호화를 한다 vs 별도의 저장소를 이용한다 의 차이가 발생합니다.
+
+### 장단점
+
+**장점**
+
+1. 간편합니다.
+   > 세션/쿠키 인증은 별도의 저장소 관리가 필요합니다.
+   > JWT 는 발급한 후 검증만 하기 때문에 추가 저장소가 필요하지 않습니다. (StateLess - 상태/정보 저장하지 않음) 이는 서버를 확장하거나 유지, 보수하는데 유리합니다.
+
+2. 확장성이 뛰어납니다.
+   > 토큰 기반으로 하는 다른 인증 시스템에 접근이 가능합니다.
+   > Facebook, Google, Microsoft 로그인 등은 모두 토큰 기반으로 인증을 하는데, 권한을 받을 수도, 프로필을 써드파티 웹사이트에 제공하도록 허가 할 수도 있습니다.
+
+**단점**
+
+1. 이미 발급된 JWT 에 대해서는 유효기간이 완료될 때 까지는 계속 사용이 가능합니다.
+   > 세션/쿠키 인증 방식은 쿠키가 악의적으로 이용될 경우 쿠키를 삭제하면 됩니다.
+   > 그러나 JWT 는 유효기간이 지나기 전까지 정보들을 이용할 수 있습니다.
+   > 이에 대한 해결책은, Access Token 유효기간을 짧게 하고 Refresh Token 이라는 새로운 토큰을 발급합니다. 그렇게 되면 Access Token 을 탈취당해도 상대적으로 피해를 줄일 수 있습니다.
+2. Payload 정보가 제한적입니다.
+   > Payload 는 따로 암호화되지 않기 때문에 디코딩하면 누구나 정보를 확인할 수 있습니다. 따라서 유저의 중요한 정보들은 Payload 에 넣을 수 없습니다.
+3. JWT 의 길이
+   > JWT 의 길이는 길기 때문에 인증이 필요한 요청이 많아질수록 서버의 자원낭비가 발생합니다.
