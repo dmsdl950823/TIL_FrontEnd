@@ -5,6 +5,8 @@
 - [SPA, MAP](#spa-map)
   - [마무리](#마무리)
 
+출처 : [velog.io/@namezin](https://velog.io/@namezin/CSR-SSR#spa-mpa), [ppss](https://ppss.kr/archives/82980), [velog.io/@qkrdudgh052](https://velog.io/@qkrdudgh052/SSR-CSR-%EC%B0%A8%EC%9D%B4)
+
 # SEO, CSR, SSR
 
 <img src="./images/210210_SEO.png" width=500>
@@ -36,7 +38,7 @@
   
 ## SSR
 
-![](https://miro.medium.com/max/1400/1*fuDcEQEaNQXEg4S78n-lUQ.png)
+![https://velog.io/@namezin/CSR-SSR#spa-mpa](https://miro.medium.com/max/1400/1*fuDcEQEaNQXEg4S78n-lUQ.png)
 
 1. 완전하게 만들어진 HTML 파일을 받아오고 그 후에 랜더링합니다.
 2. 웹 **서버에 요청할 때마다 Browser 새로고침**이 일어나고 **서버에 새로운 페이지에 대한 요청**을 하는 방식
@@ -77,3 +79,4 @@ SPA, MPA 는 페이지를 여러개 사용하느냐, 아니냐에 차이입니�
 ## 마무리
 
 SSR 과 CSR 을 적절히 사용해야합니다. UX 에 지장이 가지 않는 선에서 페이지를 나누어 적절히 활용해야합니다.
+

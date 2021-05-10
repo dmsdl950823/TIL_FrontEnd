@@ -101,6 +101,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [axios](HTTP%20Connection/axios.md)
 * [CORS & XSS](HTTP%20Connection/CORS%20&%20XSS.md)
 * [210504 _ Cookie, Session, Token 의 차이점](HTTP%20Connection/210504_Cookie,%20Session,%20Token%20의%20차이점.md)
+* [210510 _ XSS 공격 및 CORS - 해결방법](HTTP%20Connection/210510_XSS%20공격%20및%20CORS%20-%20해결방법.md)
 
 
 <br>
