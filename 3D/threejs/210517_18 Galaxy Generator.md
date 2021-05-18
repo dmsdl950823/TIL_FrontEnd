@@ -1,5 +1,14 @@
 # Galaxy Generator
 
+- [Galaxy Generator](#galaxy-generator)
+  - [기본 Particles](#기본-particles)
+  - [Tweaks](#tweaks)
+  - [모양 - Shape](#모양---shape)
+    - [Radius](#radius)
+    - [Branches](#branches)
+    - [Spin](#spin)
+    - [Randomness](#randomness)
+
 ## 기본 Particles
 
 ``` js
@@ -150,7 +159,7 @@ const generateGalaxy = () => {
 그리고, 해당 변수를 할당하기 전에, 이 변수들이 이미 존재하는지를 확인해야합니다. 그러기 위해서는 geometry 에서 `dispose()` 를 호출합니다. 그런 뒤, `remove()` 메서드를 이용하여 points 를 scene 에서 제거합니다.
 
 ``` js
-    const generateGalaxt = () => {
+    const generateGalaxy = () => {
         if (points !== null) {
             geometry.dispose()
             meterial.dispose()
@@ -158,3 +167,163 @@ const generateGalaxy = () => {
         }
     }
 ```
+
+이전 강의에서 봤던, (버그가 있는) depth 와 alpha 를 생성할 수 있는 texture 를 사용하는 대신에, 여기에서는 기본 육면체를 사용했습니다. 육면체가 아니라는 것을 알 수 있도록 아주 작은 particles 들을 생성할 것 입니다.
+
+이제 `count` 와 `size` parameter 를 늘려줍니다.
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-06.png" width=500>
+
+## 모양 - Shape
+
+은하수는 각각 다른 모양을 가지고있습니다. 우리는 여기서 나선형의 모양을 제작해볼 것 입니다. 은하수를 생성하기 위해서 다양하게 particles 를 위치시킬 수 있는 방법이 있으므로 다양하게 시도해보세요.
+
+### Radius
+
+`radius` parameter 를 생성해줍니다.
+
+``` js
+    /**
+    * Galaxy
+    */
+    // ...
+    parameters.radius = 5
+
+    // ...
+
+    gui.add(parameters, 'add').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy)
+```
+
+각 별들은 이 `radius` 에 맞게 위치될 것 입니다. 만약 `radius` 가 `5` 라면, 별들은 0 ~ 5 사이에 위치하게 됩니다. 여기서는 모든 particles 를 선형으로 나열해보도록 하겠습니다.
+
+``` js
+    // generateGalaxy ()
+    for (let i = 0; i < parameters.count; i++) {
+        const i3 = i * 3
+
+        // Position
+        const radius = Math.random() * parameters.radius
+
+        positions[i3 + 0] = radius
+        positions[i3 + 1] = 0
+        positions[i3 + 2] = 0
+    }
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-07.png" width=500>
+
+
+### Branches
+
+나선형 은하수는 적어도 두개 이상의 가지가 있을 수 있습니다.
+
+`branches` parameters 를 추가해줍니다.
+
+``` js
+    /**
+    * Galaxy
+    */
+    // ...
+    parameters.branches = 3
+
+    gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy)
+```
+
+`Math.cos()` 와 `Math.sin()` 을 사용하여 branch 위에 particle 위치를  설정할 수 있습니다. 먼저, modulo(`%`) 를 사용하여 angle 을 계산하고, 결과를 branch 의 갯수만큼 나누어서 `0` 과 `1` 사이의 값을 가질것 입니다.
+
+``` js
+    // generateGalaxy ()
+    for (let i = 0; i < parameters.count; i++) {
+        const i3 = i * 3
+
+        // Position
+        const radius = Math.random() * parameters.radius
+        const branchAngle = (i % parameters.branches) / parameters.branches * Math.PI * 2
+
+        positions[i3 + 0] = Math.cos(branchAngle) * radius
+        positions[i3 + 1] = 0
+        positions[i3 + 2] = Math.sin(branchAngle) * radius
+    }
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-08.png" width=500>
+
+### Spin
+
+spin 효과를 추가해봅시다.
+
+`spin` parameter 를 추가해줍니다.
+
+``` js
+    // ...
+    parameters.spin = 1
+
+    // ...
+    gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(generateGalaxy)
+```
+
+``` js
+    // generateGalaxy ()
+    for (let i = 0; i < parameters.count; i++) {
+        const i3 = i * 3
+
+        // Position
+        const radius = Math.random() * parameters.radius
+        const spinAngle = radius * parameters.spin
+        const branchAngle = (i % parameters.branches) / parameters.branches * (Math.PI * 2)
+
+        positions[i3 + 0] = Math.cos(branchAngle) * radius
+        positions[i3 + 1] = 0
+        positions[i3 + 2] = Math.sin(branchAngle) * radius
+    }
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-09.png" width=500>
+
+### Randomness
+
+particles 들이 완벽하게 정렬되었으니, 이제는 임의로 배치가 필요합니다. 그치만 정말로 필요한 것은, 내부로 가면 갈수록 빽빽하고, 외부로 가면 갈수록 별이 분포되어야 합니다.
+
+`randomness` parameter 를 추가합니다.
+
+``` js
+    parameters.randomness = 0.2
+
+    // ...
+
+    gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(generateGalaxy)
+```
+
+이제 각 축을 위한 값을 `Math.random()` 으로 생성해야합니다. `radius` 를 사용하여 곱하고 이 값을 `positions` 에 추가합니다.
+
+``` js
+    // generateGalaxy ()
+    for (let i = 0; i < parameters.count; i++) {
+        const i3 = i * 3
+
+        // Position
+        const radius = Math.random() * parameters.radius
+        const spinAngle = radius * parameters.spin
+        const branchAngle = (i % parameters.branches) / parameters.branches * Math.PI * 2
+
+        const randomX = (Math.random() - 0.5) * parameters.randomness * radius
+        const randomY = (Math.random() - 0.5) * parameters.randomness * radius
+        const randomZ = (Math.random() - 0.5) * parameters.randomness * radius
+
+        positions[i3    ] = Math.cos(branchAngle + spinAngle) * radius + randomX
+        positions[i3 + 1] = randomY
+        positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ
+    }
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-10.png" width=500>
+
+동작하기는 하지만 아주 원하던 결과는 아닙니다. 그리고 아직도 패턴을 볼 수가 있어요. 이것을 고치려면 `Math.pow()` 를 적용하고 `-1` 을 곱하여 해결 할 수 있습니다.
+
+``` js
+    const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : - 1) * parameters.randomness * radius
+    const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : - 1) * parameters.randomness * radius
+    const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : - 1) * parameters.randomness * radius
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-11.png" width=500>
