@@ -8,6 +8,7 @@
     - [Branches](#branches)
     - [Spin](#spin)
     - [Randomness](#randomness)
+    - [Colors](#colors)
 
 ## 기본 Particles
 
@@ -327,3 +328,91 @@ particles 들이 완벽하게 정렬되었으니, 이제는 임의로 배치가 
 ```
 
 <img src="https://threejs-journey.xyz/assets/lessons/18/step-11.png" width=500>
+
+### Colors
+
+`parameter` 에 색상 을 추가합니다.
+
+``` js
+    parameters.insideColor = '#eb6aa5'
+    parameters.outsideColor = '#3091ff'
+
+    // ...
+    gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
+```
+
+각 꼭지점에 색상을 제공할 것 입니다. `vertextColors` 를 material 에 활성화주어야 합니다.
+
+``` js
+    /**
+     * Material
+     */
+    material = new THREE.PointsMaterial({
+        size: parameters.size,
+        sizeAttenuation: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        vertexColors: true
+    })
+```
+
+그리고, `position` attribute 에 했던것 처럼 `color` attribute 를 geometry 에 추가합니다. 지금은, `insideColor` 과 `outsideColor` 를 사용하지는 않을것 입니다.
+
+``` js
+    /**
+     * Geometry
+     */
+    geometry = new THREE.BufferGeometry()
+    const positions = new Float32Array(parameters.count * 3)
+    const colors = new Float32Array(parameters.count * 3)
+
+    for (let i = 0; i < parameters.count; i++) {
+        // ...
+        
+        colors[i3 + 0] = 1
+        colors[i3 + 1] = 0
+        colors[i3 + 2] = 0
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+```
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-12.png" width=500>
+
+빨간 은하수가 생성되었습니다.
+
+parameters 로부터 colors 를 사용하려면, 각각의 particle 에 [Color](https://threejs.org/docs/index.html#api/en/math/Color) 인스턴스를 생성해야합니다.
+`generateGalaxy` function 내부에서 해야합니다.
+
+``` js
+    const generateGalaxy = () => {
+        // ...
+        const colorInside = new THREE.Color(parameters.insideColor)
+        const colorOutside = new THREE.Color(parameters.outsideColor)
+        // ...
+    }
+```
+
+루프 안에서, 이 두가지 색상을 혼합하려고 합니다. 이것은 은하수의 중심으로부터의 거리에 따라 혼합됩니다.
+만약 particle 이 은하수의 중심에 있을 경우, `insideColor` 값을 가지며, 중심으로부터 멀리 갈 수록 `outsideColor` 와 혼합됩니다.
+
+세번째 Color 인스턴스를 생성하는것 대신에, 우리는 서로 다른 색상을 혼합하기위해 `colorInside` 를 복사하는 것과 `lerp(...)` 메서드를 사용하기로 합니다.
+
+`lerp(...)` 의 첫 번째 파라미터는 또다른 색상이고, 두번째 파라미터의 값은 `0` 과 `1` 사이의 값입니다. 만약 `0` 일경우, 색상은 기본 값을 유지할 것이고, `1` 일경우, 결과 색상은 제공된 하나의 값 입니다.
+
+`radius` parameter 를 사용하여 조절할 수 있습니다.
+
+``` js
+    // Color
+    const mixedColor = colorInside.clone()
+    mixedColor.lerp(colorOutside, radius / parameters.radius)
+
+    colors[i3 + 0] = mixedColor.r
+    colors[i3 + 1] = mixedColor.g
+    colors[i3 + 2] = mixedColor.b
+```
+
+`r`, `g`, `b` 값을 `colors` 배열에 사용할 수 있습니다.
+
+<img src="https://threejs-journey.xyz/assets/lessons/18/step-13.png" width=500>
