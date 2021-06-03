@@ -21,22 +21,26 @@
 
     while (days.length > idx) {
         const day = days[idx]     // 루프를 돌 때마다 0 번째 값을 가져옵니다.
-        let count = days.findIndex(nextDay => day < nextDay)
+        let count = days.findIndex(nextDay => {
+            // 현재 값 (제일 먼저 개발중인 일수) < 다음 값 (값이 더 큰 개발일수) 의 인덱스
+            // console.log([day, nextDay])
+            return day < nextDay // (5, 10), (10, 20), 없음 => 마지막 스택까지 확인 (-1)
+        })
+
+        // count // 1, 3, -1 ===> (1, 3) 번째 인덱스 마다 배포, -1 은 나머지 모두 배포
         
-        if (count !== -1) { // 마지막 스택까지 확인했다는 의미
-            answer.push(count)
-            days.splice(0, count)
-            
-        // count 의 수가 있는 경우 :: 확인할 개발 날짜가 있다는 것 (스택에 값이 존재한다는 것)
-        // 현재 개발 날짜 > 다음 개발 날짜 :: 더 큰 숫자가 나타날때까지 대기
-        // 현재 개발 날짜 < 다음 개발 날짜 :: 바로 배포
+        // count > -1 :: 함께 배포할 날짜가 존재 (스택에 값이 존재한다는 것)
+        if (count !== -1) {
+            answer.push(count) // index === 배포되는 기능 갯수
+            days.splice(0, count) // 스택에서 index 만큼 제거
+        
+        // count === -1 :: 마지막 스택까지 확인한 경우
         } else {
-            answer.push(days.length)
-            days.splice(0, days.length)
+            answer.push(days.length) // 남은 days 의 length === 남은 기능갯수
+            days.splice(0, days.length) // 스택에서 모두 제거
         }
     }
 
-    // [2, 1]
     return answer
 }
 
@@ -47,17 +51,21 @@ const speeds = [1, 1, 1, 1, 1, 1]
 
 solution(progress, speeds)
 
+
 // ======= 다른사람의 풀이
 
-function solution(progresses, speeds) {
-    let answer = [0]
-    let days = progresses.map((progress, index) => Math.ceil((100 - progress) / speeds[index]))
-    let maxDay = days[0]
 
+function solution(progresses, speeds) {
+    let days = progresses.map((progress, index) => Math.ceil((100 - progress) / speeds[index]))
+    let maxDay = days[0] // 맨 처음 값부터 비교
+
+    let answer = [0]
     for(let i = 0, j = 0; i< days.length; i++){
-        if(days[i] <= maxDay) {
+        if (days[i] <= maxDay) { // 다음 개발일 보다 작은경우 :: 스택에 쌓아놓기
             answer[j] += 1
         } else {
+            // 다음 개발일보다 큰경우 :: maxDay 의 최댓값을 현재 개발일로 설정
+            // j의 값을 하나 올려서 값을 스택에 추가합니다. 
             maxDay = days[i]
             answer[++j] = 1
         }
@@ -65,3 +73,10 @@ function solution(progresses, speeds) {
 
     return answer
 }
+
+// const progress = [93, 30, 55]
+// const speeds = [1, 30, 5]
+const progress = [95, 90, 99, 99, 80, 99]
+const speeds = [1, 1, 1, 1, 1, 1]
+
+solution(progress, speeds)
