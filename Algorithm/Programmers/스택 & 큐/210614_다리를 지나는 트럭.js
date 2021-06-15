@@ -8,11 +8,45 @@
  * 다리에 완전히 오르지 않은 트럭의 무게는 무시
  * @returns 모든 트럭이 다리를 건너기 위한 최소 시간(초)
  */
+
+
+
+
+
+
  function solution(bridge_length, weight, truck_weights) {
-    var answer = 0
+    var answer = 0 // 총 시간
 
-    bridge_length
+    let crossing_truck = []
 
+    // const ddd = crossing_truck.length * bridge_length
+   
+    while (truck_weights.length) {
+        if (!crossing_truck.length) {
+            const current = truck_weights.shift()
+            crossing_truck.push(current)
+            const trucks = crossing_truck.reduce((acc, curr) => {
+                return (acc + curr > weight) ? acc : acc + curr
+            })
+            if (trucks < weight) answer += crossing_truck.length * bridge_length
+            else {
+    
+            }
+        } else {
+            const current = truck_weights.shift()
+            crossing_truck.push(current)
+            const trucks = crossing_truck.reduce((acc, curr) => {
+                return (acc + curr > weight) ? acc : acc + curr
+            })
+            if (trucks < weight) answer += crossing_truck.length * bridge_length
+            else {
+    
+            }
+        }
+    }
+
+
+    answer
     return answer
 }
 
@@ -21,6 +55,19 @@ const weight = 10
 const truck_weights = [7, 4, 5, 6]
 
 solution(bridge_length, weight, truck_weights)
+
+
+
+
+
+
+
+
+
+// const trucks = truck_weights.reduce((acc, curr) => {
+//     if (acc + curr > weight) return acc
+//     else return acc + curr
+// })
 
 
 /**
