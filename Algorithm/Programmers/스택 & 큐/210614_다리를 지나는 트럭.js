@@ -17,33 +17,18 @@
  function solution(bridge_length, weight, truck_weights) {
     var answer = 0 // 총 시간
 
-    let crossing_truck = []
+    let crossing_truck = [] // 다리를 건너고 있는 트럭
+    const crossing_truck_1 = Array(bridge_length)
 
-    // const ddd = crossing_truck.length * bridge_length
-   
     while (truck_weights.length) {
-        if (!crossing_truck.length) {
-            const current = truck_weights.shift()
-            crossing_truck.push(current)
-            const trucks = crossing_truck.reduce((acc, curr) => {
-                return (acc + curr > weight) ? acc : acc + curr
-            })
-            if (trucks < weight) answer += crossing_truck.length * bridge_length
-            else {
-    
-            }
-        } else {
-            const current = truck_weights.shift()
-            crossing_truck.push(current)
-            const trucks = crossing_truck.reduce((acc, curr) => {
-                return (acc + curr > weight) ? acc : acc + curr
-            })
-            if (trucks < weight) answer += crossing_truck.length * bridge_length
-            else {
-    
-            }
-        }
+        
+        const current = truck_weights.shift()
+        crossing_truck.push(current)
+
+        // crossing_truck_1.splice(0, 1)
     }
+
+    crossing_truck_1
 
 
     answer
