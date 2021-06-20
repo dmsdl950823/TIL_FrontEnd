@@ -15,40 +15,59 @@
 
 
  function solution(bridge_length, weight, truck_weights) {
-    var answer = 0 // 총 시간
-
+    let answer = 0 // 총 시간
+    let crossing_weights = 0 // 현재 다리 무게
     const crossing_truck = [] // 다리를 건너고 있는 트럭
-    for (let i = 0; i < bridge_length; i++) crossing_truck.push(undefined)
 
+    for (let i = 0; i < bridge_length; i++) crossing_truck.push(null)
 
-    // const crossing_truck = Array(bridge_length) // 다리를 건너고 있는 트럭
-    
-    while (truck_weights.length) {
+    let current = truck_weights.shift() // 현재 다리를 지나가고있는 트럭
 
-        const current = truck_weights.shift()
-        current
+    // 트럭을 넣고 다리를 앞으로 한칸씩 당김
+    crossing_truck.unshift(current)
+    crossing_truck.pop()
+    crossing_truck
 
-        crossing_truck
+    crossing_weights += current // 다리 무게 증가
+    answer++
 
-        for (const road of crossing_truck) {
-            // road
-            if (!road) {
-                const is_max_weight = crossing_truck.reduce((acc, cur) => acc + cur)
-                
-                console.log(is_max_weight > 1)
-                crossing_truck.push(current)
-                crossing_truck.shift()
-            } else {
-            }
+    while (crossing_weights) {
 
-            
+        crossing_weights -= crossing_truck.pop() // 다리에 있는 트럭 이동
+        current = truck_weights.shift()
 
+        if (current + crossing_weights <= weight) {
+            crossing_truck.unshift(current)
+            crossing_weights += current
+        } else {
+            crossing_truck.unshift(0)
+            truck_weights.unshift(current)
         }
+        answer++
         crossing_truck
 
-    }
+    //     const current = truck_weights.shift() // 현재 다리를 지나가고있는 트럭
+    //     let next = 0
+    //     current
+    //     next
 
-    truck_weights
+    //     const total = current + next
+        
+    //     total
+    //     current
+
+    //     if (total < weight) {
+    //         crossing_truck.push(current)
+    //         next = truck_weights[0]
+            
+    //     } else {
+    //         crossing_truck.push(current)
+    //         crossing_truck.push(null)
+    //     }
+
+    //     crossing_truck.shift()    
+    //     crossing_truck
+    }
 
     answer
     return answer
