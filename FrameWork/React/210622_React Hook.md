@@ -8,6 +8,7 @@
     - [Rules of Hooks](#rules-of-hooks)
     - [Building Your Own Hooks](#building-your-own-hooks)
   - [useContext](#usecontext)
+    - [Context](#context)
 - [Additional Hooks](#additional-hooks)
   - [useReducer](#usereducer)
   - [useCallback](#usecallback)
@@ -35,25 +36,24 @@ React 에서 Hook 은, function 컴포넌트 내부에서 React 의 state 와 li
 또한 초기 값 `initialState` 을 매개변수로 받습니다. 초기값 state 매개변수는 첫 번째 렌더링 중에만 딱 한번 사용됩니다.
 
 ``` js
-    /* function component example */
-    import React, { useState } from 'react'
+  /* function component example */
+  import React, { useState } from 'react'
 
-    const react = () => {
-        // const [state, setstate] = useState(initialState)
-        const [count, setCount] = useState(0)
-        return (
-            <div>
-                <p>you clicked {count} Times</p>
+  const react = () => {
+    // const [state, setstate] = useState(initialState)
+    const [count, setCount] = useState(0)
+    return (
+      <div>
+        <p>you clicked {count} Times</p>
 
-                <button onClick={() => setCount(count + 1)}>
-                    +
-                </button>
-            </div>
-        )
-    }
+        <button onClick={() => setCount(count + 1)}>
+          +
+        </button>
+      </div>
+    )
+  }
 
-    export default react
-
+  export default react
 ```
 
 ## useEffect
@@ -61,38 +61,37 @@ React 에서 Hook 은, function 컴포넌트 내부에서 React 의 state 와 li
 ``` js
     useEffect(didUpdate) 
 ```
-data fetching, React 컴포넌트에서 수동으로 DOM 을 변경하는  등의 작업을 하고싶을경우, 다른 컴포넌트에 영향을 줄 수 있기 때문에 사이드 이펙트가 발생할 수 있었습니다.
+data fetching, React 컴포넌트에서 수동으로 DOM 을 변경하는  등의 작업을 하고싶을경우, 다른 컴포넌트에 영향을 줄 수 있기 때문에 사이드 이펙트가(부작용) 발생할 수 있었습니다.
 
 `useEffect` 는, function 컴포넌트의 사이드 이펙트를 수행하는 기능을 추가합니다. class 컴포넌트의 `componentDidMount`, `componentDidUpdate`, `componentWillUnmount` 과 같은 일을 하지만, 하나의 API 로 통합된 것입니다.
  
-`useEffect` 를 호출할 경우, React 에게 DOM 을 변경한 후, `effect` function 을 호출하도록 알려줍니다. Effects 는 component 내부에 선언되어있으므로, `props` 와 `state` 에 접근 가능합니다.
+`useEffect` 를 호출할 경우, React 에게 **DOM 을 변경한 후, `effect` function 을 호출하도록 알려줍니다.** DOM 을 업데이트 한 바로 직후에, 선언한 effect 를 동작시킵니다. Effects 는 component 내부에 선언되어있으므로, `props` 와 `state` 에 접근 가능합니다.
+
+> [useEffect reference](https://reactjs.org/docs/hooks-reference.html#useeffect), [useEffect docs](https://reactjs.org/docs/hooks-effect.html)
 
 ``` js
-    /* function component example */
-    import React, { useState, useEffect } from 'react'
+  /* function component example */
+  import React, { useState, useEffect } from 'react'
 
-    const react = () => {
-        const [count, setCount] = useState(0)
-        
-        useEffect(() => {
-            document.title = `You clicked ${count} times`
-        })
-        return (
-            <div>
-                <p>you clicked {count} Times</p>
+  const react = () => {
+    const [count, setCount] = useState(0)
+    
+    useEffect(() => {
+        document.title = `You clicked ${count} times`
+    })
+    return (
+      <div>
+        <p>you clicked {count} Times</p>
 
-                <button onClick={() => setCount(count + 1)}>
-                    +
-                </button>
-            </div>
-        )
-    }
+        <button onClick={() => setCount(count + 1)}>
+          +
+        </button>
+      </div>
+    )
+  }
 
-    export default react
+  export default react
 ```
-https://reactjs.org/docs/hooks-reference.html#useeffect
-
-https://reactjs.org/docs/hooks-effect.html
 
 ``` js
 /* class component example */
@@ -126,9 +125,53 @@ class Example extends React.Component {
 
 ### Rules of Hooks
 
+hook 은 js function 이긴 하지만,
+
+1. 오직 상단에 선언을 해주어야합니다. 루프, 조건문, 내부 function 에서 선언하지마세요.
+2. Function 컴포넌트에서만 사용할 수 있습니다. 일반 javascript function 에서 호출하여 사용하지 않습니다.
+
 ### Building Your Own Hooks
 
+hook 을 직접 제작하는 작업은, **컴포넌트 로직**을 **재사용 가능한 함수에 적용**할 수 있도록 도와줍니다.
+
+``` js
+/* created custom hooks */
+import React, { useState, useEffect } from 'react'
+
+const useFriendStatus = (friendId) =>  {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    const handleStatusChange = (status) => {
+      setIsOnline(status.isOnline)
+    }
+    ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange)
+
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendId, handleStatusChange)
+    }
+  })
+
+  return isOnline
+}
+```
+
+``` js
+  /* using custom hooks */
+  // ...
+  const FriendStatus = ({ friend }) => {
+    const isOnline = useFriendStatus(friend.id)
+
+    if (isOnline === null) return 'loading ... '
+    return isOnline ? 'Online' : 'Offline'
+  }
+```
+
 ## useContext
+
+### Context
+
+컨텍스트에 관한 자세한 설명은 [이 포스팅](./210623_React%20Context.md)를 참조하세요.
 
 # Additional Hooks
 

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 
-const react = () => {
-    const [count, setCount] = useState(0)
-    
-    useEffect(() => {
-        document.title = `You clicked ${count} times`
-    })
-    return (
-        <div>
-            <p>you clicked {count} Times</p>
+const FriendStatus = ({ friend }) =>  {
+  const [isOnline, setIsOnline] = useState(null)
 
-            <button onClick={() => setCount(count + 1)}>
-                +
-            </button>
-        </div>
-    )
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+    ChatAPI.subscribeToFriendStatus(friend.id, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friend.id, handleStatusChange)
+    }
+  })
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
 }
-
-export default react
