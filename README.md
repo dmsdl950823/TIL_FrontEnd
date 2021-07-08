@@ -128,6 +128,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210304 _ Javascript에서 Stack & Queue](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210304_Javascript%EC%97%90%EC%84%9C%20Stack%20%26%20Queue.md) Stack 개념 추가 
 * [210331 _ TEST CODE 의 필요성](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/210331_TEST%20CODE%EC%9D%98%20%ED%95%84%EC%9A%94%EC%84%B1.md)
 * [210507 _ SEO, CSR, SSR, SPA, MPA](./Notion/210507_SEO,CSR,SSR,SPA,MPA.md)
+* [210708 _ VirtualDOM 이 빠른 이유](Notion/210708_VirtualDOM%20이%20빠른%20이유.md)
 
 ### Design
 * [210218 _ Design / UI 용어 - 팝업](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/Notion/Design/210218_UI%20%EC%9A%A9%EC%96%B4%20-%20%ED%8C%9D%EC%97%85.md)
