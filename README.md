@@ -62,6 +62,7 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210221 _ SASS & SCSS](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/CSS/CSS-preprocessor/210221_SASS%20%26%20SCSS.md)
 * [210225 _ BEM](https://github.com/dmsdl950823/TIL_FrontEnd/blob/master/CSS/210225_BEM.md)
 * [210706 _ custom property 와 javascript 를 사용한 pseudo-elements 스타일링](CSS/210706_custom%20property%20와%20javascript%20를%20사용한%20pseudo-elements%20스타일링.md)
+* [210720 _ SVG Favicons Colorize](CSS/210720_SVG%20Favicons%20Colorize.md)
 
 <br>
 
