@@ -9,6 +9,11 @@
   - [Vector 2](#vector-2)
   - [Vector 3](#vector-3)
   - [Vector 4](#vector-4)
+  - [Function](#function)
+  - [Native Function](#native-function)
+    - [Shaderific documentation](#shaderific-documentation)
+    - [Kronos Group OpenGL reference pages](#kronos-group-opengl-reference-pages)
+    - [Book of shaders documentation](#book-of-shaders-documentation)
 
 # GLSL
 
@@ -163,4 +168,57 @@ variable 을 지정하기 위해서는, type 을 지정하고 변수명을 지�
 ```
 
 `mat2`, `mat3`, `mat4`, `sampler3D` 같은 다른 타입의 변수도 있지만 나중에 살펴볼 것 입니다.
+
+## Function
+
+일반 프로그래밍 언어처럼, function 을 생성해서 사용할 수 있습니다. function 은 반드시 리턴하는 값의 타입을 지정해주어야 합니다.
+
+``` c
+  float loremIpsum() {
+    float a = 1.0;
+    float b = 2.0;
+
+    return a + b;
+  }
+```
+
+아무것도 리턴하지 않는 function 이라면 `void` 타입을 설정해줍니다.
+
+``` c
+  void justDoingStuff() {
+    float a = 1.0;
+    float b = 2.0;
+  }
+```
+
+매개변수를 사용할 경우, 타입을 설정하여 구체화 할 수 있습니다.
+``` c
+  float add (float a, float b) {
+    return a + b;
+  }
+```
+
+## Native Function
+
+GLSL 은 내장 function 을 가지고 있습니다. - `sin`, `cos`, `max`, `min`, `pow`, `exp`, `mod`, `clamp` 뿐 아니라, 실질적인 function - `cross`, `dot`, `mix`, `step`, `smoothstep`, `length`, `distance`, `reflect`, `refract`, `normalize` 같은것도 보유하고있습니다.
+
+안타깝게도 초심자를 위한 친절한 docs 는 없으며, 대부분 web 에서 검색 하거나, 아래의 사이트들을 이용하는 수 밖에 없습니다.
+
+### Shaderific documentation
+
+https://www.shaderific.com/glsl-functions
+
+Shaderific 은 GLSL 을 가지고 놀 수 있는 iOS 어플리케이션 입니다. 
+
+### Kronos Group OpenGL reference pages
+
+https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/indexflat.php
+
+이 docs 는 OpenGL 을 다루고 있으나, WebGL 과 비교하여 일반적인 function 을 비교해 볼 수 있습니다. WebGL 은 OpenGL 에 접근할 수 있는 javascript API 라는 것을 잊지마세요!
+
+### Book of shaders documentation
+
+https://thebookofshaders.com/
+
+Book of shaders 은 주로 fragment shader 에 초점을 두고있으며, Three.js 와는 연관이 없습니다. 그러나 자신만의 [glossary](https://thebookofshaders.com/glossary/) 를 만들 수 있는 좋은 자원입니다.
 
