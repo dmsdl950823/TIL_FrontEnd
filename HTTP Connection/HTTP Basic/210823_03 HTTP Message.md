@@ -1,6 +1,6 @@
-# HTTP 메세지
+# HTTP Message
 
-- [HTTP 메세지](#http-메세지)
+- [HTTP Message](#http-message)
   - [메시지의 흐름](#메시지의-흐름)
   - [메시지의 각 부분](#메시지의-각-부분)
   - [메시지 문법](#메시지-문법)

@@ -117,6 +117,11 @@ FrontEnd based TIL - FrontEnd 위주 TIL 작성
 * [210504 _ Cookie, Session, Token 의 차이점](HTTP%20Connection/210504_Cookie,%20Session,%20Token%20의%20차이점.md)
 * [210510 _ XSS 공격 및 CORS - 해결방법](HTTP%20Connection/210510_XSS%20공격%20및%20CORS%20-%20해결방법.md)
 * [210603 _ Short Polling vs Long Polling](HTTP%20Connection/210603_Short%20Polling%20vs%20Long%20Polling.md)
+* [HTTP Basic / 210817 _ 01 HTTP](HTTP%20Connection/HTTP%20Basic/210817_01%20HTTP.md)
+* [HTTP Basic / 210820 _ 02 URL & Resource](HTTP%20Connection/HTTP%20Basic/210820_02%20URL%20&%20Resource.md)
+* [HTTP Basic / 210823 _ 03 HTTP Message](HTTP%20Connection/HTTP%20Basic/210823_03%20HTTP%20Message.md)
+* [HTTP Basic / 210830 _ 04 HTTP Connection](HTTP%20Connection/HTTP%20Basic/210830_04%20HTTP%20Connection.md)
+* [HTTP Basic / 210903 _ 05 Web Server](HTTP%20Connection/HTTP%20Basic/210903_05%20Web%20Server.md)
 
 ## TEST
 
