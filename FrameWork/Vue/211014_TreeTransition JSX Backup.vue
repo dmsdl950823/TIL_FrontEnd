@@ -1,6 +1,6 @@
 <script>
 
-import TreeTransition from './TreeTransition'
+import TreeTransition from './TreeTransition' // Transition 용 컴포넌트를 따로 만들었음!
 
 export default {
   name: 'TransitionTeamTree',
