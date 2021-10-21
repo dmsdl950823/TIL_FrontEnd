@@ -57,3 +57,105 @@
   return templates
   },
 ```
+
+``` js
+// input
+DATAFORMAT: [
+    { apiName: 'A', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: false, indeterminate: false },
+    { apiName: 'B', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: false, indeterminate: false },
+    { apiName: 'C', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: 'disabled' },
+    { apiName: 'D', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: 'disabled' },
+    { apiName: 'E', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: 'disabled' },
+    { apiName: 'F', isCreate: 'disabled', isRead: 'disabled', isUpdate: 'disabled', isDelete: false },
+    { apiName: 'G', isCreate: false, isRead: false, isUpdate: false, isDelete: false, indeterminate: false },
+    { apiName: 'H', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+    { apiName: 'I', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+    { apiName: 'K', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+    { apiName: 'M', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+    { apiName: 'N', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+    { apiName: 'O', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+    { apiName: 'Q', isCreate: false, isRead: false, isUpdate: 'disabled', isDelete: 'disabled' },
+    { apiName: 'P', isCreate: false, isRead: false, isUpdate: false, isDelete: false, range: 'all' },
+    { apiName: 'R', isCreate: false, isRead: false, isUpdate: false, isDelete: false, range: 'all' },
+    { apiName: 'S', isCreate: 'disabled', isRead: false, isUpdate: 'disabled', isDelete: 'disabled' }
+  ]
+```
+
+
+``` js
+// 만들고자 하는 형태
+DATAFORMAT: [
+    {
+      apiName: 'A',
+      isCreate: 'disabled',
+      isRead: false,
+      isUpdate: false,
+      isDelete: false,
+      indeterminate: false,
+      children: [
+        {
+          apiName: 'B',
+          isCreate: 'disabled',
+          isRead: false,
+          isUpdate: false,
+          isDelete: false,
+          indeterminate: false,
+          children: [
+            { apiName: 'C', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: 'disabled' },
+            { apiName: 'D', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: 'disabled' },
+            { apiName: 'E', isCreate: 'disabled', isRead: false, isUpdate: false, isDelete: 'disabled' },
+            { apiName: 'F', isCreate: 'disabled', isRead: 'disabled', isUpdate: 'disabled', isDelete: false }
+          ]
+        },
+        {
+          apiName: 'G',
+          isCreate: false,
+          isRead: false,
+          isUpdate: false,
+          isDelete: false,
+          indeterminate: false,
+          children: [
+            { apiName: 'H', isCreate: false, isRead: false, isUpdate: false, isDelete: false }
+          ]
+        }
+      ]
+    },
+    {
+      apiName: 'I',
+      isCreate: false,
+      isRead: false,
+      isUpdate: false,
+      isDelete: false,
+      children: [
+        { apiName: 'K', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+        { apiName: 'M', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+        { apiName: 'N', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+        { apiName: 'O', isCreate: false, isRead: false, isUpdate: false, isDelete: false },
+        { apiName: 'Q', isCreate: false, isRead: false, isUpdate: 'disabled', isDelete: 'disabled' }
+      ]
+    },
+    {
+      apiName: 'P',
+      isCreate: false,
+      isRead: false,
+      isUpdate: false,
+      isDelete: false,
+      range: 'all'
+    },
+    {
+      apiName: 'R',
+      isCreate: false,
+      isRead: false,
+      isUpdate: false,
+      isDelete: false,
+      range: 'all'
+    },
+    {
+      apiName: 'S',
+      isCreate: 'disabled',
+      isRead: false,
+      isUpdate: 'disabled',
+      isDelete: 'disabled'
+    }
+  ]
+```
